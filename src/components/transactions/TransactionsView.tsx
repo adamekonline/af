@@ -1,5 +1,10 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { DollarSign } from "lucide-react";
+</lov-replace>
+
+<lov-search>
+                      <DollarSign className="h-3 w-3" />
+</lov-search>
+<lov-replace>
 import { Transaction, PropertyLocation } from "@/types";
 import { TransactionFormDialog } from "./TransactionFormDialog";
 import { PropertyFilter } from "./PropertyFilter";
