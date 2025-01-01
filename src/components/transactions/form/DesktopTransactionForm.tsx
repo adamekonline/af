@@ -23,12 +23,12 @@ export const DesktopTransactionForm = ({ open, onOpenChange, form, onSubmit }: D
           Add Transaction
         </Button>
       </DialogTrigger>
-      <DialogContent className="max-h-[85vh] flex flex-col">
+      <DialogContent className="max-h-[90vh] flex flex-col">
         <DialogHeader className="flex-shrink-0">
           <DialogTitle>Add Transaction</DialogTitle>
           <DialogDescription>Add a new transaction to your records.</DialogDescription>
         </DialogHeader>
-        <ScrollArea className="flex-1 pr-4 -mr-4">
+        <ScrollArea className="flex-1 pr-4">
           <form onSubmit={onSubmit} className="space-y-4">
             <TransactionBasicFields form={form} />
             <TransactionSelectFields form={form} />
