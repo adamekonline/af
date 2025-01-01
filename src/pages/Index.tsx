@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
+import { t } from "@/utils/translations";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -20,10 +21,10 @@ const Index = () => {
     try {
       await supabase.auth.signOut();
       navigate("/login");
-      toast.success("Logged out successfully");
+      toast.success(t("logout"));
     } catch (error) {
       console.error("Error logging out:", error);
-      toast.error("Error logging out");
+      toast.error(t("error"));
     }
   };
 
@@ -51,7 +52,7 @@ const Index = () => {
                     onClick={() => handleTabChange("dashboard")}
                   >
                     <LayoutDashboard className="mr-2 h-4 w-4" />
-                    Dashboard
+                    {t("dashboard")}
                   </Button>
                   <Button 
                     variant="ghost" 
@@ -59,7 +60,7 @@ const Index = () => {
                     onClick={() => handleTabChange("transactions")}
                   >
                     <Receipt className="mr-2 h-4 w-4" />
-                    Transactions
+                    {t("transactions")}
                   </Button>
                   <Button 
                     variant="ghost" 
@@ -67,7 +68,7 @@ const Index = () => {
                     onClick={() => handleTabChange("exchange-rates")}
                   >
                     <DollarSign className="mr-2 h-4 w-4" />
-                    Exchange Rates
+                    {t("exchangeRates")}
                   </Button>
                 </nav>
               </SheetContent>
@@ -97,15 +98,15 @@ const Index = () => {
           <TabsList className="hidden md:flex justify-start border-b w-full text-sm">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
-              Dashboard
+              {t("dashboard")}
             </TabsTrigger>
             <TabsTrigger value="transactions" className="flex items-center gap-2">
               <Receipt className="h-4 w-4" />
-              Transactions
+              {t("transactions")}
             </TabsTrigger>
             <TabsTrigger value="exchange-rates" className="flex items-center gap-2">
               <DollarSign className="h-4 w-4" />
-              Exchange Rates
+              {t("exchangeRates")}
             </TabsTrigger>
           </TabsList>
           
