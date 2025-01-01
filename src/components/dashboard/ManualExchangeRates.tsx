@@ -24,6 +24,15 @@ interface ManualRateForm {
   rate: string;
 }
 
+interface SupabaseManualRate {
+  id: number;
+  date: string;
+  base_currency: string;
+  target_currency: string;
+  rate: number;
+  created_at: string;
+}
+
 export const ManualExchangeRates = () => {
   const [rates, setRates] = useState<ManualRate[]>([]);
   const form = useForm<ManualRateForm>({
@@ -46,7 +55,16 @@ export const ManualExchangeRates = () => {
       return;
     }
     
-    setRates(data);
+    // Convert the Supabase response to ManualRate type
+    const typedRates: ManualRate[] = (data as SupabaseManualRate[]).map(rate => ({
+      id: rate.id,
+      date: rate.date,
+      base_currency: rate.base_currency as Currency,
+      target_currency: rate.target_currency as Currency,
+      rate: rate.rate,
+    }));
+    
+    setRates(typedRates);
   };
 
   useEffect(() => {
