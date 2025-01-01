@@ -91,7 +91,6 @@ const Login = () => {
               },
             }}
             redirectTo={window.location.origin}
-            persistSession={true}
           />
         </CardContent>
       </Card>
