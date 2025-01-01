@@ -32,13 +32,6 @@ const Login = () => {
     return () => subscription.unsubscribe();
   }, [navigate]);
 
-  // Update the Supabase client's auth configuration when rememberMe changes
-  useEffect(() => {
-    supabase.auth.initialize({
-      persistSession: rememberMe
-    });
-  }, [rememberMe]);
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
