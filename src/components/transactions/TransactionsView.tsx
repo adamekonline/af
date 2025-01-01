@@ -6,44 +6,69 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { convertCurrency } from "@/utils/currencyConverter";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
-
-const initialTransactions: Transaction[] = [
-  {
-    id: 1,
-    date: "2024-03-15",
-    description: "Rent Payment - Poznan",
-    amount: -2000,
-    currency: "PLN" as Currency,
-    category: "Housing",
-    person: "Adam",
-    property: "Poznań"
-  },
-  {
-    id: 2,
-    date: "2024-03-14",
-    description: "Grocery Shopping",
-    amount: -200,
-    currency: "PLN" as Currency,
-    category: "Food",
-    person: "Natka"
-  },
-  {
-    id: 3,
-    date: "2024-03-13",
-    description: "Salary",
-    amount: 8000,
-    currency: "PLN" as Currency,
-    category: "Income",
-    person: "Adam"
-  }
-];
+import { Trash2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const TransactionsView = () => {
-  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN");
   const [convertedAmounts, setConvertedAmounts] = useState<Record<number, number>>({});
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    // Fetch initial transactions
+    fetchTransactions();
+
+    // Set up real-time subscription
+    const channel = supabase
+      .channel('public:transactions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'transactions' },
+        (payload) => {
+          console.log('Change received!', payload);
+          fetchTransactions(); // Refresh the list when changes occur
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+      setTransactions(data || []);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+      toast.error('Failed to fetch transactions');
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    try {
+      const { error } = await supabase
+        .from('transactions')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      toast.success('Transaction deleted successfully');
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+      toast.error('Failed to delete transaction');
+    }
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -107,13 +132,23 @@ export const TransactionsView = () => {
                       <p className="font-medium text-sm">{transaction.description}</p>
                       <p className="text-xs text-muted-foreground">{transaction.date}</p>
                     </div>
-                    <div className={`text-right ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
-                      <p className="font-semibold">
-                        {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-                      </p>
-                      <p className="text-xs opacity-75">
-                        {transaction.amount.toLocaleString()} {transaction.currency}
-                      </p>
+                    <div className="flex items-center gap-2">
+                      <div className={`text-right ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
+                        <p className="font-semibold">
+                          {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                        </p>
+                        <p className="text-xs opacity-75">
+                          {transaction.amount.toLocaleString()} {transaction.currency}
+                        </p>
+                      </div>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(transaction.id)}
+                        className="text-muted-foreground hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
                     </div>
                   </div>
                   <div className="flex justify-between text-xs text-muted-foreground pt-2 border-t">
@@ -138,6 +173,7 @@ export const TransactionsView = () => {
                 <TableHead className="w-[100px]">Category</TableHead>
                 <TableHead className="w-[100px]">Person</TableHead>
                 <TableHead className="w-[100px]">Property</TableHead>
+                <TableHead className="w-[50px]"></TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -160,6 +196,16 @@ export const TransactionsView = () => {
                     <TableCell className="whitespace-nowrap">{transaction.category}</TableCell>
                     <TableCell className="whitespace-nowrap">{transaction.person}</TableCell>
                     <TableCell className="whitespace-nowrap">{transaction.property || '-'}</TableCell>
+                    <TableCell>
+                      <Button
+                        variant="ghost"
+                        size="icon"
+                        onClick={() => handleDelete(transaction.id)}
+                        className="text-muted-foreground hover:text-red-600"
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </TableCell>
                   </TableRow>
                 );
               })}

@@ -8,11 +8,7 @@ import { TransactionFormData } from "./types";
 import { MobileTransactionForm } from "./form/MobileTransactionForm";
 import { DesktopTransactionForm } from "./form/DesktopTransactionForm";
 
-interface TransactionFormDialogProps {
-  onAddTransaction: (transaction: Transaction) => void;
-}
-
-export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: TransactionFormDialogProps) => {
+export const ResponsiveTransactionFormDialog = () => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
   
@@ -48,8 +44,7 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
         currency: formData.currency,
         category: formData.category,
         person: formData.person,
-        property: formData.property || null,
-        id: Date.now()
+        property: formData.property || null
       };
 
       const { error } = await supabase
@@ -58,7 +53,6 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
 
       if (error) throw error;
 
-      onAddTransaction(newTransaction);
       setOpen(false);
       form.reset();
       toast.success("Transaction added successfully");
