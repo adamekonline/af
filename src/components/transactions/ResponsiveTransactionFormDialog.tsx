@@ -25,15 +25,6 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
       category: "Other",
       person: "Adam",
       property: undefined
-    },
-    defaultValues: {
-      date: new Date().toISOString().split('T')[0],
-      description: "",
-      amount: "",
-      currency: "PLN",
-      category: "Other",
-      person: "Adam",
-      property: undefined
     }
   });
 
