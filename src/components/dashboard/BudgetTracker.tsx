@@ -99,7 +99,7 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
                 <span className="font-medium">{budget.category}</span>
                 <div className="text-sm">
                   <span className="font-semibold">
-                    {totalSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                    {totalSpent.toLocaleString('pl-PL', { maximumFractionDigits: 2 })} {displayCurrency}
                   </span>
                   <span className="text-muted-foreground ml-2">
                     ({percentage.toFixed(1)}%)
@@ -140,7 +140,7 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
                       />
                       <span className="font-medium">{person}:</span>
                       <span>
-                        {personSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                        {personSpent.toLocaleString('pl-PL', { maximumFractionDigits: 2 })} {displayCurrency}
                         <span className="text-muted-foreground ml-1">
                           ({personPercentage.toFixed(1)}%)
                         </span>

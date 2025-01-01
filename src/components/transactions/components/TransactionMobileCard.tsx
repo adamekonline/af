@@ -29,7 +29,7 @@ export const TransactionMobileCard = ({
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   
   const formatNumber = (num: number) => {
-    return num.toLocaleString('de-DE', { 
+    return num.toLocaleString('pl-PL', { 
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });

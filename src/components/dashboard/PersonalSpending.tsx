@@ -74,7 +74,7 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
                 <span className="font-medium text-sm" style={{ color: colors.text }}>{person}</span>
                 <div className="text-sm">
                   <span className="font-semibold">
-                    {spentAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                    {spentAmount.toLocaleString('pl-PL', { maximumFractionDigits: 2 })} {displayCurrency}
                   </span>
                   <span className="text-muted-foreground ml-2">
                     ({percentage.toFixed(1)}%)
