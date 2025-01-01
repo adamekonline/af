@@ -9,14 +9,6 @@ import { PersonalSpending } from "./PersonalSpending";
 import { DashboardFilters } from "./DashboardFilters";
 import { isWithinInterval, parseISO } from "date-fns";
 
-const mockTransactions: Transaction[] = [
-  { id: 1, date: "2024-03-15", description: "Rent Payment - Poznan", amount: -2000, currency: "PLN" as Currency, category: "Housing", person: "Adam", property: "Poznań" },
-  { id: 2, date: "2024-03-14", description: "Grocery Shopping", amount: -200, currency: "PLN" as Currency, category: "Food", person: "Natka" },
-  { id: 3, date: "2024-03-13", description: "Salary", amount: 8000, currency: "PLN" as Currency, category: "Income", person: "Adam" },
-  { id: 4, date: "2024-03-12", description: "Transport", amount: -500, currency: "PLN" as Currency, category: "Transport", person: "Adi" },
-  { id: 5, date: "2024-03-11", description: "Healthcare", amount: -300, currency: "PLN" as Currency, category: "Health", person: "Natka" },
-];
-
 export const DashboardView = () => {
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
   const [convertedBalance, setConvertedBalance] = useState<number>(0);
@@ -31,7 +23,7 @@ export const DashboardView = () => {
   const [sortBy, setSortBy] = useState("date-desc");
   
   // Filtered transactions
-  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(mockTransactions);
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
 
   // Calculate active filters count
   const getActiveFiltersCount = () => {
@@ -46,7 +38,7 @@ export const DashboardView = () => {
 
   useEffect(() => {
     // Apply filters and sorting
-    let filtered = [...mockTransactions];
+    let filtered = [...filteredTransactions];
 
     // Date range filter
     if (startDate && endDate) {
