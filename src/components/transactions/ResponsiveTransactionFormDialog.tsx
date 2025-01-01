@@ -26,17 +26,14 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
       person: "Adam",
       property: undefined
     },
-    // Add required validation for all fields
-    rules: {
-      date: { required: "Date is required" },
-      description: { required: "Description is required" },
-      amount: { 
-        required: "Amount is required",
-        validate: (value) => !isNaN(parseFloat(value)) || "Amount must be a number"
-      },
-      currency: { required: "Currency is required" },
-      category: { required: "Category is required" },
-      person: { required: "Person is required" }
+    defaultValues: {
+      date: new Date().toISOString().split('T')[0],
+      description: "",
+      amount: "",
+      currency: "PLN",
+      category: "Other",
+      person: "Adam",
+      property: undefined
     }
   });
 
