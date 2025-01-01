@@ -90,6 +90,7 @@ const Login = () => {
                 },
               },
             }}
+            redirectTo={window.location.origin}
           />
         </CardContent>
       </Card>
