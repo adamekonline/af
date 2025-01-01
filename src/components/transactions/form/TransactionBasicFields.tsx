@@ -14,12 +14,14 @@ export const TransactionBasicFields = ({ form }: TransactionBasicFieldsProps) =>
         control={form.control}
         name="date"
         render={({ field }) => (
-          <FormItem className="space-y-1">
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
             <FormLabel className="text-sm font-medium">Date</FormLabel>
-            <FormControl>
-              <Input type="date" {...field} className="h-9" />
-            </FormControl>
-            <FormMessage />
+            <div>
+              <FormControl>
+                <Input type="date" {...field} className="h-8" />
+              </FormControl>
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />
@@ -28,12 +30,14 @@ export const TransactionBasicFields = ({ form }: TransactionBasicFieldsProps) =>
         control={form.control}
         name="description"
         render={({ field }) => (
-          <FormItem className="space-y-1">
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
             <FormLabel className="text-sm font-medium">Description</FormLabel>
-            <FormControl>
-              <Input {...field} className="h-9" />
-            </FormControl>
-            <FormMessage />
+            <div>
+              <FormControl>
+                <Input {...field} className="h-8" />
+              </FormControl>
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />
@@ -42,12 +46,14 @@ export const TransactionBasicFields = ({ form }: TransactionBasicFieldsProps) =>
         control={form.control}
         name="amount"
         render={({ field }) => (
-          <FormItem className="space-y-1">
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
             <FormLabel className="text-sm font-medium">Amount</FormLabel>
-            <FormControl>
-              <Input type="number" step="0.01" {...field} className="h-9" />
-            </FormControl>
-            <FormMessage />
+            <div>
+              <FormControl>
+                <Input type="number" step="0.01" {...field} className="h-8" />
+              </FormControl>
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />

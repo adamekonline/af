@@ -19,23 +19,25 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="currency"
         render={({ field }) => (
-          <FormItem className="space-y-1">
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
             <FormLabel className="text-sm font-medium">Currency</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <div>
               <FormControl>
-                <SelectTrigger className="h-9">
-                  <SelectValue placeholder="Select currency" />
-                </SelectTrigger>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger className="h-8">
+                    <SelectValue placeholder="Select currency" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {currencies.map((currency) => (
+                      <SelectItem key={currency} value={currency}>
+                        {currency}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
-              <SelectContent>
-                {currencies.map((currency) => (
-                  <SelectItem key={currency} value={currency}>
-                    {currency}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />
@@ -44,23 +46,25 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="category"
         render={({ field }) => (
-          <FormItem className="space-y-1">
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
             <FormLabel className="text-sm font-medium">Category</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <div>
               <FormControl>
-                <SelectTrigger className="h-9">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger className="h-8">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((category) => (
+                      <SelectItem key={category} value={category}>
+                        {category}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
-              <SelectContent>
-                {categories.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />
@@ -69,23 +73,25 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="person"
         render={({ field }) => (
-          <FormItem className="space-y-1">
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
             <FormLabel className="text-sm font-medium">Person</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+            <div>
               <FormControl>
-                <SelectTrigger className="h-9">
-                  <SelectValue placeholder="Select person" />
-                </SelectTrigger>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger className="h-8">
+                    <SelectValue placeholder="Select person" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {people.map((person) => (
+                      <SelectItem key={person} value={person}>
+                        {person}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
-              <SelectContent>
-                {people.map((person) => (
-                  <SelectItem key={person} value={person}>
-                    {person}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />
@@ -94,23 +100,25 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="property"
         render={({ field }) => (
-          <FormItem className="space-y-1">
-            <FormLabel className="text-sm font-medium">Property (Optional)</FormLabel>
-            <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
+            <FormLabel className="text-sm font-medium">Property</FormLabel>
+            <div>
               <FormControl>
-                <SelectTrigger className="h-9">
-                  <SelectValue placeholder="Select property" />
-                </SelectTrigger>
+                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                  <SelectTrigger className="h-8">
+                    <SelectValue placeholder="Select property" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {properties.map((property) => (
+                      <SelectItem key={property} value={property}>
+                        {property}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </FormControl>
-              <SelectContent>
-                {properties.map((property) => (
-                  <SelectItem key={property} value={property}>
-                    {property}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
-            <FormMessage />
+              <FormMessage />
+            </div>
           </FormItem>
         )}
       />
