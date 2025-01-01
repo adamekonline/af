@@ -17,7 +17,9 @@ export const SummaryCard = ({ title, amount, currency, icon: Icon, variant = 'de
       case 'expense':
         return 'from-red-50 to-white dark:from-red-950 dark:to-gray-950';
       default:
-        return 'from-violet-50 to-white dark:from-violet-950 dark:to-gray-950';
+        return amount < 0 
+          ? 'from-red-50 to-white dark:from-red-950 dark:to-gray-950'
+          : 'from-green-50 to-white dark:from-green-950 dark:to-gray-950';
     }
   };
 
@@ -28,7 +30,7 @@ export const SummaryCard = ({ title, amount, currency, icon: Icon, variant = 'de
       case 'expense':
         return 'text-red-600';
       default:
-        return '';
+        return amount < 0 ? 'text-red-600' : 'text-green-600';
     }
   };
 
@@ -42,7 +44,7 @@ export const SummaryCard = ({ title, amount, currency, icon: Icon, variant = 'de
       </CardHeader>
       <CardContent className="p-2 md:p-6">
         <p className={`text-lg md:text-2xl font-bold ${getTextColorClass()}`}>
-          {variant === 'expense' ? '-' : variant === 'income' ? '+' : ''}
+          {amount < 0 ? '-' : '+'}
           {Math.abs(amount).toLocaleString(undefined, { maximumFractionDigits: 2 })} {currency}
         </p>
       </CardContent>

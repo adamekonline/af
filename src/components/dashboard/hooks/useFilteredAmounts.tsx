@@ -10,7 +10,6 @@ export const useFilteredAmounts = (filteredTransactions: Transaction[], displayC
   useEffect(() => {
     const updateConvertedAmounts = async () => {
       try {
-        let totalBalance = 0;
         let totalIncome = 0;
         let totalExpenses = 0;
 
@@ -20,16 +19,17 @@ export const useFilteredAmounts = (filteredTransactions: Transaction[], displayC
           
           if (transaction.category === 'Income') {
             totalIncome += converted;
-            totalBalance += converted;
           } else {
             totalExpenses += converted;
-            totalBalance -= converted;
           }
         }
 
-        setConvertedBalance(totalBalance);
+        // Calculate balance as expenses - income
+        const balance = totalExpenses - totalIncome;
+        
+        setConvertedBalance(balance);
         setConvertedIncome(totalIncome);
-        setConvertedExpenses(-totalExpenses); // Make expenses negative
+        setConvertedExpenses(totalExpenses);
       } catch (error) {
         console.error('Error converting amounts:', error);
       }
