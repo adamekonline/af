@@ -120,7 +120,7 @@ export const DashboardView = () => {
   }, [filteredTransactions, displayCurrency]);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div className="flex flex-col gap-4">
         <DashboardFilters
           startDate={startDate}
@@ -141,43 +141,43 @@ export const DashboardView = () => {
         />
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950 dark:to-gray-950">
-          <CardHeader className="space-y-1">
-            <CardTitle className="flex items-center gap-2 text-lg">
+      <div className="grid gap-3 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950 dark:to-gray-950 p-3 md:p-6">
+          <CardHeader className="space-y-1 p-2 md:p-6">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
               Total Balance
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold">
+          <CardContent className="p-2 md:p-6">
+            <p className="text-lg md:text-2xl font-bold">
               {convertedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-green-50 to-white dark:from-green-950 dark:to-gray-950">
-          <CardHeader className="space-y-1">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <TrendingUp className="h-5 w-5 text-green-600" />
+        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-green-50 to-white dark:from-green-950 dark:to-gray-950 p-3 md:p-6">
+          <CardHeader className="space-y-1 p-2 md:p-6">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
               Monthly Income
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-green-600">
+          <CardContent className="p-2 md:p-6">
+            <p className="text-lg md:text-2xl font-bold text-green-600">
               +{convertedIncome.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
             </p>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-950">
-          <CardHeader className="space-y-1">
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <TrendingDown className="h-5 w-5 text-red-600" />
+        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-950 p-3 md:p-6">
+          <CardHeader className="space-y-1 p-2 md:p-6">
+            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
+              <TrendingDown className="h-4 w-4 md:h-5 md:w-5 text-red-600" />
               Monthly Expenses
             </CardTitle>
           </CardHeader>
-          <CardContent>
-            <p className="text-2xl font-bold text-red-600">
+          <CardContent className="p-2 md:p-6">
+            <p className="text-lg md:text-2xl font-bold text-red-600">
               -{convertedExpenses.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
             </p>
           </CardContent>
