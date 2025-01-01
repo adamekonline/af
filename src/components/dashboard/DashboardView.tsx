@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { DollarSign, TrendingUp, TrendingDown } from "lucide-react";
 import { Transaction } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -16,21 +15,6 @@ const mockTransactions: Transaction[] = [
   { id: 5, date: "2024-03-11", description: "Healthcare", amount: -300, currency: "PLN", category: "Health", person: "Natka" },
 ];
 
-const aggregateByCategory = (transactions: Transaction[], displayCurrency: string) => {
-  return transactions
-    .filter(t => t.amount < 0)
-    .reduce((acc, curr) => {
-      const convertedAmount = convertCurrency(Math.abs(curr.amount), curr.currency, displayCurrency);
-      const existing = acc.find(item => item.name === curr.category);
-      if (existing) {
-        existing.amount += convertedAmount;
-      } else {
-        acc.push({ name: curr.category, amount: convertedAmount, currency: displayCurrency });
-      }
-      return acc;
-    }, [] as Array<{ name: string; amount: number; currency: string }>);
-};
-
 export const DashboardView = () => {
   const [displayCurrency, setDisplayCurrency] = useState<string>("PLN");
 
@@ -45,8 +29,6 @@ export const DashboardView = () => {
   const convertedExpenses = mockTransactions
     .filter(t => t.amount < 0)
     .reduce((sum, t) => sum + Math.abs(convertCurrency(t.amount, t.currency, displayCurrency)), 0);
-
-  const expensesByCategory = aggregateByCategory(mockTransactions, displayCurrency);
 
   return (
     <div className="space-y-6">
@@ -65,7 +47,7 @@ export const DashboardView = () => {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-lg transition-shadow duration-300">
+        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950 dark:to-gray-950">
           <CardHeader className="space-y-1">
             <CardTitle className="flex items-center gap-2 text-lg">
               <DollarSign className="h-5 w-5" />
@@ -79,10 +61,10 @@ export const DashboardView = () => {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow duration-300">
+        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-green-50 to-white dark:from-green-950 dark:to-gray-950">
           <CardHeader className="space-y-1">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <TrendingUp className="h-5 w-5" />
+              <TrendingUp className="h-5 w-5 text-green-600" />
               Monthly Income
             </CardTitle>
           </CardHeader>
@@ -93,10 +75,10 @@ export const DashboardView = () => {
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-lg transition-shadow duration-300">
+        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-950">
           <CardHeader className="space-y-1">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <TrendingDown className="h-5 w-5" />
+              <TrendingDown className="h-5 w-5 text-red-600" />
               Monthly Expenses
             </CardTitle>
           </CardHeader>
@@ -104,37 +86,6 @@ export const DashboardView = () => {
             <p className="text-2xl font-bold text-red-600">
               -{convertedExpenses.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
             </p>
-          </CardContent>
-        </Card>
-
-        <Card className="col-span-full hover:shadow-lg transition-shadow duration-300">
-          <CardHeader className="space-y-1">
-            <CardTitle className="flex items-center gap-2 text-xl font-semibold">
-              <BarChart className="h-5 w-5" />
-              Expenses by Category
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={expensesByCategory}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="name" />
-                <YAxis />
-                <Tooltip 
-                  formatter={(value) => [
-                    `${value.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${displayCurrency}`, 
-                    'Amount'
-                  ]} 
-                  contentStyle={{
-                    backgroundColor: 'white',
-                    border: '1px solid #e5e7eb',
-                    borderRadius: '0.5rem',
-                    padding: '0.75rem'
-                  }}
-                />
-                <Bar dataKey="amount" fill="#9b87f5" radius={[4, 4, 0, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
           </CardContent>
         </Card>
 
