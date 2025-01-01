@@ -3,51 +3,75 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
 import { TrendsView } from "@/components/trends/TrendsView";
-import { Bookmark, LayoutDashboard, Menu, Plus, Receipt } from "lucide-react";
+import { Bookmark, LayoutDashboard, LogOut, Menu, Plus, Receipt } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { TransactionFormDialog } from "@/components/transactions/TransactionFormDialog";
 import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      navigate("/login");
+      toast.success("Logged out successfully");
+    } catch (error) {
+      console.error("Error logging out:", error);
+      toast.error("Error logging out");
+    }
+  };
 
   return (
     <div className="min-h-screen flex flex-col">
       {/* Top Navigation */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-          <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
-            <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="md:hidden">
-                <Menu className="h-5 w-5" />
-              </Button>
-            </SheetTrigger>
-            <SheetContent side="left" className="w-[240px] sm:w-[280px]">
-              <nav className="flex flex-col gap-4">
-                <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
-                  <LayoutDashboard className="mr-2 h-4 w-4" />
-                  Dashboard
+        <div className="container flex h-14 items-center justify-between">
+          <div className="flex items-center">
+            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+              <SheetTrigger asChild>
+                <Button variant="ghost" size="icon" className="md:hidden">
+                  <Menu className="h-5 w-5" />
                 </Button>
-                <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
-                  <Receipt className="mr-2 h-4 w-4" />
-                  Transactions
-                </Button>
-                <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
-                  <Bookmark className="mr-2 h-4 w-4" />
-                  Trends
-                </Button>
-              </nav>
-            </SheetContent>
-          </Sheet>
+              </SheetTrigger>
+              <SheetContent side="left" className="w-[240px] sm:w-[280px]">
+                <nav className="flex flex-col gap-4">
+                  <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
+                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    Dashboard
+                  </Button>
+                  <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
+                    <Receipt className="mr-2 h-4 w-4" />
+                    Transactions
+                  </Button>
+                  <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
+                    <Bookmark className="mr-2 h-4 w-4" />
+                    Trends
+                  </Button>
+                </nav>
+              </SheetContent>
+            </Sheet>
           
-          <h1 className="text-base md:text-lg lg:text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-2 md:ml-4 truncate max-w-[200px] md:max-w-none">
-            Family Finance Manager
-          </h1>
+            <h1 className="text-base md:text-lg lg:text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-2 md:ml-4 truncate max-w-[200px] md:max-w-none">
+              Adams Family Finances
+            </h1>
+          </div>
 
-          <div className="flex-1" />
-
-          <TransactionFormDialog onAddTransaction={() => {}} />
+          <div className="flex items-center gap-2">
+            <TransactionFormDialog onAddTransaction={() => {}} />
+            <Button 
+              variant="ghost" 
+              size="icon"
+              onClick={handleLogout}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              <LogOut className="h-5 w-5" />
+            </Button>
+          </div>
         </div>
       </header>
 
