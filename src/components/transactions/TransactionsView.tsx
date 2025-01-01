@@ -4,6 +4,8 @@ import { Transaction, PropertyLocation } from "@/types";
 import { TransactionFormDialog } from "./TransactionFormDialog";
 import { PropertyFilter } from "./PropertyFilter";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { convertCurrency } from "@/utils/currencyConverter";
 
 const initialTransactions: Transaction[] = [
   {
@@ -39,6 +41,7 @@ const initialTransactions: Transaction[] = [
 export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
+  const [displayCurrency, setDisplayCurrency] = useState<string>("PLN");
 
   const handleAddTransaction = (newTransaction: Transaction) => {
     setTransactions(prev => [newTransaction, ...prev]);
@@ -53,6 +56,17 @@ export const TransactionsView = () => {
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Transactions</h2>
         <div className="flex gap-4 items-center">
+          <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="PLN">PLN</SelectItem>
+              <SelectItem value="USD">USD</SelectItem>
+              <SelectItem value="EUR">EUR</SelectItem>
+              <SelectItem value="GBP">GBP</SelectItem>
+            </SelectContent>
+          </Select>
           <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
           <TransactionFormDialog onAddTransaction={handleAddTransaction} />
         </div>
@@ -64,27 +78,37 @@ export const TransactionsView = () => {
             <TableHead>Date</TableHead>
             <TableHead>Description</TableHead>
             <TableHead>Amount</TableHead>
+            <TableHead>Original Amount</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Person</TableHead>
             <TableHead>Property</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
-          {filteredTransactions.map((transaction) => (
-            <TableRow key={transaction.id}>
-              <TableCell>{transaction.date}</TableCell>
-              <TableCell>{transaction.description}</TableCell>
-              <TableCell className={transaction.amount > 0 ? "text-green-600" : "text-red-600"}>
-                <span className="flex items-center gap-1">
-                  <DollarSign className="h-4 w-4" />
-                  {transaction.amount} {transaction.currency}
-                </span>
-              </TableCell>
-              <TableCell>{transaction.category}</TableCell>
-              <TableCell>{transaction.person}</TableCell>
-              <TableCell>{transaction.property || '-'}</TableCell>
-            </TableRow>
-          ))}
+          {filteredTransactions.map((transaction) => {
+            const convertedAmount = convertCurrency(transaction.amount, transaction.currency, displayCurrency);
+            return (
+              <TableRow key={transaction.id}>
+                <TableCell>{transaction.date}</TableCell>
+                <TableCell>{transaction.description}</TableCell>
+                <TableCell className={convertedAmount > 0 ? "text-green-600" : "text-red-600"}>
+                  <span className="flex items-center gap-1">
+                    <DollarSign className="h-4 w-4" />
+                    {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                  </span>
+                </TableCell>
+                <TableCell className={transaction.amount > 0 ? "text-green-600" : "text-red-600"}>
+                  <span className="flex items-center gap-1">
+                    <DollarSign className="h-4 w-4" />
+                    {transaction.amount.toLocaleString()} {transaction.currency}
+                  </span>
+                </TableCell>
+                <TableCell>{transaction.category}</TableCell>
+                <TableCell>{transaction.person}</TableCell>
+                <TableCell>{transaction.property || '-'}</TableCell>
+              </TableRow>
+            );
+          })}
         </TableBody>
       </Table>
     </div>
