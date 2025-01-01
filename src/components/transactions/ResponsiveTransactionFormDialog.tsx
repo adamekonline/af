@@ -11,7 +11,6 @@ import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useForm } from "react-hook-form";
 import { TransactionFormData } from "./types";
-import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface TransactionFormDialogProps {
   onAddTransaction: (transaction: Transaction) => void;
@@ -73,22 +72,22 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
           Add Transaction
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[80vh] max-h-[80vh]">
+      <SheetContent side="bottom" className="h-[70vh] p-0">
         <div className="flex flex-col h-full">
-          <SheetHeader className="flex-shrink-0">
+          <SheetHeader className="p-6 pb-4 border-b">
             <SheetTitle>Add Transaction</SheetTitle>
             <SheetDescription>Add a new transaction to your records.</SheetDescription>
           </SheetHeader>
           
           <form onSubmit={handleSubmit} className="flex flex-col h-full">
-            <div className="flex-1 overflow-y-auto py-4">
-              <div className="space-y-4">
+            <div className="flex-1 overflow-y-auto px-6 py-4">
+              <div className="space-y-4 pb-4">
                 <TransactionBasicFields form={form} />
                 <TransactionSelectFields form={form} />
               </div>
             </div>
             
-            <div className="flex-shrink-0 pt-4 pb-2 border-t bg-background mt-auto">
+            <div className="flex-shrink-0 p-4 border-t bg-background">
               <Button type="submit" className="w-full">
                 Add Transaction
               </Button>
