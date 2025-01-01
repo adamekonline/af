@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Transaction, Currency } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { BudgetTracker } from "./BudgetTracker";
 import { PersonalSpending } from "./PersonalSpending";
@@ -17,23 +17,52 @@ const mockTransactions: Transaction[] = [
 
 export const DashboardView = () => {
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
+  const [convertedBalance, setConvertedBalance] = useState<number>(0);
+  const [convertedIncome, setConvertedIncome] = useState<number>(0);
+  const [convertedExpenses, setConvertedExpenses] = useState<number>(0);
 
-  const convertedBalance = mockTransactions.reduce((sum, t) => {
-    return sum + convertCurrency(t.amount, t.currency, displayCurrency);
-  }, 0);
+  useEffect(() => {
+    const updateConvertedAmounts = async () => {
+      try {
+        // Calculate converted balance
+        const balancePromises = mockTransactions.map(t => 
+          convertCurrency(t.amount, t.currency, displayCurrency)
+        );
+        const convertedAmounts = await Promise.all(balancePromises);
+        const totalBalance = convertedAmounts.reduce((sum, amount) => sum + amount, 0);
+        setConvertedBalance(totalBalance);
 
-  const convertedIncome = mockTransactions
-    .filter(t => t.amount > 0)
-    .reduce((sum, t) => sum + convertCurrency(t.amount, t.currency, displayCurrency), 0);
+        // Calculate converted income
+        const incomePromises = mockTransactions
+          .filter(t => t.amount > 0)
+          .map(t => convertCurrency(t.amount, t.currency, displayCurrency));
+        const convertedIncomes = await Promise.all(incomePromises);
+        const totalIncome = convertedIncomes.reduce((sum, amount) => sum + amount, 0);
+        setConvertedIncome(totalIncome);
 
-  const convertedExpenses = mockTransactions
-    .filter(t => t.amount < 0)
-    .reduce((sum, t) => sum + Math.abs(convertCurrency(t.amount, t.currency, displayCurrency)), 0);
+        // Calculate converted expenses
+        const expensePromises = mockTransactions
+          .filter(t => t.amount < 0)
+          .map(t => convertCurrency(Math.abs(t.amount), t.currency, displayCurrency));
+        const convertedExpenses = await Promise.all(expensePromises);
+        const totalExpenses = convertedExpenses.reduce((sum, amount) => sum + amount, 0);
+        setConvertedExpenses(totalExpenses);
+      } catch (error) {
+        console.error('Error converting amounts:', error);
+      }
+    };
+
+    updateConvertedAmounts();
+  }, [displayCurrency]);
+
+  const handleCurrencyChange = (value: string) => {
+    setDisplayCurrency(value as Currency);
+  };
 
   return (
     <div className="space-y-6">
       <div className="flex justify-end mb-4">
-        <Select value={displayCurrency} onValueChange={(value: Currency) => setDisplayCurrency(value)}>
+        <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select currency" />
           </SelectTrigger>

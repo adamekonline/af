@@ -18,14 +18,76 @@ const FALLBACK_RATES: Record<Currency, number> = {
   GBP: 5.05
 };
 
-export const convertCurrency = (amount: number, fromCurrency: Currency, toCurrency: Currency): number => {
+export const convertCurrency = async (amount: number, fromCurrency: Currency, toCurrency: Currency): Promise<number> => {
   if (fromCurrency === toCurrency) return amount;
-  
-  // Use fallback rates for now
-  const fromRate = FALLBACK_RATES[fromCurrency];
-  const toRate = FALLBACK_RATES[toCurrency];
-  
-  return (amount * toRate) / fromRate;
+
+  const cacheKey = `${fromCurrency}_${toCurrency}`;
+  const now = Date.now();
+
+  // Check cache first
+  if (
+    exchangeRatesCache[cacheKey] &&
+    now - exchangeRatesCache[cacheKey].timestamp < CACHE_DURATION
+  ) {
+    return amount * exchangeRatesCache[cacheKey].rate;
+  }
+
+  try {
+    // Fetch latest rate from Supabase
+    const { data: rateData, error } = await supabase
+      .from('exchange_rates')
+      .select('rate')
+      .eq('base_currency', fromCurrency)
+      .eq('target_currency', toCurrency)
+      .order('date', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (error) throw error;
+
+    if (rateData) {
+      // Update cache
+      exchangeRatesCache[cacheKey] = {
+        rate: rateData.rate,
+        timestamp: now,
+      };
+      return amount * rateData.rate;
+    }
+
+    // If no rate found, try reverse conversion
+    const { data: reverseRateData, error: reverseError } = await supabase
+      .from('exchange_rates')
+      .select('rate')
+      .eq('base_currency', toCurrency)
+      .eq('target_currency', fromCurrency)
+      .order('date', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (reverseError) throw reverseError;
+
+    if (reverseRateData) {
+      const rate = 1 / reverseRateData.rate;
+      exchangeRatesCache[cacheKey] = {
+        rate,
+        timestamp: now,
+      };
+      return amount * rate;
+    }
+
+    // Fallback to hardcoded rates if no data is available
+    console.warn('Using fallback rates for currency conversion');
+    const fromRate = FALLBACK_RATES[fromCurrency];
+    const toRate = FALLBACK_RATES[toCurrency];
+    return (amount * toRate) / fromRate;
+
+  } catch (error) {
+    console.error('Error fetching exchange rate:', error);
+    // Fallback to hardcoded rates
+    const fromRate = FALLBACK_RATES[fromCurrency];
+    const toRate = FALLBACK_RATES[toCurrency];
+    return (amount * toRate) / fromRate;
+  }
 };
 
 // Function to trigger exchange rates update
