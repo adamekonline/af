@@ -9,6 +9,8 @@ import { Transaction } from "@/types";
 import { useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
+import { useForm } from "react-hook-form";
+import { TransactionFormData } from "./types";
 
 interface TransactionFormDialogProps {
   onAddTransaction: (transaction: Transaction) => void;
@@ -17,52 +19,49 @@ interface TransactionFormDialogProps {
 export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: TransactionFormDialogProps) => {
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
-  const [formData, setFormData] = useState({
-    date: new Date(),
-    description: "",
-    amount: "",
-    currency: "PLN",
-    category: "",
-    person: "",
-    property: "",
+  
+  const form = useForm<TransactionFormData>({
+    defaultValues: {
+      date: new Date().toISOString().split('T')[0],
+      description: "",
+      amount: "",
+      currency: "PLN",
+      category: "Other",
+      person: "Adam",
+      property: ""
+    }
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const formData = form.getValues();
     
     try {
       const newTransaction = {
-        ...formData,
+        date: formData.date,
+        description: formData.description,
         amount: parseFloat(formData.amount),
-        id: Date.now(),
+        currency: formData.currency,
+        category: formData.category,
+        person: formData.person,
+        property: formData.property || null,
+        id: Date.now()
       };
 
       const { error } = await supabase
         .from('transactions')
-        .insert([newTransaction]);
+        .insert(newTransaction);
 
       if (error) throw error;
 
       onAddTransaction(newTransaction);
       setOpen(false);
-      setFormData({
-        date: new Date(),
-        description: "",
-        amount: "",
-        currency: "PLN",
-        category: "",
-        person: "",
-        property: "",
-      });
+      form.reset();
       toast.success("Transaction added successfully");
     } catch (error) {
       console.error('Error adding transaction:', error);
       toast.error("Failed to add transaction");
     }
-  };
-
-  const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
   };
 
   const MobileContent = () => (
@@ -79,8 +78,8 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
           <SheetDescription>Add a new transaction to your records.</SheetDescription>
         </SheetHeader>
         <form onSubmit={handleSubmit} className="space-y-6 py-4">
-          <TransactionBasicFields formData={formData} onInputChange={handleInputChange} />
-          <TransactionSelectFields formData={formData} onInputChange={handleInputChange} />
+          <TransactionBasicFields form={form} />
+          <TransactionSelectFields form={form} />
           <div className="flex justify-end">
             <Button type="submit">Add Transaction</Button>
           </div>
@@ -103,8 +102,8 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
           <DialogDescription>Add a new transaction to your records.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-6">
-          <TransactionBasicFields formData={formData} onInputChange={handleInputChange} />
-          <TransactionSelectFields formData={formData} onInputChange={handleInputChange} />
+          <TransactionBasicFields form={form} />
+          <TransactionSelectFields form={form} />
           <div className="flex justify-end">
             <Button type="submit">Add Transaction</Button>
           </div>
