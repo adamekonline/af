@@ -50,7 +50,6 @@ export const DashboardView = () => {
         <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950 dark:to-gray-950">
           <CardHeader className="space-y-1">
             <CardTitle className="flex items-center gap-2 text-lg">
-              <DollarSign className="h-5 w-5" />
               Total Balance
             </CardTitle>
           </CardHeader>
