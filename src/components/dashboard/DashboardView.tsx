@@ -8,6 +8,7 @@ import { BudgetTracker } from "./BudgetTracker";
 import { PersonalSpending } from "./PersonalSpending";
 import { DashboardFilters } from "./DashboardFilters";
 import { isWithinInterval, parseISO } from "date-fns";
+import { supabase } from "@/integrations/supabase/client";
 
 export const DashboardView = () => {
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
@@ -24,6 +25,49 @@ export const DashboardView = () => {
   
   // Filtered transactions
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  useEffect(() => {
+    fetchTransactions();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('public:transactions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'transactions' },
+        () => {
+          fetchTransactions();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const fetchTransactions = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) throw error;
+
+      // Ensure the data matches our Transaction type
+      const typedData = data.map(item => ({
+        ...item,
+        amount: Number(item.amount)
+      })) as Transaction[];
+
+      setTransactions(typedData);
+      setFilteredTransactions(typedData);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    }
+  };
 
   // Calculate active filters count
   const getActiveFiltersCount = () => {
@@ -38,7 +82,7 @@ export const DashboardView = () => {
 
   useEffect(() => {
     // Apply filters and sorting
-    let filtered = [...filteredTransactions];
+    let filtered = [...transactions];
 
     // Date range filter
     if (startDate && endDate) {
@@ -75,7 +119,7 @@ export const DashboardView = () => {
     });
 
     setFilteredTransactions(filtered);
-  }, [startDate, endDate, selectedCategory, selectedPerson, sortBy]);
+  }, [transactions, startDate, endDate, selectedCategory, selectedPerson, sortBy]);
 
   useEffect(() => {
     const updateConvertedAmounts = async () => {
