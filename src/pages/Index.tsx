@@ -25,15 +25,15 @@ const Index = () => {
             </SheetTrigger>
             <SheetContent side="left" className="w-[240px] sm:w-[280px]">
               <nav className="flex flex-col gap-4">
-                <Button variant="ghost" className="justify-start" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
                   <LayoutDashboard className="mr-2 h-4 w-4" />
                   Dashboard
                 </Button>
-                <Button variant="ghost" className="justify-start" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
                   <Receipt className="mr-2 h-4 w-4" />
                   Transactions
                 </Button>
-                <Button variant="ghost" className="justify-start" onClick={() => setMobileMenuOpen(false)}>
+                <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
                   <Bookmark className="mr-2 h-4 w-4" />
                   Trends
                 </Button>
@@ -41,7 +41,7 @@ const Index = () => {
             </SheetContent>
           </Sheet>
           
-          <h1 className="text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-4">
+          <h1 className="text-lg md:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-4">
             Family Finance Manager
           </h1>
 
@@ -53,7 +53,7 @@ const Index = () => {
 
       <main className="flex-1 container mx-auto p-4 md:p-6">
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="hidden md:flex justify-start border-b w-full">
+          <TabsList className="hidden md:flex justify-start border-b w-full text-sm">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
