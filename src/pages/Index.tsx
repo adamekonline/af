@@ -1,9 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
-import { TrendsView } from "@/components/trends/TrendsView";
-import { Bookmark, LayoutDashboard, LogOut, Menu, Plus, Receipt } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Plus, Receipt } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -62,14 +60,6 @@ const Index = () => {
                     <Receipt className="mr-2 h-4 w-4" />
                     Transactions
                   </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="justify-start text-sm" 
-                    onClick={() => handleTabChange("trends")}
-                  >
-                    <Bookmark className="mr-2 h-4 w-4" />
-                    Trends
-                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -104,10 +94,6 @@ const Index = () => {
               <Receipt className="h-4 w-4" />
               Transactions
             </TabsTrigger>
-            <TabsTrigger value="trends" className="flex items-center gap-2">
-              <Bookmark className="h-4 w-4" />
-              Trends
-            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="dashboard">
@@ -116,10 +102,6 @@ const Index = () => {
           
           <TabsContent value="transactions">
             <TransactionsView />
-          </TabsContent>
-
-          <TabsContent value="trends">
-            <TrendsView />
           </TabsContent>
         </Tabs>
       </main>

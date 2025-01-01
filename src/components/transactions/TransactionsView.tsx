@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { convertCurrency } from "@/utils/currencyConverter";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
-import { ResponsiveTransactionFormDialog } from "./ResponsiveTransactionFormDialog";
 
 const initialTransactions: Transaction[] = [
   {
@@ -68,14 +67,6 @@ export const TransactionsView = () => {
     updateConvertedAmounts();
   }, [transactions, displayCurrency]);
 
-  const handleAddTransaction = (newTransaction: Transaction) => {
-    setTransactions(prev => [newTransaction, ...prev]);
-  };
-
-  const handleCurrencyChange = (value: string) => {
-    setDisplayCurrency(value as Currency);
-  };
-
   const filteredTransactions = transactions.filter(transaction => 
     propertyFilter === "all" || transaction.property === propertyFilter
   );
@@ -85,8 +76,7 @@ export const TransactionsView = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-bold">Transactions</h2>
         <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
-          <ResponsiveTransactionFormDialog onAddTransaction={handleAddTransaction} />
-          <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
+          <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Currency" />
             </SelectTrigger>
