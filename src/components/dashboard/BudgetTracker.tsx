@@ -25,16 +25,21 @@ interface BudgetTrackerProps {
 export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerProps) => {
   const [spentAmounts, setSpentAmounts] = useState<Record<string, Record<string, number>>>({});
   const [convertedLimits, setConvertedLimits] = useState<Record<string, number>>({});
+  const [totalBudget, setTotalBudget] = useState(0);
+  const [totalSpent, setTotalSpent] = useState(0);
 
   useEffect(() => {
     const updateAmounts = async () => {
       const newSpentAmounts: Record<string, Record<string, number>> = {};
       const newConvertedLimits: Record<string, number> = {};
+      let newTotalBudget = 0;
+      let newTotalSpent = 0;
 
       // Calculate converted limits
       for (const budget of mockBudgets) {
         const limit = await convertCurrency(budget.limit, budget.currency, displayCurrency);
         newConvertedLimits[budget.category] = limit;
+        newTotalBudget += limit;
       }
 
       // Calculate spent amounts per person and category
@@ -47,18 +52,23 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
           let total = 0;
           for (const t of personTransactions) {
             const converted = await convertCurrency(Math.abs(t.amount), t.currency, displayCurrency);
-            // All transactions except Income are expenses
-            total += converted;
+            // Only add to spending if it's not an income transaction
+            if (t.category !== 'Income') {
+              total += converted;
+            }
           }
           
           if (total !== 0) {
             newSpentAmounts[budget.category][person] = total;
+            newTotalSpent += total;
           }
         }
       }
 
       setSpentAmounts(newSpentAmounts);
       setConvertedLimits(newConvertedLimits);
+      setTotalBudget(newTotalBudget);
+      setTotalSpent(newTotalSpent);
     };
 
     updateAmounts();
@@ -80,23 +90,21 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
       </CardHeader>
       <CardContent className="space-y-6">
         {mockBudgets.map(budget => {
-          const convertedLimit = convertedLimits[budget.category] || 0;
           const totalSpent = calculateTotalSpentAmount(budget.category);
-          const percentage = Math.min((totalSpent / convertedLimit) * 100, 100);
+          const percentage = (totalSpent / totalBudget) * 100;
           
           return (
             <div key={budget.category} className="space-y-3">
               <div className="flex justify-between items-center">
                 <span className="font-medium">{budget.category}</span>
-                <span className="text-sm">
+                <div className="text-sm">
                   <span className="font-semibold">
-                    {totalSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                    {totalSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
                   </span>
-                  <span className="text-muted-foreground mx-1">/</span>
-                  <span>
-                    {convertedLimit.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                  <span className="text-muted-foreground ml-2">
+                    ({percentage.toFixed(1)}%)
                   </span>
-                </span>
+                </div>
               </div>
               <div className="relative h-2.5 overflow-hidden rounded-full bg-secondary">
                 {people.map((person, index) => {
@@ -104,8 +112,8 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
                   const previousTotal = people
                     .slice(0, index)
                     .reduce((sum, p) => sum + (spentAmounts[budget.category]?.[p] || 0), 0);
-                  const personPercentage = (personSpent / convertedLimit) * 100;
-                  const previousPercentage = (previousTotal / convertedLimit) * 100;
+                  const personPercentage = (personSpent / totalBudget) * 100;
+                  const previousPercentage = (previousTotal / totalBudget) * 100;
 
                   return personSpent > 0 ? (
                     <div
@@ -123,6 +131,7 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
               <div className="flex flex-wrap gap-4 text-xs">
                 {people.map(person => {
                   const personSpent = spentAmounts[budget.category]?.[person] || 0;
+                  const personPercentage = (personSpent / totalBudget) * 100;
                   return personSpent > 0 ? (
                     <div key={person} className="flex items-center gap-1.5">
                       <div 
@@ -130,7 +139,12 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
                         style={{ backgroundColor: personColors[person as keyof typeof personColors] || '#94a3b8' }}
                       />
                       <span className="font-medium">{person}:</span>
-                      <span>{personSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}</span>
+                      <span>
+                        {personSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                        <span className="text-muted-foreground ml-1">
+                          ({personPercentage.toFixed(1)}%)
+                        </span>
+                      </span>
                     </div>
                   ) : null;
                 })}
