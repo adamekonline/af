@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useState } from "react";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { BudgetTracker } from "./BudgetTracker";
+import { PersonalSpending } from "./PersonalSpending";
 
 const mockTransactions: Transaction[] = [
   { id: 1, date: "2024-03-15", description: "Rent Payment - Poznan", amount: -2000, currency: "PLN", category: "Housing", person: "Adam", property: "Poznań" },
@@ -124,6 +125,7 @@ export const DashboardView = () => {
         </Card>
 
         <BudgetTracker transactions={mockTransactions} displayCurrency={displayCurrency} />
+        <PersonalSpending transactions={mockTransactions} displayCurrency={displayCurrency} />
       </div>
     </div>
   );
