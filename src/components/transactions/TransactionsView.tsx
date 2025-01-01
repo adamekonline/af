@@ -1,12 +1,12 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Transaction, PropertyLocation, Currency } from "@/types";
-import { TransactionFormDialog } from "./TransactionFormDialog";
 import { PropertyFilter } from "./PropertyFilter";
 import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Card, CardContent } from "@/components/ui/card";
+import { ResponsiveTransactionFormDialog } from "./ResponsiveTransactionFormDialog";
 
 const initialTransactions: Transaction[] = [
   {
@@ -85,7 +85,7 @@ export const TransactionsView = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-bold">Transactions</h2>
         <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
-          <TransactionFormDialog onAddTransaction={handleAddTransaction} />
+          <ResponsiveTransactionFormDialog onAddTransaction={handleAddTransaction} />
           <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Currency" />
