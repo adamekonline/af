@@ -16,26 +16,37 @@ Deno.serve(async (req) => {
   }
 
   try {
+    console.log('Starting exchange rate fetch...');
     const currencies = ['PLN', 'USD', 'EUR', 'GBP']
+    const today = new Date().toISOString().split('T')[0]
     
-    // Fetch latest rates for each currency pair to ensure we have all combinations
+    // Fetch latest rates for each currency pair
     for (const baseCurrency of currencies) {
-      const response = await fetch(`https://v6.exchangerate-api.com/v6/${Deno.env.get('EXCHANGE_RATE_API_KEY')}/latest/${baseCurrency}`)
+      console.log(`Fetching rates for base currency: ${baseCurrency}`);
+      const response = await fetch(
+        `https://v6.exchangerate-api.com/v6/${Deno.env.get('EXCHANGE_RATE_API_KEY')}/latest/${baseCurrency}`
+      )
+      
+      if (!response.ok) {
+        throw new Error(`Failed to fetch rates for ${baseCurrency}: ${response.statusText}`);
+      }
+      
       const data = await response.json()
       
       if (!data.conversion_rates) {
-        throw new Error(`Failed to fetch exchange rates for ${baseCurrency}`)
+        throw new Error(`No conversion rates found for ${baseCurrency}`);
       }
 
-      const today = new Date().toISOString().split('T')[0]
+      console.log(`Successfully fetched rates for ${baseCurrency}`);
       
       // Store rates for each currency pair
       for (const targetCurrency of currencies) {
         if (targetCurrency === baseCurrency) continue
         
         const rate = data.conversion_rates[targetCurrency]
+        console.log(`Storing rate: 1 ${baseCurrency} = ${rate} ${targetCurrency}`);
         
-        await supabase
+        const { error } = await supabase
           .from('exchange_rates')
           .upsert({
             base_currency: baseCurrency,
@@ -45,14 +56,20 @@ Deno.serve(async (req) => {
           }, {
             onConflict: 'base_currency,target_currency,date'
           })
+
+        if (error) {
+          console.error(`Error storing rate for ${baseCurrency}/${targetCurrency}:`, error);
+          throw error;
+        }
       }
     }
 
+    console.log('Exchange rates update completed successfully');
     return new Response(JSON.stringify({ success: true }), {
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
     })
   } catch (error) {
-    console.error('Error:', error.message)
+    console.error('Error updating exchange rates:', error);
     return new Response(JSON.stringify({ error: error.message }), {
       status: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
