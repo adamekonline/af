@@ -21,7 +21,8 @@ export const TransactionFormDialog = ({ onAddTransaction }: { onAddTransaction: 
       amount: "",
       currency: "PLN",
       category: "Other",
-      person: "Adam"
+      person: "Adam",
+      property: undefined
     }
   });
 

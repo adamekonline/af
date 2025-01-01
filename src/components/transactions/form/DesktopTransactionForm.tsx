@@ -6,6 +6,7 @@ import { TransactionBasicFields } from "./TransactionBasicFields";
 import { TransactionSelectFields } from "./TransactionSelectFields";
 import { UseFormReturn } from "react-hook-form";
 import { TransactionFormData } from "../types";
+import { Form } from "@/components/ui/form";
 
 interface DesktopTransactionFormProps {
   open: boolean;
@@ -29,15 +30,17 @@ export const DesktopTransactionForm = ({ open, onOpenChange, form, onSubmit }: D
           <DialogDescription>Add a new transaction to your records.</DialogDescription>
         </DialogHeader>
         <ScrollArea className="flex-1 mt-4">
-          <form onSubmit={onSubmit} className="space-y-3 pr-4">
-            <TransactionBasicFields form={form} />
-            <TransactionSelectFields form={form} />
-            <div className="pt-2">
-              <Button type="submit" className="w-full">
-                Add Transaction
-              </Button>
-            </div>
-          </form>
+          <Form {...form}>
+            <form onSubmit={onSubmit} className="space-y-3 pr-4">
+              <TransactionBasicFields form={form} />
+              <TransactionSelectFields form={form} />
+              <div className="pt-2">
+                <Button type="submit" className="w-full">
+                  Add Transaction
+                </Button>
+              </div>
+            </form>
+          </Form>
         </ScrollArea>
       </DialogContent>
     </Dialog>

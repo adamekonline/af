@@ -6,6 +6,7 @@ import { TransactionBasicFields } from "./TransactionBasicFields";
 import { TransactionSelectFields } from "./TransactionSelectFields";
 import { UseFormReturn } from "react-hook-form";
 import { TransactionFormData } from "../types";
+import { Form } from "@/components/ui/form";
 
 interface MobileTransactionFormProps {
   open: boolean;
@@ -30,20 +31,22 @@ export const MobileTransactionForm = ({ open, onOpenChange, form, onSubmit }: Mo
             <SheetDescription>Add a new transaction to your records.</SheetDescription>
           </SheetHeader>
           
-          <form onSubmit={onSubmit} className="flex flex-col flex-1">
-            <ScrollArea className="flex-1 px-4">
-              <div className="space-y-3">
-                <TransactionBasicFields form={form} />
-                <TransactionSelectFields form={form} />
+          <Form {...form}>
+            <form onSubmit={onSubmit} className="flex flex-col flex-1">
+              <ScrollArea className="flex-1 px-4">
+                <div className="space-y-3">
+                  <TransactionBasicFields form={form} />
+                  <TransactionSelectFields form={form} />
+                </div>
+              </ScrollArea>
+              
+              <div className="flex-shrink-0 p-4 border-t bg-background mt-auto">
+                <Button type="submit" className="w-full">
+                  Add Transaction
+                </Button>
               </div>
-            </ScrollArea>
-            
-            <div className="flex-shrink-0 p-4 border-t bg-background mt-auto">
-              <Button type="submit" className="w-full">
-                Add Transaction
-              </Button>
-            </div>
-          </form>
+            </form>
+          </Form>
         </div>
       </SheetContent>
     </Sheet>
