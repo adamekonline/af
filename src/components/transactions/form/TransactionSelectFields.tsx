@@ -5,7 +5,7 @@ import { Category, Currency, Person, PropertyLocation, TransactionFormData } fro
 
 const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
 const currencies: Currency[] = ["PLN", "USD", "EUR", "GBP"];
-const people: Person[] = ["Natka", "Adam", "Adi"];
+const people: Person[] = ["Adam", "Natka", "Adi"];
 const properties: PropertyLocation[] = ["Poznań", "Leuven"];
 
 interface TransactionSelectFieldsProps {
