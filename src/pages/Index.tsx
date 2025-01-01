@@ -86,6 +86,7 @@ const Index = () => {
               size="icon"
               onClick={handleLogout}
               className="text-muted-foreground hover:text-foreground"
+              title={t("logout")}
             >
               <LogOut className="h-5 w-5" />
             </Button>

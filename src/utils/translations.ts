@@ -1,21 +1,34 @@
 export const translations = {
-  // Dashboard
+  // Navigation & Common
   dashboard: "Panel główny",
   transactions: "Transakcje",
   exchangeRates: "Kursy walut",
   addTransaction: "Dodaj transakcję",
   logout: "Wyloguj",
+  clear: "Wyczyść",
+  clearAll: "Wyczyść wszystko",
+  clearFilters: "Wyczyść filtry",
+  edit: "Edytuj",
+  delete: "Usuń",
+  save: "Zapisz",
+  cancel: "Anuluj",
+  loading: "Ładowanie...",
+  success: "Sukces",
+  error: "Błąd",
 
   // Summary Cards
-  totalBalance: "Saldo",
+  totalBalance: "Saldo całkowite",
   monthlyIncome: "Przychody miesięczne",
   monthlyExpenses: "Wydatki miesięczne",
 
   // Budget Tracking
   budgetTracking: "Śledzenie budżetu",
+  personalSpendingOverview: "Przegląd wydatków osobistych",
   housing: "Mieszkanie",
   food: "Jedzenie",
   transport: "Transport",
+  spent: "wydano",
+  budget: "budżet",
 
   // Transaction Form
   date: "Data",
@@ -27,7 +40,15 @@ export const translations = {
   property: "Nieruchomość",
   add: "Dodaj",
   update: "Aktualizuj",
-  cancel: "Anuluj",
+  selectDate: "Wybierz datę",
+  pickDateRange: "Wybierz zakres dat",
+  filterByCategory: "Filtruj po kategorii",
+  filterByPerson: "Filtruj po osobie",
+  displayCurrency: "Wyświetl walutę",
+  sortBy: "Sortuj po",
+  filters: "Filtry",
+  allCategories: "Wszystkie kategorie",
+  allProperties: "Wszystkie nieruchomości",
 
   // Categories
   income: "Przychód",
@@ -37,13 +58,18 @@ export const translations = {
   creditCard: "Karta kredytowa",
   other: "Inne",
 
+  // Sort options
+  dateNewest: "Data (od najnowszych)",
+  dateOldest: "Data (od najstarszych)",
+  amountHighest: "Kwota (od najwyższej)",
+  amountLowest: "Kwota (od najniższej)",
+
   // Exchange Rates
   manualExchangeRates: "Ręczne kursy walut",
   addRate: "Dodaj kurs",
   baseCurrency: "Waluta bazowa",
   targetCurrency: "Waluta docelowa",
   rate: "Kurs",
-  delete: "Usuń",
 
   // Messages
   transactionAdded: "Transakcja została dodana",
@@ -52,7 +78,6 @@ export const translations = {
   rateAdded: "Kurs został dodany",
   rateDeleted: "Kurs został usunięty",
   fillAllFields: "Wypełnij wszystkie wymagane pola",
-  error: "Wystąpił błąd",
 
   // Auth
   login: "Zaloguj się",
