@@ -94,7 +94,7 @@ const Login = () => {
               },
             }}
             redirectTo={window.location.origin}
-            persistsSession={rememberMe}
+            persistSession={rememberMe}
           />
           <div className="flex items-center space-x-2">
             <Switch
