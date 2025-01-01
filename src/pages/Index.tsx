@@ -29,7 +29,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen flex flex-col">
-      {/* Top Navigation */}
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center">
@@ -58,7 +57,7 @@ const Index = () => {
             </Sheet>
           
             <h1 className="text-base md:text-lg lg:text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-2 md:ml-4 truncate max-w-[200px] md:max-w-none">
-              Adams Family Finances
+              AFinance
             </h1>
           </div>
 
