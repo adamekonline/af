@@ -37,11 +37,8 @@ const Login = () => {
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold bg-gradient-to-r from-[#9b87f5] to-[#8B5CF6] bg-clip-text text-transparent">
-            AFinance
+            AF
           </h1>
-          <p className="text-muted-foreground mt-2">
-            Your Personal Finance Companion
-          </p>
         </div>
         
         <Card className="w-full backdrop-blur-sm bg-white/80 dark:bg-slate-900/80 shadow-xl border-0">
