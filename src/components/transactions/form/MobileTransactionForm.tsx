@@ -23,22 +23,22 @@ export const MobileTransactionForm = ({ open, onOpenChange, form, onSubmit }: Mo
           Add Transaction
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[95dvh]">
+      <SheetContent side="bottom" className="h-[95dvh] p-0">
         <div className="flex flex-col h-full">
-          <SheetHeader className="flex-shrink-0">
+          <SheetHeader className="flex-shrink-0 p-6 pb-2">
             <SheetTitle>Add Transaction</SheetTitle>
             <SheetDescription>Add a new transaction to your records.</SheetDescription>
           </SheetHeader>
           
-          <form onSubmit={onSubmit} className="flex flex-col flex-1 mt-6">
-            <ScrollArea className="flex-1 pr-4">
-              <div className="space-y-4 pb-4">
+          <form onSubmit={onSubmit} className="flex flex-col flex-1">
+            <ScrollArea className="flex-1 px-6 pb-6">
+              <div className="space-y-4">
                 <TransactionBasicFields form={form} />
                 <TransactionSelectFields form={form} />
               </div>
             </ScrollArea>
             
-            <div className="flex-shrink-0 pt-4 border-t bg-background mt-2">
+            <div className="flex-shrink-0 p-6 pt-4 border-t bg-background mt-auto">
               <Button type="submit" className="w-full">
                 Add Transaction
               </Button>
