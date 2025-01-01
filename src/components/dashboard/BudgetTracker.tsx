@@ -10,9 +10,9 @@ const mockBudgets: Budget[] = [
 ];
 
 const personColors = {
-  'Adam': '#F2FCE2',
-  'Natka': '#FEF7CD',
-  'Adi': '#FEC6A1'
+  'Adam': '#9b87f5',
+  'Natka': '#D946EF',
+  'Adi': '#F97316'
 };
 
 interface BudgetTrackerProps {
