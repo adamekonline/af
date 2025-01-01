@@ -49,7 +49,7 @@ export const DashboardView = () => {
   const expensesByCategory = aggregateByCategory(mockTransactions, displayCurrency);
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex justify-end mb-4">
         <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
           <SelectTrigger className="w-[180px]">
@@ -64,11 +64,11 @@ export const DashboardView = () => {
         </Select>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <DollarSign className="h-4 w-4" />
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        <Card className="hover:shadow-lg transition-shadow duration-300">
+          <CardHeader className="space-y-1">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <DollarSign className="h-5 w-5" />
               Total Balance
             </CardTitle>
           </CardHeader>
@@ -79,10 +79,10 @@ export const DashboardView = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingUp className="h-4 w-4" />
+        <Card className="hover:shadow-lg transition-shadow duration-300">
+          <CardHeader className="space-y-1">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <TrendingUp className="h-5 w-5" />
               Monthly Income
             </CardTitle>
           </CardHeader>
@@ -93,10 +93,10 @@ export const DashboardView = () => {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <TrendingDown className="h-4 w-4" />
+        <Card className="hover:shadow-lg transition-shadow duration-300">
+          <CardHeader className="space-y-1">
+            <CardTitle className="flex items-center gap-2 text-lg">
+              <TrendingDown className="h-5 w-5" />
               Monthly Expenses
             </CardTitle>
           </CardHeader>
@@ -107,18 +107,32 @@ export const DashboardView = () => {
           </CardContent>
         </Card>
 
-        <Card className="col-span-full">
-          <CardHeader>
-            <CardTitle>Expenses by Category</CardTitle>
+        <Card className="col-span-full hover:shadow-lg transition-shadow duration-300">
+          <CardHeader className="space-y-1">
+            <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+              <BarChart className="h-5 w-5" />
+              Expenses by Category
+            </CardTitle>
           </CardHeader>
           <CardContent className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={expensesByCategory}>
-                <CartesianGrid strokeDasharray="3 3" />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                <Tooltip formatter={(value) => [`${value.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${displayCurrency}`, 'Amount']} />
-                <Bar dataKey="amount" fill="#4f46e5" />
+                <Tooltip 
+                  formatter={(value) => [
+                    `${value.toLocaleString(undefined, { maximumFractionDigits: 2 })} ${displayCurrency}`, 
+                    'Amount'
+                  ]} 
+                  contentStyle={{
+                    backgroundColor: 'white',
+                    border: '1px solid #e5e7eb',
+                    borderRadius: '0.5rem',
+                    padding: '0.75rem'
+                  }}
+                />
+                <Bar dataKey="amount" fill="#9b87f5" radius={[4, 4, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>

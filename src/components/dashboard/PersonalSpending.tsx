@@ -29,33 +29,35 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
   const people = Array.from(new Set(transactions.map(t => t.person)));
 
   return (
-    <Card className="col-span-full">
-      <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Users className="h-4 w-4" />
+    <Card className="col-span-full hover:shadow-lg transition-shadow duration-300">
+      <CardHeader className="space-y-1">
+        <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+          <Users className="h-5 w-5" />
           Personal Spending Overview
         </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         {people.map(person => {
           const spentAmount = calculatePersonalSpending(person);
           const percentage = totalSpending > 0 ? (spentAmount / totalSpending) * 100 : 0;
           const colors = personColors[person] || { bg: '#94a3b8', text: '#64748b' };
           
           return (
-            <div key={person} className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span style={{ color: colors.text }}>{person}</span>
-                <span>
-                  {spentAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+            <div key={person} className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="font-medium text-sm" style={{ color: colors.text }}>{person}</span>
+                <div className="text-sm">
+                  <span className="font-semibold">
+                    {spentAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                  </span>
                   <span className="text-muted-foreground ml-2">
                     ({percentage.toFixed(1)}%)
                   </span>
-                </span>
+                </div>
               </div>
               <Progress 
                 value={percentage} 
-                className="h-2"
+                className="h-2.5 rounded-full"
                 style={{ 
                   '--progress-background': colors.bg,
                 } as React.CSSProperties}

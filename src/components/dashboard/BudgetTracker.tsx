@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Budget, Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
+import { PieChart } from "lucide-react";
 
 const mockBudgets: Budget[] = [
   { category: "Housing", limit: 3000, currency: "PLN" },
@@ -36,25 +37,34 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
   const people = Array.from(new Set(transactions.map(t => t.person)));
 
   return (
-    <Card className="col-span-full">
-      <CardHeader>
-        <CardTitle>Budget Tracking</CardTitle>
+    <Card className="col-span-full hover:shadow-lg transition-shadow duration-300">
+      <CardHeader className="space-y-1">
+        <CardTitle className="flex items-center gap-2 text-xl font-semibold">
+          <PieChart className="h-5 w-5" />
+          Budget Tracking
+        </CardTitle>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         {mockBudgets.map(budget => {
           const convertedLimit = convertCurrency(budget.limit, budget.currency, displayCurrency);
           const totalSpent = calculateTotalSpentAmount(budget.category);
           const percentage = Math.min((totalSpent / convertedLimit) * 100, 100);
           
           return (
-            <div key={budget.category} className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span>{budget.category}</span>
-                <span>
-                  {totalSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} / {convertedLimit.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+            <div key={budget.category} className="space-y-3">
+              <div className="flex justify-between items-center">
+                <span className="font-medium">{budget.category}</span>
+                <span className="text-sm">
+                  <span className="font-semibold">
+                    {totalSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })}
+                  </span>
+                  <span className="text-muted-foreground mx-1">/</span>
+                  <span>
+                    {convertedLimit.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                  </span>
                 </span>
               </div>
-              <div className="relative h-2 overflow-hidden rounded-full bg-secondary">
+              <div className="relative h-2.5 overflow-hidden rounded-full bg-secondary">
                 {people.map((person, index) => {
                   const previousTotal = people
                     .slice(0, index)
@@ -66,7 +76,7 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
                   return personSpent > 0 ? (
                     <div
                       key={person}
-                      className="absolute h-full transition-all"
+                      className="absolute h-full transition-all duration-300"
                       style={{
                         backgroundColor: personColors[person as keyof typeof personColors] || '#94a3b8',
                         width: `${personPercentage}%`,
@@ -76,16 +86,17 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
                   ) : null;
                 })}
               </div>
-              <div className="flex justify-end gap-4 text-xs">
+              <div className="flex flex-wrap gap-4 text-xs">
                 {people.map(person => {
                   const personSpent = calculateSpentAmountByPerson(budget.category, person);
                   return personSpent > 0 ? (
-                    <div key={person} className="flex items-center gap-1">
+                    <div key={person} className="flex items-center gap-1.5">
                       <div 
-                        className="h-2 w-2 rounded-full" 
+                        className="h-2.5 w-2.5 rounded-full" 
                         style={{ backgroundColor: personColors[person as keyof typeof personColors] || '#94a3b8' }}
                       />
-                      <span>{person}: {personSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}</span>
+                      <span className="font-medium">{person}:</span>
+                      <span>{personSpent.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}</span>
                     </div>
                   ) : null;
                 })}
