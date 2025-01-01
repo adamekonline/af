@@ -17,34 +17,35 @@ Deno.serve(async (req) => {
 
   try {
     const currencies = ['PLN', 'USD', 'EUR', 'GBP']
-    const baseCurrency = 'PLN' // Using PLN as base currency
     
-    // Fetch latest rates from exchangerate-api.com
-    const response = await fetch(`https://v6.exchangerate-api.com/v6/${Deno.env.get('EXCHANGE_RATE_API_KEY')}/latest/${baseCurrency}`)
-    const data = await response.json()
-    
-    if (!data.conversion_rates) {
-      throw new Error('Failed to fetch exchange rates')
-    }
+    // Fetch latest rates for each currency pair to ensure we have all combinations
+    for (const baseCurrency of currencies) {
+      const response = await fetch(`https://v6.exchangerate-api.com/v6/${Deno.env.get('EXCHANGE_RATE_API_KEY')}/latest/${baseCurrency}`)
+      const data = await response.json()
+      
+      if (!data.conversion_rates) {
+        throw new Error(`Failed to fetch exchange rates for ${baseCurrency}`)
+      }
 
-    const today = new Date().toISOString().split('T')[0]
-    
-    // Store rates in Supabase
-    for (const targetCurrency of currencies) {
-      if (targetCurrency === baseCurrency) continue
+      const today = new Date().toISOString().split('T')[0]
       
-      const rate = data.conversion_rates[targetCurrency]
-      
-      await supabase
-        .from('exchange_rates')
-        .upsert({
-          base_currency: baseCurrency,
-          target_currency: targetCurrency,
-          rate,
-          date: today
-        }, {
-          onConflict: 'base_currency,target_currency,date'
-        })
+      // Store rates for each currency pair
+      for (const targetCurrency of currencies) {
+        if (targetCurrency === baseCurrency) continue
+        
+        const rate = data.conversion_rates[targetCurrency]
+        
+        await supabase
+          .from('exchange_rates')
+          .upsert({
+            base_currency: baseCurrency,
+            target_currency: targetCurrency,
+            rate,
+            date: today
+          }, {
+            onConflict: 'base_currency,target_currency,date'
+          })
+      }
     }
 
     return new Response(JSON.stringify({ success: true }), {

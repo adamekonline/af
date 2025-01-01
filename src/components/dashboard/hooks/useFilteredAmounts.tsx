@@ -24,8 +24,8 @@ export const useFilteredAmounts = (filteredTransactions: Transaction[], displayC
           }
         }
 
-        // Calculate balance as expenses - income
-        const balance = totalExpenses - totalIncome;
+        // Calculate balance as income - expenses (positive means we have more income than expenses)
+        const balance = totalIncome - totalExpenses;
         
         setConvertedBalance(balance);
         setConvertedIncome(totalIncome);
