@@ -28,17 +28,20 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
       const people = Array.from(new Set(transactions.map(t => t.person)));
       
       for (const person of people) {
-        const personTransactions = transactions.filter(t => t.amount < 0 && t.person === person);
+        const personTransactions = transactions.filter(t => t.person === person);
         let personTotal = 0;
         
         for (const t of personTransactions) {
-          const converted = await convertCurrency(Math.abs(t.amount), t.currency, displayCurrency);
-          personTotal += converted;
+          // Only treat income as positive, everything else is an expense
+          const isIncome = t.category === 'Income';
+          const amount = isIncome ? t.amount : Math.abs(t.amount);
+          const converted = await convertCurrency(amount, t.currency, displayCurrency);
+          personTotal += isIncome ? converted : -converted;
         }
         
-        if (personTotal > 0) {
-          spending[person] = personTotal;
-          total += personTotal;
+        if (personTotal !== 0) {
+          spending[person] = Math.abs(personTotal); // Always show absolute value for display
+          total += Math.abs(personTotal);
         }
       }
 
