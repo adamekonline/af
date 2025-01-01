@@ -2,11 +2,14 @@ import { Auth } from "@supabase/auth-ui-react";
 import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [rememberMe, setRememberMe] = useState(true);
 
   useEffect(() => {
     // Check if user is already logged in
@@ -38,7 +41,7 @@ const Login = () => {
             Welcome back! Please sign in to continue.
           </CardDescription>
         </CardHeader>
-        <CardContent>
+        <CardContent className="space-y-6">
           <Auth
             supabaseClient={supabase}
             appearance={{
@@ -91,7 +94,16 @@ const Login = () => {
               },
             }}
             redirectTo={window.location.origin}
+            persistSession={rememberMe}
           />
+          <div className="flex items-center space-x-2">
+            <Switch
+              id="remember-me"
+              checked={rememberMe}
+              onCheckedChange={setRememberMe}
+            />
+            <Label htmlFor="remember-me">Remember me</Label>
+          </div>
         </CardContent>
       </Card>
     </div>
