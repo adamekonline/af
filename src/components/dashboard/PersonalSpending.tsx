@@ -9,6 +9,12 @@ interface PersonalSpendingProps {
   displayCurrency: string;
 }
 
+const personColors: Record<string, { bg: string, text: string }> = {
+  'Adam': { bg: '#9b87f5', text: '#6E59A5' },
+  'Natka': { bg: '#D946EF', text: '#BE3FD3' },
+  'Adi': { bg: '#F97316', text: '#EA6C15' }
+};
+
 export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpendingProps) => {
   const calculatePersonalSpending = (person: string) => {
     return transactions
@@ -34,11 +40,12 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
         {people.map(person => {
           const spentAmount = calculatePersonalSpending(person);
           const percentage = totalSpending > 0 ? (spentAmount / totalSpending) * 100 : 0;
+          const colors = personColors[person] || { bg: '#94a3b8', text: '#64748b' };
           
           return (
             <div key={person} className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span>{person}</span>
+                <span style={{ color: colors.text }}>{person}</span>
                 <span>
                   {spentAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
                   <span className="text-muted-foreground ml-2">
@@ -46,7 +53,13 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
                   </span>
                 </span>
               </div>
-              <Progress value={percentage} />
+              <Progress 
+                value={percentage} 
+                className="h-2"
+                style={{ 
+                  '--progress-background': colors.bg,
+                } as React.CSSProperties}
+              />
             </div>
           );
         })}
