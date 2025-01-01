@@ -19,11 +19,11 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="currency"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Currency</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Currency</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger className="h-9">
                   <SelectValue placeholder="Select currency" />
                 </SelectTrigger>
               </FormControl>
@@ -44,11 +44,11 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="category"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Category</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Category</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger className="h-9">
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
               </FormControl>
@@ -69,11 +69,11 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="person"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Person</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Person</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger className="h-9">
                   <SelectValue placeholder="Select person" />
                 </SelectTrigger>
               </FormControl>
@@ -94,11 +94,11 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         control={form.control}
         name="property"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Property (Optional)</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Property (Optional)</FormLabel>
             <Select onValueChange={field.onChange} defaultValue={field.value}>
               <FormControl>
-                <SelectTrigger>
+                <SelectTrigger className="h-9">
                   <SelectValue placeholder="Select property" />
                 </SelectTrigger>
               </FormControl>

@@ -14,10 +14,10 @@ export const TransactionBasicFields = ({ form }: TransactionBasicFieldsProps) =>
         control={form.control}
         name="date"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Date</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Date</FormLabel>
             <FormControl>
-              <Input type="date" {...field} />
+              <Input type="date" {...field} className="h-9" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -28,10 +28,10 @@ export const TransactionBasicFields = ({ form }: TransactionBasicFieldsProps) =>
         control={form.control}
         name="description"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Description</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Description</FormLabel>
             <FormControl>
-              <Input {...field} />
+              <Input {...field} className="h-9" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -42,10 +42,10 @@ export const TransactionBasicFields = ({ form }: TransactionBasicFieldsProps) =>
         control={form.control}
         name="amount"
         render={({ field }) => (
-          <FormItem>
-            <FormLabel>Amount</FormLabel>
+          <FormItem className="space-y-1">
+            <FormLabel className="text-sm font-medium">Amount</FormLabel>
             <FormControl>
-              <Input type="number" step="0.01" {...field} />
+              <Input type="number" step="0.01" {...field} className="h-9" />
             </FormControl>
             <FormMessage />
           </FormItem>
