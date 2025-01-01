@@ -7,7 +7,6 @@ import { useTransactions } from "./hooks/useTransactions";
 import { useFilters } from "./hooks/useFilters";
 import { useFilteredAmounts } from "./hooks/useFilteredAmounts";
 import { Skeleton } from "@/components/ui/skeleton";
-import { ManualExchangeRates } from "./ManualExchangeRates";
 
 export const DashboardView = () => {
   const { transactions, isLoading } = useTransactions();
@@ -90,7 +89,6 @@ export const DashboardView = () => {
           variant="expense"
         />
 
-        <ManualExchangeRates />
         <BudgetTracker transactions={filteredTransactions} displayCurrency="PLN" />
         <PersonalSpending transactions={filteredTransactions} displayCurrency="PLN" />
       </div>

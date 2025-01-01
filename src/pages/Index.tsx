@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
-import { LayoutDashboard, LogOut, Menu, Receipt } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Receipt, DollarSign } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -9,6 +9,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
+import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -60,6 +61,14 @@ const Index = () => {
                     <Receipt className="mr-2 h-4 w-4" />
                     Transactions
                   </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-sm" 
+                    onClick={() => handleTabChange("exchange-rates")}
+                  >
+                    <DollarSign className="mr-2 h-4 w-4" />
+                    Exchange Rates
+                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -94,6 +103,10 @@ const Index = () => {
               <Receipt className="h-4 w-4" />
               Transactions
             </TabsTrigger>
+            <TabsTrigger value="exchange-rates" className="flex items-center gap-2">
+              <DollarSign className="h-4 w-4" />
+              Exchange Rates
+            </TabsTrigger>
           </TabsList>
           
           <TabsContent value="dashboard">
@@ -102,6 +115,12 @@ const Index = () => {
           
           <TabsContent value="transactions">
             <TransactionsView />
+          </TabsContent>
+
+          <TabsContent value="exchange-rates">
+            <div className="max-w-2xl mx-auto">
+              <ManualExchangeRates />
+            </div>
           </TabsContent>
         </Tabs>
       </main>
