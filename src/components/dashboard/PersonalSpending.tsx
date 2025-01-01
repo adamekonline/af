@@ -1,12 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Transaction } from "@/types";
+import { Transaction, Currency } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { Users } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface PersonalSpendingProps {
   transactions: Transaction[];
-  displayCurrency: string;
+  displayCurrency: Currency;
 }
 
 const personColors: Record<string, { bg: string, text: string }> = {

@@ -1,13 +1,13 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Budget, Transaction } from "@/types";
+import { Budget, Transaction, Currency } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { PieChart } from "lucide-react";
 
 const mockBudgets: Budget[] = [
-  { category: "Housing", limit: 3000, currency: "PLN" },
-  { category: "Food", limit: 1500, currency: "PLN" },
-  { category: "Transport", limit: 800, currency: "PLN" },
+  { category: "Housing", limit: 3000, currency: "PLN" as Currency },
+  { category: "Food", limit: 1500, currency: "PLN" as Currency },
+  { category: "Transport", limit: 800, currency: "PLN" as Currency },
 ];
 
 const personColors = {
@@ -18,7 +18,7 @@ const personColors = {
 
 interface BudgetTrackerProps {
   transactions: Transaction[];
-  displayCurrency: string;
+  displayCurrency: Currency;
 }
 
 export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerProps) => {

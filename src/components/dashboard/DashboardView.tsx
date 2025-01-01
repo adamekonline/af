@@ -1,6 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown } from "lucide-react";
-import { Transaction } from "@/types";
+import { Transaction, Currency } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { convertCurrency } from "@/utils/currencyConverter";
@@ -8,15 +8,15 @@ import { BudgetTracker } from "./BudgetTracker";
 import { PersonalSpending } from "./PersonalSpending";
 
 const mockTransactions: Transaction[] = [
-  { id: 1, date: "2024-03-15", description: "Rent Payment - Poznan", amount: -2000, currency: "PLN", category: "Housing", person: "Adam", property: "Poznań" },
-  { id: 2, date: "2024-03-14", description: "Grocery Shopping", amount: -200, currency: "PLN", category: "Food", person: "Natka" },
-  { id: 3, date: "2024-03-13", description: "Salary", amount: 8000, currency: "PLN", category: "Income", person: "Adam" },
-  { id: 4, date: "2024-03-12", description: "Transport", amount: -500, currency: "PLN", category: "Transport", person: "Adi" },
-  { id: 5, date: "2024-03-11", description: "Healthcare", amount: -300, currency: "PLN", category: "Health", person: "Natka" },
+  { id: 1, date: "2024-03-15", description: "Rent Payment - Poznan", amount: -2000, currency: "PLN" as Currency, category: "Housing", person: "Adam", property: "Poznań" },
+  { id: 2, date: "2024-03-14", description: "Grocery Shopping", amount: -200, currency: "PLN" as Currency, category: "Food", person: "Natka" },
+  { id: 3, date: "2024-03-13", description: "Salary", amount: 8000, currency: "PLN" as Currency, category: "Income", person: "Adam" },
+  { id: 4, date: "2024-03-12", description: "Transport", amount: -500, currency: "PLN" as Currency, category: "Transport", person: "Adi" },
+  { id: 5, date: "2024-03-11", description: "Healthcare", amount: -300, currency: "PLN" as Currency, category: "Health", person: "Natka" },
 ];
 
 export const DashboardView = () => {
-  const [displayCurrency, setDisplayCurrency] = useState<string>("PLN");
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
 
   const convertedBalance = mockTransactions.reduce((sum, t) => {
     return sum + convertCurrency(t.amount, t.currency, displayCurrency);
@@ -33,7 +33,7 @@ export const DashboardView = () => {
   return (
     <div className="space-y-6">
       <div className="flex justify-end mb-4">
-        <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
+        <Select value={displayCurrency} onValueChange={(value: Currency) => setDisplayCurrency(value)}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select currency" />
           </SelectTrigger>

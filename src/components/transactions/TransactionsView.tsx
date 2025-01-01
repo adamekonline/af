@@ -1,5 +1,5 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Transaction, PropertyLocation } from "@/types";
+import { Transaction, PropertyLocation, Currency } from "@/types";
 import { TransactionFormDialog } from "./TransactionFormDialog";
 import { PropertyFilter } from "./PropertyFilter";
 import { useState } from "react";
@@ -12,7 +12,7 @@ const initialTransactions: Transaction[] = [
     date: "2024-03-15",
     description: "Rent Payment - Poznan",
     amount: -2000,
-    currency: "PLN",
+    currency: "PLN" as Currency,
     category: "Housing",
     person: "Adam",
     property: "Poznań"
@@ -22,7 +22,7 @@ const initialTransactions: Transaction[] = [
     date: "2024-03-14",
     description: "Grocery Shopping",
     amount: -200,
-    currency: "PLN",
+    currency: "PLN" as Currency,
     category: "Food",
     person: "Natka"
   },
@@ -31,7 +31,7 @@ const initialTransactions: Transaction[] = [
     date: "2024-03-13",
     description: "Salary",
     amount: 8000,
-    currency: "PLN",
+    currency: "PLN" as Currency,
     category: "Income",
     person: "Adam"
   }
@@ -40,7 +40,7 @@ const initialTransactions: Transaction[] = [
 export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
-  const [displayCurrency, setDisplayCurrency] = useState<string>("PLN");
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
 
   const handleAddTransaction = (newTransaction: Transaction) => {
     setTransactions(prev => [newTransaction, ...prev]);
