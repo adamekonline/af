@@ -6,9 +6,10 @@ import { SummaryCard } from "./cards/SummaryCard";
 import { useTransactions } from "./hooks/useTransactions";
 import { useFilters } from "./hooks/useFilters";
 import { useFilteredAmounts } from "./hooks/useFilteredAmounts";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export const DashboardView = () => {
-  const { transactions } = useTransactions();
+  const { transactions, isLoading } = useTransactions();
   const {
     startDate,
     endDate,
@@ -28,8 +29,22 @@ export const DashboardView = () => {
 
   const { convertedBalance, convertedIncome, convertedExpenses } = useFilteredAmounts(
     filteredTransactions,
-    "PLN" // Force PLN as display currency
+    "PLN"
   );
+
+  if (isLoading) {
+    return (
+      <div className="space-y-4 md:space-y-6">
+        <div className="grid gap-3 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+          <Skeleton className="h-[140px] w-full" />
+          <Skeleton className="h-[140px] w-full" />
+          <Skeleton className="h-[140px] w-full" />
+          <Skeleton className="h-[400px] w-full col-span-full" />
+          <Skeleton className="h-[400px] w-full col-span-full" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4 md:space-y-6">

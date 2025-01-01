@@ -10,28 +10,25 @@ export const useFilteredAmounts = (filteredTransactions: Transaction[], displayC
   useEffect(() => {
     const updateConvertedAmounts = async () => {
       try {
-        // Calculate converted balance
-        const balancePromises = filteredTransactions.map(t => 
-          convertCurrency(t.amount, t.currency, displayCurrency)
-        );
-        const convertedAmounts = await Promise.all(balancePromises);
-        const totalBalance = convertedAmounts.reduce((sum, amount) => sum + amount, 0);
+        let totalBalance = 0;
+        let totalIncome = 0;
+        let totalExpenses = 0;
+
+        // Process each transaction
+        for (const transaction of filteredTransactions) {
+          const converted = await convertCurrency(Math.abs(transaction.amount), transaction.currency, displayCurrency);
+          
+          if (transaction.category === 'Income') {
+            totalIncome += converted;
+            totalBalance += converted;
+          } else {
+            totalExpenses += converted;
+            totalBalance -= converted;
+          }
+        }
+
         setConvertedBalance(totalBalance);
-
-        // Calculate converted income (positive amounts)
-        const incomePromises = filteredTransactions
-          .filter(t => t.amount > 0)
-          .map(t => convertCurrency(t.amount, t.currency, displayCurrency));
-        const convertedIncomes = await Promise.all(incomePromises);
-        const totalIncome = convertedIncomes.reduce((sum, amount) => sum + amount, 0);
         setConvertedIncome(totalIncome);
-
-        // Calculate converted expenses (negative amounts)
-        const expensePromises = filteredTransactions
-          .filter(t => t.amount < 0)
-          .map(t => convertCurrency(Math.abs(t.amount), t.currency, displayCurrency));
-        const convertedExpenses = await Promise.all(expensePromises);
-        const totalExpenses = convertedExpenses.reduce((sum, amount) => sum + amount, 0);
         setConvertedExpenses(-totalExpenses); // Make expenses negative
       } catch (error) {
         console.error('Error converting amounts:', error);

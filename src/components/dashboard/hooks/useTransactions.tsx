@@ -1,14 +1,43 @@
 import { useState, useEffect } from "react";
 import { Transaction } from "@/types";
 import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 export const useTransactions = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchTransactions = async () => {
+    try {
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .order('date', { ascending: false });
+
+      if (error) {
+        toast.error('Error fetching transactions');
+        throw error;
+      }
+
+      // Ensure amount is treated as a number
+      const typedData = data.map(item => ({
+        ...item,
+        amount: Number(item.amount)
+      })) as Transaction[];
+      
+      setTransactions(typedData);
+    } catch (error) {
+      console.error('Error fetching transactions:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   useEffect(() => {
     fetchTransactions();
 
+    // Subscribe to real-time changes
     const channel = supabase
       .channel('public:transactions')
       .on(
@@ -16,6 +45,7 @@ export const useTransactions = () => {
         { event: '*', schema: 'public', table: 'transactions' },
         () => {
           fetchTransactions();
+          toast.success('Dashboard updated');
         }
       )
       .subscribe();
@@ -25,26 +55,5 @@ export const useTransactions = () => {
     };
   }, []);
 
-  const fetchTransactions = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('transactions')
-        .select('*')
-        .order('date', { ascending: false });
-
-      if (error) throw error;
-
-      const typedData = data.map(item => ({
-        ...item,
-        amount: Number(item.amount)
-      })) as Transaction[];
-
-      setTransactions(typedData);
-      setFilteredTransactions(typedData);
-    } catch (error) {
-      console.error('Error fetching transactions:', error);
-    }
-  };
-
-  return { transactions, filteredTransactions, setFilteredTransactions };
+  return { transactions, isLoading };
 };
