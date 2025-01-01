@@ -1,28 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Form } from "@/components/ui/form";
 import { PlusCircle } from "lucide-react";
 import { useForm } from "react-hook-form";
-import { Category, Currency, Person, PropertyLocation, Transaction } from "@/types";
+import { Transaction } from "@/types";
 import { useState } from "react";
 import { useToast } from "../ui/use-toast";
-
-const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
-const currencies: Currency[] = ["PLN", "USD", "EUR", "GBP"];
-const people: Person[] = ["Natka", "Adam", "Adi"];
-const properties: PropertyLocation[] = ["Poznań", "Leuven"];
-
-interface TransactionFormData {
-  date: string;
-  description: string;
-  amount: string;
-  currency: Currency;
-  category: Category;
-  person: Person;
-  property?: PropertyLocation;
-}
+import { TransactionBasicFields } from "./form/TransactionBasicFields";
+import { TransactionSelectFields } from "./form/TransactionSelectFields";
+import { TransactionFormData } from "./types";
 
 export const TransactionFormDialog = ({ onAddTransaction }: { onAddTransaction: (transaction: Transaction) => void }) => {
   const [open, setOpen] = useState(false);
@@ -75,148 +61,8 @@ export const TransactionFormDialog = ({ onAddTransaction }: { onAddTransaction: 
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Description</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="amount"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Amount</FormLabel>
-                  <FormControl>
-                    <Input type="number" step="0.01" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="currency"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Currency</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select currency" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {currencies.map((currency) => (
-                        <SelectItem key={currency} value={currency}>
-                          {currency}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Category</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {categories.map((category) => (
-                        <SelectItem key={category} value={category}>
-                          {category}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="person"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Person</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select person" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {people.map((person) => (
-                        <SelectItem key={person} value={person}>
-                          {person}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="property"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Property (Optional)</FormLabel>
-                  <Select onValueChange={field.onChange} defaultValue={field.value}>
-                    <FormControl>
-                      <SelectTrigger>
-                        <SelectValue placeholder="Select property" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      {properties.map((property) => (
-                        <SelectItem key={property} value={property}>
-                          {property}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
+            <TransactionBasicFields form={form} />
+            <TransactionSelectFields form={form} />
             <Button type="submit" className="w-full">Add Transaction</Button>
           </form>
         </Form>

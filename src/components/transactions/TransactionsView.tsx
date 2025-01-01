@@ -1,7 +1,8 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DollarSign } from "lucide-react";
-import { Transaction } from "@/types";
+import { Transaction, PropertyLocation } from "@/types";
 import { TransactionFormDialog } from "./TransactionFormDialog";
+import { PropertyFilter } from "./PropertyFilter";
 import { useState } from "react";
 
 const initialTransactions: Transaction[] = [
@@ -37,16 +38,24 @@ const initialTransactions: Transaction[] = [
 
 export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+  const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
 
   const handleAddTransaction = (newTransaction: Transaction) => {
     setTransactions(prev => [newTransaction, ...prev]);
   };
 
+  const filteredTransactions = transactions.filter(transaction => 
+    propertyFilter === "all" || transaction.property === propertyFilter
+  );
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Transactions</h2>
-        <TransactionFormDialog onAddTransaction={handleAddTransaction} />
+        <div className="flex gap-4 items-center">
+          <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
+          <TransactionFormDialog onAddTransaction={handleAddTransaction} />
+        </div>
       </div>
 
       <Table>
@@ -61,7 +70,7 @@ export const TransactionsView = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {transactions.map((transaction) => (
+          {filteredTransactions.map((transaction) => (
             <TableRow key={transaction.id}>
               <TableCell>{transaction.date}</TableCell>
               <TableCell>{transaction.description}</TableCell>
