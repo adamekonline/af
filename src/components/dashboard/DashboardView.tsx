@@ -6,6 +6,8 @@ import { useState, useEffect } from "react";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { BudgetTracker } from "./BudgetTracker";
 import { PersonalSpending } from "./PersonalSpending";
+import { DashboardFilters } from "./DashboardFilters";
+import { isWithinInterval, parseISO } from "date-fns";
 
 const mockTransactions: Transaction[] = [
   { id: 1, date: "2024-03-15", description: "Rent Payment - Poznan", amount: -2000, currency: "PLN" as Currency, category: "Housing", person: "Adam", property: "Poznań" },
@@ -20,12 +22,57 @@ export const DashboardView = () => {
   const [convertedBalance, setConvertedBalance] = useState<number>(0);
   const [convertedIncome, setConvertedIncome] = useState<number>(0);
   const [convertedExpenses, setConvertedExpenses] = useState<number>(0);
+  
+  // Filter states
+  const [startDate, setStartDate] = useState<Date>();
+  const [endDate, setEndDate] = useState<Date>();
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [sortBy, setSortBy] = useState("date-desc");
+  
+  // Filtered transactions
+  const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(mockTransactions);
+
+  useEffect(() => {
+    // Apply filters and sorting
+    let filtered = [...mockTransactions];
+
+    // Date range filter
+    if (startDate && endDate) {
+      filtered = filtered.filter(t => {
+        const transactionDate = parseISO(t.date);
+        return isWithinInterval(transactionDate, { start: startDate, end: endDate });
+      });
+    }
+
+    // Category filter
+    if (selectedCategory !== "all") {
+      filtered = filtered.filter(t => t.category === selectedCategory);
+    }
+
+    // Sorting
+    filtered.sort((a, b) => {
+      switch (sortBy) {
+        case "date-desc":
+          return new Date(b.date).getTime() - new Date(a.date).getTime();
+        case "date-asc":
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
+        case "amount-desc":
+          return b.amount - a.amount;
+        case "amount-asc":
+          return a.amount - b.amount;
+        default:
+          return 0;
+      }
+    });
+
+    setFilteredTransactions(filtered);
+  }, [startDate, endDate, selectedCategory, sortBy]);
 
   useEffect(() => {
     const updateConvertedAmounts = async () => {
       try {
         // Calculate converted balance
-        const balancePromises = mockTransactions.map(t => 
+        const balancePromises = filteredTransactions.map(t => 
           convertCurrency(t.amount, t.currency, displayCurrency)
         );
         const convertedAmounts = await Promise.all(balancePromises);
@@ -33,7 +80,7 @@ export const DashboardView = () => {
         setConvertedBalance(totalBalance);
 
         // Calculate converted income
-        const incomePromises = mockTransactions
+        const incomePromises = filteredTransactions
           .filter(t => t.amount > 0)
           .map(t => convertCurrency(t.amount, t.currency, displayCurrency));
         const convertedIncomes = await Promise.all(incomePromises);
@@ -41,7 +88,7 @@ export const DashboardView = () => {
         setConvertedIncome(totalIncome);
 
         // Calculate converted expenses
-        const expensePromises = mockTransactions
+        const expensePromises = filteredTransactions
           .filter(t => t.amount < 0)
           .map(t => convertCurrency(Math.abs(t.amount), t.currency, displayCurrency));
         const convertedExpenses = await Promise.all(expensePromises);
@@ -53,7 +100,7 @@ export const DashboardView = () => {
     };
 
     updateConvertedAmounts();
-  }, [displayCurrency]);
+  }, [filteredTransactions, displayCurrency]);
 
   const handleCurrencyChange = (value: string) => {
     setDisplayCurrency(value as Currency);
@@ -61,18 +108,33 @@ export const DashboardView = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex justify-end mb-4">
-        <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Select currency" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="PLN">PLN</SelectItem>
-            <SelectItem value="USD">USD</SelectItem>
-            <SelectItem value="EUR">EUR</SelectItem>
-            <SelectItem value="GBP">GBP</SelectItem>
-          </SelectContent>
-        </Select>
+      <div className="flex flex-col gap-4">
+        <div className="flex justify-end">
+          <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
+            <SelectTrigger className="w-[180px]">
+              <SelectValue placeholder="Select currency" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="PLN">PLN</SelectItem>
+              <SelectItem value="USD">USD</SelectItem>
+              <SelectItem value="EUR">EUR</SelectItem>
+              <SelectItem value="GBP">GBP</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <DashboardFilters
+          startDate={startDate}
+          endDate={endDate}
+          onDateChange={(start, end) => {
+            setStartDate(start);
+            setEndDate(end);
+          }}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+        />
       </div>
 
       <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -117,8 +179,8 @@ export const DashboardView = () => {
           </CardContent>
         </Card>
 
-        <BudgetTracker transactions={mockTransactions} displayCurrency={displayCurrency} />
-        <PersonalSpending transactions={mockTransactions} displayCurrency={displayCurrency} />
+        <BudgetTracker transactions={filteredTransactions} displayCurrency={displayCurrency} />
+        <PersonalSpending transactions={filteredTransactions} displayCurrency={displayCurrency} />
       </div>
     </div>
   );
