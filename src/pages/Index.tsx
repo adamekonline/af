@@ -1,14 +1,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
-import { LayoutDashboard, LogOut, Menu, Plus, Receipt } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Receipt } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { TransactionFormDialog } from "@/components/transactions/TransactionFormDialog";
+import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -70,7 +70,7 @@ const Index = () => {
           </div>
 
           <div className="flex items-center gap-2">
-            <TransactionFormDialog />
+            <ResponsiveTransactionFormDialog />
             <Button 
               variant="ghost" 
               size="icon"
