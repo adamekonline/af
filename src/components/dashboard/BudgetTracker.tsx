@@ -46,13 +46,13 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
           
           let total = 0;
           for (const t of personTransactions) {
-            const converted = await convertCurrency(t.amount, t.currency, displayCurrency);
-            // All transactions except Income are expenses (negative)
-            total += t.category === 'Income' ? converted : -Math.abs(converted);
+            const converted = await convertCurrency(Math.abs(t.amount), t.currency, displayCurrency);
+            // All transactions except Income are expenses
+            total += converted;
           }
           
           if (total !== 0) {
-            newSpentAmounts[budget.category][person] = Math.abs(total); // Always show absolute value for display
+            newSpentAmounts[budget.category][person] = total;
           }
         }
       }

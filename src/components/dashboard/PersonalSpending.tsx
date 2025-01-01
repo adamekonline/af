@@ -32,14 +32,16 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
         let personTotal = 0;
         
         for (const t of personTransactions) {
-          const converted = await convertCurrency(t.amount, t.currency, displayCurrency);
-          // All transactions except Income are expenses (negative)
-          personTotal += t.category === 'Income' ? converted : -Math.abs(converted);
+          const converted = await convertCurrency(Math.abs(t.amount), t.currency, displayCurrency);
+          // Only add to spending if it's not an income transaction
+          if (t.category !== 'Income') {
+            personTotal += converted;
+          }
         }
         
         if (personTotal !== 0) {
-          spending[person] = Math.abs(personTotal); // Always show absolute value for display
-          total += Math.abs(personTotal);
+          spending[person] = personTotal;
+          total += personTotal;
         }
       }
 
