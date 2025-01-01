@@ -1,8 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Category, Currency } from "@/types";
 import { DashboardFiltersProps } from "./types";
+import { format } from "date-fns";
+import { Input } from "@/components/ui/input";
 
 const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
 const people = ["All", "Adam", "Natka", "Adi"];
@@ -26,16 +27,32 @@ export const MobileFilters = ({
       <div className="space-y-4">
         <div className="space-y-2">
           <label className="text-sm font-medium">Date Range</label>
-          <Calendar
-            mode="range"
-            selected={{
-              from: startDate,
-              to: endDate,
-            }}
-            onSelect={(range) => {
-              onDateChange(range?.from, range?.to);
-            }}
-          />
+          <div className="grid grid-cols-2 gap-2">
+            <div>
+              <label className="text-xs text-muted-foreground">Start Date</label>
+              <Input
+                type="date"
+                value={startDate ? format(startDate, 'yyyy-MM-dd') : ''}
+                onChange={(e) => {
+                  const date = e.target.value ? new Date(e.target.value) : undefined;
+                  onDateChange(date, endDate);
+                }}
+                className="mt-1"
+              />
+            </div>
+            <div>
+              <label className="text-xs text-muted-foreground">End Date</label>
+              <Input
+                type="date"
+                value={endDate ? format(endDate, 'yyyy-MM-dd') : ''}
+                onChange={(e) => {
+                  const date = e.target.value ? new Date(e.target.value) : undefined;
+                  onDateChange(startDate, date);
+                }}
+                className="mt-1"
+              />
+            </div>
+          </div>
         </div>
 
         <div className="space-y-2">
