@@ -1,37 +1,11 @@
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Currency } from "@/types";
 import { supabase } from "@/integrations/supabase/client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { useState, useEffect } from "react";
-
-interface ManualRate {
-  id: number;
-  date: string;
-  base_currency: Currency;
-  target_currency: Currency;
-  rate: number;
-}
-
-interface ManualRateForm {
-  date: string;
-  base_currency: Currency;
-  target_currency: Currency;
-  rate: string;
-}
-
-interface SupabaseManualRate {
-  id: number;
-  date: string;
-  base_currency: string;
-  target_currency: string;
-  rate: number;
-  created_at: string;
-}
+import { ExchangeRateForm } from "./exchange-rates/ExchangeRateForm";
+import { ExchangeRatesList } from "./exchange-rates/ExchangeRatesList";
+import { ManualRate, ManualRateForm, SupabaseManualRate } from "./exchange-rates/types";
 
 export const ManualExchangeRates = () => {
   const [rates, setRates] = useState<ManualRate[]>([]);
@@ -55,12 +29,11 @@ export const ManualExchangeRates = () => {
       return;
     }
     
-    // Convert the Supabase response to ManualRate type
     const typedRates: ManualRate[] = (data as SupabaseManualRate[]).map(rate => ({
       id: rate.id,
       date: rate.date,
-      base_currency: rate.base_currency as Currency,
-      target_currency: rate.target_currency as Currency,
+      base_currency: rate.base_currency as ManualRate['base_currency'],
+      target_currency: rate.target_currency as ManualRate['target_currency'],
       rate: rate.rate,
     }));
     
@@ -85,7 +58,12 @@ export const ManualExchangeRates = () => {
       if (error) throw error;
 
       toast.success('Exchange rate added successfully');
-      form.reset();
+      form.reset({
+        date: new Date().toISOString().split('T')[0],
+        base_currency: 'PLN',
+        target_currency: 'EUR',
+        rate: '',
+      });
       fetchRates();
     } catch (error) {
       toast.error('Failed to add exchange rate');
@@ -114,97 +92,8 @@ export const ManualExchangeRates = () => {
         <CardTitle>Manual Exchange Rates</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              <FormField
-                control={form.control}
-                name="date"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Date</FormLabel>
-                    <FormControl>
-                      <Input type="date" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="base_currency"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>From Currency</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select currency" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PLN">PLN</SelectItem>
-                        <SelectItem value="EUR">EUR</SelectItem>
-                        <SelectItem value="USD">USD</SelectItem>
-                        <SelectItem value="GBP">GBP</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="target_currency"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>To Currency</FormLabel>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select currency" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="PLN">PLN</SelectItem>
-                        <SelectItem value="EUR">EUR</SelectItem>
-                        <SelectItem value="USD">USD</SelectItem>
-                        <SelectItem value="GBP">GBP</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="rate"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Exchange Rate</FormLabel>
-                    <FormControl>
-                      <Input type="number" step="0.0001" {...field} />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
-            <Button type="submit">Add Rate</Button>
-          </form>
-        </Form>
-
-        <div className="space-y-4">
-          {rates.map((rate) => (
-            <div key={rate.id} className="flex items-center justify-between p-4 border rounded-lg">
-              <div className="space-y-1">
-                <p className="text-sm font-medium">{rate.date}</p>
-                <p className="text-sm text-muted-foreground">
-                  1 {rate.base_currency} = {rate.rate} {rate.target_currency}
-                </p>
-              </div>
-              <Button variant="ghost" size="sm" onClick={() => handleDelete(rate.id)}>
-                Delete
-              </Button>
-            </div>
-          ))}
-        </div>
+        <ExchangeRateForm form={form} onSubmit={onSubmit} />
+        <ExchangeRatesList rates={rates} onDelete={handleDelete} />
       </CardContent>
     </Card>
   );
