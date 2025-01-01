@@ -53,12 +53,12 @@ export const TransactionsView = () => {
 
   return (
     <div className="space-y-4">
-      <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-bold">Transactions</h2>
-        <div className="flex gap-4 items-center">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <h2 className="text-xl font-bold">Transactions</h2>
+        <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
           <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select currency" />
+            <SelectTrigger className="w-[120px]">
+              <SelectValue placeholder="Currency" />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="PLN">PLN</SelectItem>
@@ -68,49 +68,50 @@ export const TransactionsView = () => {
             </SelectContent>
           </Select>
           <PropertyFilter value={propertyFilter} onChange={setPropertyFilter} />
-          <TransactionFormDialog onAddTransaction={handleAddTransaction} />
         </div>
       </div>
 
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Date</TableHead>
-            <TableHead>Description</TableHead>
-            <TableHead>Amount</TableHead>
-            <TableHead>Original Amount</TableHead>
-            <TableHead>Category</TableHead>
-            <TableHead>Person</TableHead>
-            <TableHead>Property</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {filteredTransactions.map((transaction) => {
-            const convertedAmount = convertCurrency(transaction.amount, transaction.currency, displayCurrency);
-            return (
-              <TableRow key={transaction.id}>
-                <TableCell>{transaction.date}</TableCell>
-                <TableCell>{transaction.description}</TableCell>
-                <TableCell className={convertedAmount > 0 ? "text-green-600" : "text-red-600"}>
-                  <span className="flex items-center gap-1">
-                    <DollarSign className="h-4 w-4" />
-                    {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-                  </span>
-                </TableCell>
-                <TableCell className={transaction.amount > 0 ? "text-green-600" : "text-red-600"}>
-                  <span className="flex items-center gap-1">
-                    <DollarSign className="h-4 w-4" />
-                    {transaction.amount.toLocaleString()} {transaction.currency}
-                  </span>
-                </TableCell>
-                <TableCell>{transaction.category}</TableCell>
-                <TableCell>{transaction.person}</TableCell>
-                <TableCell>{transaction.property || '-'}</TableCell>
-              </TableRow>
-            );
-          })}
-        </TableBody>
-      </Table>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow>
+              <TableHead className="w-[100px]">Date</TableHead>
+              <TableHead className="min-w-[200px]">Description</TableHead>
+              <TableHead className="w-[120px]">Amount</TableHead>
+              <TableHead className="w-[120px]">Original</TableHead>
+              <TableHead className="w-[100px]">Category</TableHead>
+              <TableHead className="w-[100px]">Person</TableHead>
+              <TableHead className="w-[100px]">Property</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {filteredTransactions.map((transaction) => {
+              const convertedAmount = convertCurrency(transaction.amount, transaction.currency, displayCurrency);
+              return (
+                <TableRow key={transaction.id}>
+                  <TableCell className="whitespace-nowrap">{transaction.date}</TableCell>
+                  <TableCell className="max-w-[200px] truncate">{transaction.description}</TableCell>
+                  <TableCell className={`whitespace-nowrap ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
+                    <span className="flex items-center gap-1">
+                      <DollarSign className="h-3 w-3" />
+                      {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                    </span>
+                  </TableCell>
+                  <TableCell className={`whitespace-nowrap ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}>
+                    <span className="flex items-center gap-1">
+                      <DollarSign className="h-3 w-3" />
+                      {transaction.amount.toLocaleString()} {transaction.currency}
+                    </span>
+                  </TableCell>
+                  <TableCell className="whitespace-nowrap">{transaction.category}</TableCell>
+                  <TableCell className="whitespace-nowrap">{transaction.person}</TableCell>
+                  <TableCell className="whitespace-nowrap">{transaction.property || '-'}</TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </div>
     </div>
   );
 };

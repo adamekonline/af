@@ -99,22 +99,34 @@
   }
 
   h1 {
-    @apply text-4xl font-bold;
+    @apply text-3xl md:text-4xl font-bold;
   }
 
   h2 {
-    @apply text-3xl font-semibold;
+    @apply text-2xl md:text-3xl font-semibold;
   }
 
   h3 {
-    @apply text-2xl font-semibold;
+    @apply text-xl md:text-2xl font-semibold;
   }
 
   h4 {
-    @apply text-xl font-semibold;
+    @apply text-lg md:text-xl font-semibold;
   }
 
   p {
-    @apply leading-relaxed;
+    @apply text-sm md:text-base leading-relaxed;
+  }
+
+  table {
+    @apply text-sm;
+  }
+
+  th {
+    @apply text-xs md:text-sm font-medium;
+  }
+
+  td {
+    @apply text-xs md:text-sm;
   }
 }
