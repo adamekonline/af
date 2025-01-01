@@ -1,9 +1,10 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { PlusCircle, DollarSign } from "lucide-react";
+import { DollarSign } from "lucide-react";
 import { Transaction } from "@/types";
+import { TransactionFormDialog } from "./TransactionFormDialog";
+import { useState } from "react";
 
-const mockTransactions: Transaction[] = [
+const initialTransactions: Transaction[] = [
   {
     id: 1,
     date: "2024-03-15",
@@ -35,14 +36,17 @@ const mockTransactions: Transaction[] = [
 ];
 
 export const TransactionsView = () => {
+  const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
+
+  const handleAddTransaction = (newTransaction: Transaction) => {
+    setTransactions(prev => [newTransaction, ...prev]);
+  };
+
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-bold">Transactions</h2>
-        <Button>
-          <PlusCircle className="mr-2 h-4 w-4" />
-          Add Transaction
-        </Button>
+        <TransactionFormDialog onAddTransaction={handleAddTransaction} />
       </div>
 
       <Table>
@@ -57,7 +61,7 @@ export const TransactionsView = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {mockTransactions.map((transaction) => (
+          {transactions.map((transaction) => (
             <TableRow key={transaction.id}>
               <TableCell>{transaction.date}</TableCell>
               <TableCell>{transaction.description}</TableCell>
