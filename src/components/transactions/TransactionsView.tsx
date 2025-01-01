@@ -1,36 +1,33 @@
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Transaction, PropertyLocation, Currency } from "@/types";
+import { Table, TableBody } from "@/components/ui/table";
+import { Transaction, Currency } from "@/types";
 import { PropertyFilter } from "./PropertyFilter";
 import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Card, CardContent } from "@/components/ui/card";
-import { Trash2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { TransactionTableHeader } from "./components/TransactionTableHeader";
+import { TransactionTableRow } from "./components/TransactionTableRow";
+import { TransactionMobileCard } from "./components/TransactionMobileCard";
 
 export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
-  const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
+  const [propertyFilter, setPropertyFilter] = useState<Transaction["property"] | "all">("all");
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN");
   const [convertedAmounts, setConvertedAmounts] = useState<Record<number, number>>({});
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
 
   useEffect(() => {
-    // Fetch initial transactions
     fetchTransactions();
 
-    // Set up real-time subscription
     const channel = supabase
       .channel('public:transactions')
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'transactions' },
-        (payload) => {
-          console.log('Change received!', payload);
-          fetchTransactions(); // Refresh the list when changes occur
+        () => {
+          fetchTransactions();
         }
       )
       .subscribe();
@@ -48,7 +45,17 @@ export const TransactionsView = () => {
         .order('date', { ascending: false });
 
       if (error) throw error;
-      setTransactions(data || []);
+      
+      // Ensure the data matches our Transaction type
+      const typedData: Transaction[] = data.map(item => ({
+        ...item,
+        currency: item.currency as Currency,
+        category: item.category,
+        person: item.person,
+        property: item.property || undefined
+      }));
+      
+      setTransactions(typedData);
     } catch (error) {
       console.error('Error fetching transactions:', error);
       toast.error('Failed to fetch transactions');
@@ -122,93 +129,30 @@ export const TransactionsView = () => {
 
       {isMobile ? (
         <div className="space-y-4">
-          {filteredTransactions.map((transaction) => {
-            const convertedAmount = convertedAmounts[transaction.id] || 0;
-            return (
-              <Card key={transaction.id} className="w-full">
-                <CardContent className="p-4 space-y-2">
-                  <div className="flex justify-between items-start">
-                    <div className="space-y-1">
-                      <p className="font-medium text-sm">{transaction.description}</p>
-                      <p className="text-xs text-muted-foreground">{transaction.date}</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <div className={`text-right ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
-                        <p className="font-semibold">
-                          {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-                        </p>
-                        <p className="text-xs opacity-75">
-                          {transaction.amount.toLocaleString()} {transaction.currency}
-                        </p>
-                      </div>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDelete(transaction.id)}
-                        className="text-muted-foreground hover:text-red-600"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </div>
-                  </div>
-                  <div className="flex justify-between text-xs text-muted-foreground pt-2 border-t">
-                    <span>{transaction.category}</span>
-                    <span>{transaction.person}</span>
-                    <span>{transaction.property || '-'}</span>
-                  </div>
-                </CardContent>
-              </Card>
-            );
-          })}
+          {filteredTransactions.map((transaction) => (
+            <TransactionMobileCard
+              key={transaction.id}
+              transaction={transaction}
+              convertedAmount={convertedAmounts[transaction.id] || 0}
+              displayCurrency={displayCurrency}
+              onDelete={handleDelete}
+            />
+          ))}
         </div>
       ) : (
         <ScrollArea className="rounded-md border">
           <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[100px]">Date</TableHead>
-                <TableHead className="min-w-[200px]">Description</TableHead>
-                <TableHead className="w-[120px]">Amount</TableHead>
-                <TableHead className="w-[120px]">Original</TableHead>
-                <TableHead className="w-[100px]">Category</TableHead>
-                <TableHead className="w-[100px]">Person</TableHead>
-                <TableHead className="w-[100px]">Property</TableHead>
-                <TableHead className="w-[50px]"></TableHead>
-              </TableRow>
-            </TableHeader>
+            <TransactionTableHeader />
             <TableBody>
-              {filteredTransactions.map((transaction) => {
-                const convertedAmount = convertedAmounts[transaction.id] || 0;
-                return (
-                  <TableRow key={transaction.id}>
-                    <TableCell className="whitespace-nowrap">{transaction.date}</TableCell>
-                    <TableCell className="max-w-[200px] truncate">{transaction.description}</TableCell>
-                    <TableCell className={`whitespace-nowrap ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
-                      <span className="flex items-center gap-1">
-                        {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-                      </span>
-                    </TableCell>
-                    <TableCell className={`whitespace-nowrap ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}>
-                      <span className="flex items-center gap-1">
-                        {transaction.amount.toLocaleString()} {transaction.currency}
-                      </span>
-                    </TableCell>
-                    <TableCell className="whitespace-nowrap">{transaction.category}</TableCell>
-                    <TableCell className="whitespace-nowrap">{transaction.person}</TableCell>
-                    <TableCell className="whitespace-nowrap">{transaction.property || '-'}</TableCell>
-                    <TableCell>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => handleDelete(transaction.id)}
-                        className="text-muted-foreground hover:text-red-600"
-                      >
-                        <Trash2 className="h-4 w-4" />
-                      </Button>
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {filteredTransactions.map((transaction) => (
+                <TransactionTableRow
+                  key={transaction.id}
+                  transaction={transaction}
+                  convertedAmount={convertedAmounts[transaction.id] || 0}
+                  displayCurrency={displayCurrency}
+                  onDelete={handleDelete}
+                />
+              ))}
             </TableBody>
           </Table>
         </ScrollArea>
