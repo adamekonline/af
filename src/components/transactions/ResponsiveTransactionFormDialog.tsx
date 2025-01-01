@@ -28,7 +28,7 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
       currency: "PLN",
       category: "Other",
       person: "Adam",
-      property: ""
+      property: undefined
     }
   });
 
