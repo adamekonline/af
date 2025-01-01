@@ -1,7 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { Transaction, Currency } from "@/types";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState, useEffect } from "react";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { BudgetTracker } from "./BudgetTracker";
@@ -9,6 +7,7 @@ import { PersonalSpending } from "./PersonalSpending";
 import { DashboardFilters } from "./DashboardFilters";
 import { isWithinInterval, parseISO } from "date-fns";
 import { supabase } from "@/integrations/supabase/client";
+import { SummaryCard } from "./cards/SummaryCard";
 
 export const DashboardView = () => {
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
@@ -30,7 +29,6 @@ export const DashboardView = () => {
   useEffect(() => {
     fetchTransactions();
 
-    // Subscribe to real-time changes
     const channel = supabase
       .channel('public:transactions')
       .on(
@@ -56,7 +54,6 @@ export const DashboardView = () => {
 
       if (error) throw error;
 
-      // Ensure the data matches our Transaction type
       const typedData = data.map(item => ({
         ...item,
         amount: Number(item.amount)
@@ -132,7 +129,7 @@ export const DashboardView = () => {
         const totalBalance = convertedAmounts.reduce((sum, amount) => sum + amount, 0);
         setConvertedBalance(totalBalance);
 
-        // Calculate converted income
+        // Calculate converted income (positive amounts)
         const incomePromises = filteredTransactions
           .filter(t => t.amount > 0)
           .map(t => convertCurrency(t.amount, t.currency, displayCurrency));
@@ -140,10 +137,10 @@ export const DashboardView = () => {
         const totalIncome = convertedIncomes.reduce((sum, amount) => sum + amount, 0);
         setConvertedIncome(totalIncome);
 
-        // Calculate converted expenses
+        // Calculate converted expenses (negative amounts)
         const expensePromises = filteredTransactions
           .filter(t => t.amount < 0)
-          .map(t => convertCurrency(Math.abs(t.amount), t.currency, displayCurrency));
+          .map(t => convertCurrency(t.amount, t.currency, displayCurrency));
         const convertedExpenses = await Promise.all(expensePromises);
         const totalExpenses = convertedExpenses.reduce((sum, amount) => sum + amount, 0);
         setConvertedExpenses(totalExpenses);
@@ -178,46 +175,25 @@ export const DashboardView = () => {
       </div>
 
       <div className="grid gap-3 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
-        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-violet-50 to-white dark:from-violet-950 dark:to-gray-950 p-3 md:p-6">
-          <CardHeader className="space-y-1 p-2 md:p-6">
-            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-              Total Balance
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 md:p-6">
-            <p className="text-lg md:text-2xl font-bold">
-              {convertedBalance.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-green-50 to-white dark:from-green-950 dark:to-gray-950 p-3 md:p-6">
-          <CardHeader className="space-y-1 p-2 md:p-6">
-            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-              <TrendingUp className="h-4 w-4 md:h-5 md:w-5 text-green-600" />
-              Monthly Income
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 md:p-6">
-            <p className="text-lg md:text-2xl font-bold text-green-600">
-              +{convertedIncome.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card className="hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br from-red-50 to-white dark:from-red-950 dark:to-gray-950 p-3 md:p-6">
-          <CardHeader className="space-y-1 p-2 md:p-6">
-            <CardTitle className="flex items-center gap-2 text-base md:text-lg">
-              <TrendingDown className="h-4 w-4 md:h-5 md:w-5 text-red-600" />
-              Monthly Expenses
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="p-2 md:p-6">
-            <p className="text-lg md:text-2xl font-bold text-red-600">
-              -{convertedExpenses.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
-            </p>
-          </CardContent>
-        </Card>
+        <SummaryCard
+          title="Total Balance"
+          amount={convertedBalance}
+          currency={displayCurrency}
+        />
+        <SummaryCard
+          title="Monthly Income"
+          amount={convertedIncome}
+          currency={displayCurrency}
+          icon={TrendingUp}
+          variant="income"
+        />
+        <SummaryCard
+          title="Monthly Expenses"
+          amount={convertedExpenses}
+          currency={displayCurrency}
+          icon={TrendingDown}
+          variant="expense"
+        />
 
         <BudgetTracker transactions={filteredTransactions} displayCurrency={displayCurrency} />
         <PersonalSpending transactions={filteredTransactions} displayCurrency={displayCurrency} />
