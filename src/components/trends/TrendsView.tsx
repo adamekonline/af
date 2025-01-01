@@ -41,11 +41,20 @@ export const TrendsView = () => {
   }, []);
 
   useEffect(() => {
-    const updateData = () => {
-      const monthly = aggregateByMonth(transactions, displayCurrency);
-      const category = aggregateByCategory(transactions, displayCurrency);
-      setMonthlyData(monthly);
-      setCategoryData(category);
+    const updateData = async () => {
+      try {
+        const monthly = await aggregateByMonth(transactions, displayCurrency);
+        const category = await aggregateByCategory(transactions, displayCurrency);
+        setMonthlyData(monthly);
+        setCategoryData(category);
+      } catch (error) {
+        console.error('Error aggregating data:', error);
+        toast({
+          title: "Error updating charts",
+          description: "Failed to update the charts with the new currency",
+          variant: "destructive",
+        });
+      }
     };
 
     updateData();
