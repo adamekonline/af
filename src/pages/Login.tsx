@@ -33,7 +33,7 @@ const Login = () => {
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-2">
-          <CardTitle className="text-2xl font-bold text-center">Adams Family Finances</CardTitle>
+          <CardTitle className="text-2xl font-bold text-center">AFinance</CardTitle>
           <CardDescription className="text-center">
             Welcome back! Please sign in to continue.
           </CardDescription>
@@ -91,6 +91,7 @@ const Login = () => {
               },
             }}
             redirectTo={window.location.origin}
+            persistSession={true}
           />
         </CardContent>
       </Card>
