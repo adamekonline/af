@@ -1,13 +1,15 @@
 import { Transaction, MonthlyData, CategoryData } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 
-export const aggregateByMonth = (transactions: Transaction[], displayCurrency: string): MonthlyData[] => {
-  const monthlyData = transactions.reduce((acc: Record<string, MonthlyData>, curr) => {
-    const date = new Date(curr.date);
+export const aggregateByMonth = async (transactions: Transaction[], displayCurrency: string): Promise<MonthlyData[]> => {
+  const monthlyData: Record<string, MonthlyData> = {};
+
+  for (const transaction of transactions) {
+    const date = new Date(transaction.date);
     const monthYear = `${date.toLocaleString('default', { month: 'short' })} ${date.getFullYear()}`;
     
-    if (!acc[monthYear]) {
-      acc[monthYear] = {
+    if (!monthlyData[monthYear]) {
+      monthlyData[monthYear] = {
         month: monthYear,
         timestamp: date.getTime(),
         Adam: 0,
@@ -18,36 +20,34 @@ export const aggregateByMonth = (transactions: Transaction[], displayCurrency: s
       };
     }
     
-    const convertedAmount = convertCurrency(Math.abs(curr.amount), curr.currency, displayCurrency as any);
+    const convertedAmount = await convertCurrency(Math.abs(transaction.amount), transaction.currency, displayCurrency as any);
     
-    if (curr.amount < 0) {
-      acc[monthYear][curr.person] += convertedAmount;
-      acc[monthYear].expenses += convertedAmount;
+    if (transaction.amount < 0) {
+      monthlyData[monthYear][transaction.person] += convertedAmount;
+      monthlyData[monthYear].expenses += convertedAmount;
     } else {
-      acc[monthYear].income += convertedAmount;
+      monthlyData[monthYear].income += convertedAmount;
     }
-    
-    return acc;
-  }, {});
+  }
 
   return Object.values(monthlyData).sort((a, b) => a.timestamp - b.timestamp);
 };
 
-export const aggregateByCategory = (transactions: Transaction[], displayCurrency: string): CategoryData[] => {
+export const aggregateByCategory = async (transactions: Transaction[], displayCurrency: string): Promise<CategoryData[]> => {
   const categoryData: Record<string, CategoryData> = {};
 
-  transactions
-    .filter(t => t.amount < 0)
-    .forEach((t) => {
-      const convertedAmount = convertCurrency(Math.abs(t.amount), t.currency, displayCurrency as any);
+  for (const transaction of transactions) {
+    if (transaction.amount < 0) {
+      const convertedAmount = await convertCurrency(Math.abs(transaction.amount), transaction.currency, displayCurrency as any);
       
-      if (!categoryData[t.category]) {
-        categoryData[t.category] = { category: t.category, total: 0, transactions: 0 };
+      if (!categoryData[transaction.category]) {
+        categoryData[transaction.category] = { category: transaction.category, total: 0, transactions: 0 };
       }
       
-      categoryData[t.category].total += convertedAmount;
-      categoryData[t.category].transactions += 1;
-    });
+      categoryData[transaction.category].total += convertedAmount;
+      categoryData[transaction.category].transactions += 1;
+    }
+  }
 
   return Object.values(categoryData).sort((a, b) => b.total - a.total);
 };

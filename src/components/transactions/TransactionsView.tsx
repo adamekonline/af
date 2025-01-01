@@ -2,7 +2,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Transaction, PropertyLocation, Currency } from "@/types";
 import { TransactionFormDialog } from "./TransactionFormDialog";
 import { PropertyFilter } from "./PropertyFilter";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { convertCurrency } from "@/utils/currencyConverter";
 
@@ -41,6 +41,20 @@ export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
   const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN");
+  const [convertedAmounts, setConvertedAmounts] = useState<Record<number, number>>({});
+
+  useEffect(() => {
+    const updateConvertedAmounts = async () => {
+      const amounts: Record<number, number> = {};
+      for (const transaction of transactions) {
+        const converted = await convertCurrency(transaction.amount, transaction.currency, displayCurrency);
+        amounts[transaction.id] = converted;
+      }
+      setConvertedAmounts(amounts);
+    };
+
+    updateConvertedAmounts();
+  }, [transactions, displayCurrency]);
 
   const handleAddTransaction = (newTransaction: Transaction) => {
     setTransactions(prev => [newTransaction, ...prev]);
@@ -89,7 +103,7 @@ export const TransactionsView = () => {
           </TableHeader>
           <TableBody>
             {filteredTransactions.map((transaction) => {
-              const convertedAmount = convertCurrency(transaction.amount, transaction.currency, displayCurrency);
+              const convertedAmount = convertedAmounts[transaction.id] || 0;
               return (
                 <TableRow key={transaction.id}>
                   <TableCell className="whitespace-nowrap">{transaction.date}</TableCell>

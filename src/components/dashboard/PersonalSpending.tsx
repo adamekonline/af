@@ -3,6 +3,7 @@ import { Transaction, Currency } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { Users } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { useEffect, useState } from "react";
 
 interface PersonalSpendingProps {
   transactions: Transaction[];
@@ -16,15 +17,37 @@ const personColors: Record<string, { bg: string, text: string }> = {
 };
 
 export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpendingProps) => {
-  const calculatePersonalSpending = (person: string) => {
-    return transactions
-      .filter(t => t.amount < 0 && t.person === person)
-      .reduce((sum, t) => sum + Math.abs(convertCurrency(t.amount, t.currency, displayCurrency)), 0);
-  };
+  const [personalSpending, setPersonalSpending] = useState<Record<string, number>>({});
+  const [totalSpending, setTotalSpending] = useState(0);
 
-  const totalSpending = transactions
-    .filter(t => t.amount < 0)
-    .reduce((sum, t) => sum + Math.abs(convertCurrency(t.amount, t.currency, displayCurrency)), 0);
+  useEffect(() => {
+    const calculateSpending = async () => {
+      const spending: Record<string, number> = {};
+      let total = 0;
+
+      const people = Array.from(new Set(transactions.map(t => t.person)));
+      
+      for (const person of people) {
+        const personTransactions = transactions.filter(t => t.amount < 0 && t.person === person);
+        let personTotal = 0;
+        
+        for (const t of personTransactions) {
+          const converted = await convertCurrency(Math.abs(t.amount), t.currency, displayCurrency);
+          personTotal += converted;
+        }
+        
+        if (personTotal > 0) {
+          spending[person] = personTotal;
+          total += personTotal;
+        }
+      }
+
+      setPersonalSpending(spending);
+      setTotalSpending(total);
+    };
+
+    calculateSpending();
+  }, [transactions, displayCurrency]);
 
   const people = Array.from(new Set(transactions.map(t => t.person)));
 
@@ -38,7 +61,7 @@ export const PersonalSpending = ({ transactions, displayCurrency }: PersonalSpen
       </CardHeader>
       <CardContent className="space-y-6">
         {people.map(person => {
-          const spentAmount = calculatePersonalSpending(person);
+          const spentAmount = personalSpending[person] || 0;
           const percentage = totalSpending > 0 ? (spentAmount / totalSpending) * 100 : 0;
           const colors = personColors[person] || { bg: '#94a3b8', text: '#64748b' };
           

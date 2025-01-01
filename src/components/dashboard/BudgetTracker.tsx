@@ -3,6 +3,7 @@ import { Progress } from "@/components/ui/progress";
 import { Budget, Transaction, Currency } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { PieChart } from "lucide-react";
+import { useEffect, useState } from "react";
 
 const mockBudgets: Budget[] = [
   { category: "Housing", limit: 3000, currency: "PLN" as Currency },
@@ -22,19 +23,51 @@ interface BudgetTrackerProps {
 }
 
 export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerProps) => {
-  const calculateSpentAmountByPerson = (category: string, person: string) => {
-    return transactions
-      .filter(t => t.amount < 0 && t.category === category && t.person === person)
-      .reduce((sum, t) => sum + Math.abs(convertCurrency(t.amount, t.currency, displayCurrency)), 0);
-  };
+  const [spentAmounts, setSpentAmounts] = useState<Record<string, Record<string, number>>>({});
+  const [convertedLimits, setConvertedLimits] = useState<Record<string, number>>({});
 
-  const calculateTotalSpentAmount = (category: string) => {
-    return transactions
-      .filter(t => t.amount < 0 && t.category === category)
-      .reduce((sum, t) => sum + Math.abs(convertCurrency(t.amount, t.currency, displayCurrency)), 0);
-  };
+  useEffect(() => {
+    const updateAmounts = async () => {
+      const newSpentAmounts: Record<string, Record<string, number>> = {};
+      const newConvertedLimits: Record<string, number> = {};
+
+      // Calculate converted limits
+      for (const budget of mockBudgets) {
+        const limit = await convertCurrency(budget.limit, budget.currency, displayCurrency);
+        newConvertedLimits[budget.category] = limit;
+      }
+
+      // Calculate spent amounts per person and category
+      for (const budget of mockBudgets) {
+        newSpentAmounts[budget.category] = {};
+        for (const person of people) {
+          const personTransactions = transactions
+            .filter(t => t.amount < 0 && t.category === budget.category && t.person === person);
+          
+          let total = 0;
+          for (const t of personTransactions) {
+            const converted = await convertCurrency(Math.abs(t.amount), t.currency, displayCurrency);
+            total += converted;
+          }
+          
+          if (total > 0) {
+            newSpentAmounts[budget.category][person] = total;
+          }
+        }
+      }
+
+      setSpentAmounts(newSpentAmounts);
+      setConvertedLimits(newConvertedLimits);
+    };
+
+    updateAmounts();
+  }, [transactions, displayCurrency]);
 
   const people = Array.from(new Set(transactions.map(t => t.person)));
+
+  const calculateTotalSpentAmount = (category: string): number => {
+    return Object.values(spentAmounts[category] || {}).reduce((sum, amount) => sum + amount, 0);
+  };
 
   return (
     <Card className="col-span-full hover:shadow-lg transition-shadow duration-300">
@@ -46,7 +79,7 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
       </CardHeader>
       <CardContent className="space-y-6">
         {mockBudgets.map(budget => {
-          const convertedLimit = convertCurrency(budget.limit, budget.currency, displayCurrency);
+          const convertedLimit = convertedLimits[budget.category] || 0;
           const totalSpent = calculateTotalSpentAmount(budget.category);
           const percentage = Math.min((totalSpent / convertedLimit) * 100, 100);
           
@@ -66,10 +99,10 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
               </div>
               <div className="relative h-2.5 overflow-hidden rounded-full bg-secondary">
                 {people.map((person, index) => {
+                  const personSpent = spentAmounts[budget.category]?.[person] || 0;
                   const previousTotal = people
                     .slice(0, index)
-                    .reduce((sum, p) => sum + calculateSpentAmountByPerson(budget.category, p), 0);
-                  const personSpent = calculateSpentAmountByPerson(budget.category, person);
+                    .reduce((sum, p) => sum + (spentAmounts[budget.category]?.[p] || 0), 0);
                   const personPercentage = (personSpent / convertedLimit) * 100;
                   const previousPercentage = (previousTotal / convertedLimit) * 100;
 
@@ -88,7 +121,7 @@ export const BudgetTracker = ({ transactions, displayCurrency }: BudgetTrackerPr
               </div>
               <div className="flex flex-wrap gap-4 text-xs">
                 {people.map(person => {
-                  const personSpent = calculateSpentAmountByPerson(budget.category, person);
+                  const personSpent = spentAmounts[budget.category]?.[person] || 0;
                   return personSpent > 0 ? (
                     <div key={person} className="flex items-center gap-1.5">
                       <div 
