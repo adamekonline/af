@@ -1,5 +1,5 @@
 import { Table, TableBody } from "@/components/ui/table";
-import { Transaction, Currency, Category } from "@/types";
+import { Transaction, Currency, Category, Person } from "@/types";
 import { PropertyFilter } from "./PropertyFilter";
 import { useState, useEffect } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -51,7 +51,7 @@ export const TransactionsView = () => {
         ...item,
         currency: item.currency as Currency,
         category: item.category as Category,
-        person: item.person,
+        person: item.person as Person,
         property: item.property || undefined,
         amount: Number(item.amount)
       }));
