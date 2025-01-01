@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { t } from "@/utils/translations";
 
-const PersonalSpending = () => {
+export const PersonalSpending = () => {
   return (
     <Card>
       <CardHeader>
@@ -35,5 +35,3 @@ const PersonalSpending = () => {
     </Card>
   );
 };
-
-export default PersonalSpending;

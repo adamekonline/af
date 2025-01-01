@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { t } from "@/utils/translations";
 
-const BudgetTracker = () => {
+export const BudgetTracker = () => {
   return (
     <Card>
       <CardHeader>
@@ -46,5 +46,3 @@ const BudgetTracker = () => {
     </Card>
   );
 };
-
-export default BudgetTracker;

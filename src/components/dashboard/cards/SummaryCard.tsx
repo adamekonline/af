@@ -4,23 +4,27 @@ import { LucideIcon } from "lucide-react";
 
 interface SummaryCardProps {
   title: string;
-  value: string;
-  icon: LucideIcon;
-  className?: string;
+  amount: number;
+  currency: string;
+  icon?: LucideIcon;
+  variant?: 'income' | 'expense';
 }
 
-const SummaryCard = ({ title, value, icon: Icon, className }: SummaryCardProps) => {
+export const SummaryCard = ({ title, amount, currency, icon: Icon, variant }: SummaryCardProps) => {
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className="text-sm font-medium">{title}</CardTitle>
-        <Icon className="h-4 w-4 text-muted-foreground" />
+        {Icon && <Icon className="h-4 w-4 text-muted-foreground" />}
       </CardHeader>
       <CardContent>
-        <div className={cn("text-2xl font-bold", className)}>{value}</div>
+        <div className={cn("text-2xl font-bold", {
+          'text-green-600': variant === 'income',
+          'text-red-600': variant === 'expense'
+        })}>
+          {amount.toLocaleString('pl-PL')} {currency}
+        </div>
       </CardContent>
     </Card>
   );
 };
-
-export default SummaryCard;

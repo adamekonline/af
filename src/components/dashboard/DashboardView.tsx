@@ -89,8 +89,8 @@ export const DashboardView = () => {
           variant="expense"
         />
 
-        <BudgetTracker transactions={filteredTransactions} displayCurrency="PLN" />
-        <PersonalSpending transactions={filteredTransactions} displayCurrency="PLN" />
+        <BudgetTracker />
+        <PersonalSpending />
       </div>
     </div>
   );
