@@ -41,7 +41,7 @@ const Index = () => {
             </SheetContent>
           </Sheet>
           
-          <h1 className="text-lg md:text-xl lg:text-2xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-4">
+          <h1 className="text-base md:text-lg lg:text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-2 md:ml-4 truncate max-w-[200px] md:max-w-none">
             Family Finance Manager
           </h1>
 
