@@ -5,6 +5,7 @@ import { Transaction } from "@/types";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useState } from "react";
 import { convertCurrency } from "@/utils/currencyConverter";
+import { BudgetTracker } from "./BudgetTracker";
 
 const mockTransactions: Transaction[] = [
   { id: 1, date: "2024-03-15", description: "Rent Payment - Poznan", amount: -2000, currency: "PLN", category: "Housing", person: "Adam", property: "Poznań" },
@@ -16,7 +17,7 @@ const mockTransactions: Transaction[] = [
 
 const aggregateByCategory = (transactions: Transaction[], displayCurrency: string) => {
   return transactions
-    .filter(t => t.amount < 0) // Only expenses
+    .filter(t => t.amount < 0)
     .reduce((acc, curr) => {
       const convertedAmount = convertCurrency(Math.abs(curr.amount), curr.currency, displayCurrency);
       const existing = acc.find(item => item.name === curr.category);
@@ -121,6 +122,8 @@ export const DashboardView = () => {
             </ResponsiveContainer>
           </CardContent>
         </Card>
+
+        <BudgetTracker transactions={mockTransactions} displayCurrency={displayCurrency} />
       </div>
     </div>
   );

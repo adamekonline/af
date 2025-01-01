@@ -22,3 +22,9 @@ export interface Transaction {
   person: Person;
   property?: PropertyLocation;
 }
+
+export interface Budget {
+  category: Category;
+  limit: number;
+  currency: Currency;
+}
