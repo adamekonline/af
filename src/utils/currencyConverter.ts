@@ -33,7 +33,43 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
   }
 
   try {
-    // Fetch latest rate from Supabase
+    // First, check for manual exchange rate for today
+    const today = new Date().toISOString().split('T')[0];
+    const { data: manualRate, error: manualError } = await supabase
+      .from('manual_exchange_rates')
+      .select('rate')
+      .eq('date', today)
+      .eq('base_currency', fromCurrency)
+      .eq('target_currency', toCurrency)
+      .maybeSingle();
+
+    if (!manualError && manualRate) {
+      exchangeRatesCache[cacheKey] = {
+        rate: manualRate.rate,
+        timestamp: now,
+      };
+      return amount * manualRate.rate;
+    }
+
+    // Check for reverse manual rate
+    const { data: reverseManualRate, error: reverseManualError } = await supabase
+      .from('manual_exchange_rates')
+      .select('rate')
+      .eq('date', today)
+      .eq('base_currency', toCurrency)
+      .eq('target_currency', fromCurrency)
+      .maybeSingle();
+
+    if (!reverseManualError && reverseManualRate) {
+      const rate = 1 / reverseManualRate.rate;
+      exchangeRatesCache[cacheKey] = {
+        rate,
+        timestamp: now,
+      };
+      return amount * rate;
+    }
+
+    // If no manual rate found, try automatic rates
     const { data: rateData, error } = await supabase
       .from('exchange_rates')
       .select('rate')
@@ -41,12 +77,11 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
       .eq('target_currency', toCurrency)
       .order('date', { ascending: false })
       .limit(1)
-      .maybeSingle(); // Changed from single() to maybeSingle()
+      .maybeSingle();
 
     if (error) throw error;
 
     if (rateData) {
-      // Update cache
       exchangeRatesCache[cacheKey] = {
         rate: rateData.rate,
         timestamp: now,
@@ -54,7 +89,7 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
       return amount * rateData.rate;
     }
 
-    // If no rate found, try reverse conversion
+    // Try reverse conversion
     const { data: reverseRateData, error: reverseError } = await supabase
       .from('exchange_rates')
       .select('rate')
@@ -62,7 +97,7 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
       .eq('target_currency', fromCurrency)
       .order('date', { ascending: false })
       .limit(1)
-      .maybeSingle(); // Changed from single() to maybeSingle()
+      .maybeSingle();
 
     if (reverseError) throw reverseError;
 
@@ -87,16 +122,5 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
     const fromRate = FALLBACK_RATES[fromCurrency];
     const toRate = FALLBACK_RATES[toCurrency];
     return (amount * toRate) / fromRate;
-  }
-};
-
-// Function to trigger exchange rates update
-export const updateExchangeRates = async () => {
-  try {
-    await supabase.functions.invoke('fetch-exchange-rates');
-    // Clear cache to force fresh rates on next conversion
-    exchangeRatesCache = {};
-  } catch (error) {
-    console.error('Failed to update exchange rates:', error);
   }
 };

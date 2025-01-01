@@ -36,6 +36,33 @@ export type Database = {
         }
         Relationships: []
       }
+      manual_exchange_rates: {
+        Row: {
+          base_currency: string
+          created_at: string
+          date: string
+          id: number
+          rate: number
+          target_currency: string
+        }
+        Insert: {
+          base_currency: string
+          created_at?: string
+          date?: string
+          id?: number
+          rate: number
+          target_currency: string
+        }
+        Update: {
+          base_currency?: string
+          created_at?: string
+          date?: string
+          id?: number
+          rate?: number
+          target_currency?: string
+        }
+        Relationships: []
+      }
       transactions: {
         Row: {
           amount: number
