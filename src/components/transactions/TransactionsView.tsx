@@ -40,10 +40,14 @@ const initialTransactions: Transaction[] = [
 export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>(initialTransactions);
   const [propertyFilter, setPropertyFilter] = useState<PropertyLocation | "all">("all");
-  const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN" as Currency);
+  const [displayCurrency, setDisplayCurrency] = useState<Currency>("PLN");
 
   const handleAddTransaction = (newTransaction: Transaction) => {
     setTransactions(prev => [newTransaction, ...prev]);
+  };
+
+  const handleCurrencyChange = (value: string) => {
+    setDisplayCurrency(value as Currency);
   };
 
   const filteredTransactions = transactions.filter(transaction => 
@@ -55,7 +59,7 @@ export const TransactionsView = () => {
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-bold">Transactions</h2>
         <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
-          <Select value={displayCurrency} onValueChange={setDisplayCurrency}>
+          <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
             <SelectTrigger className="w-[120px]">
               <SelectValue placeholder="Currency" />
             </SelectTrigger>
