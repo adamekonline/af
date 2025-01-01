@@ -41,7 +41,7 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
       .eq('target_currency', toCurrency)
       .order('date', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle(); // Changed from single() to maybeSingle()
 
     if (error) throw error;
 
@@ -62,7 +62,7 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
       .eq('target_currency', fromCurrency)
       .order('date', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle(); // Changed from single() to maybeSingle()
 
     if (reverseError) throw reverseError;
 
@@ -75,8 +75,8 @@ export const convertCurrency = async (amount: number, fromCurrency: Currency, to
       return amount * rate;
     }
 
+    console.warn(`Using fallback rates for conversion from ${fromCurrency} to ${toCurrency}`);
     // Fallback to hardcoded rates if no data is available
-    console.warn('Using fallback rates for currency conversion');
     const fromRate = FALLBACK_RATES[fromCurrency];
     const toRate = FALLBACK_RATES[toCurrency];
     return (amount * toRate) / fromRate;
