@@ -1,8 +1,9 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, DollarSign } from "lucide-react";
+import { Transaction } from "@/types";
 
-const mockTransactions = [
+const mockTransactions: Transaction[] = [
   {
     id: 1,
     date: "2024-03-15",
@@ -10,7 +11,8 @@ const mockTransactions = [
     amount: -2000,
     currency: "PLN",
     category: "Housing",
-    person: "Adam"
+    person: "Adam",
+    property: "Poznań"
   },
   {
     id: 2,
@@ -51,6 +53,7 @@ export const TransactionsView = () => {
             <TableHead>Amount</TableHead>
             <TableHead>Category</TableHead>
             <TableHead>Person</TableHead>
+            <TableHead>Property</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -59,10 +62,14 @@ export const TransactionsView = () => {
               <TableCell>{transaction.date}</TableCell>
               <TableCell>{transaction.description}</TableCell>
               <TableCell className={transaction.amount > 0 ? "text-green-600" : "text-red-600"}>
-                {transaction.amount} {transaction.currency}
+                <span className="flex items-center gap-1">
+                  <DollarSign className="h-4 w-4" />
+                  {transaction.amount} {transaction.currency}
+                </span>
               </TableCell>
               <TableCell>{transaction.category}</TableCell>
               <TableCell>{transaction.person}</TableCell>
+              <TableCell>{transaction.property || '-'}</TableCell>
             </TableRow>
           ))}
         </TableBody>
