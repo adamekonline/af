@@ -21,10 +21,27 @@ export interface Transaction {
   category: Category;
   person: Person;
   property?: PropertyLocation;
+  created_at?: string;
 }
 
 export interface Budget {
   category: Category;
   limit: number;
   currency: Currency;
+}
+
+export interface MonthlyData {
+  month: string;
+  timestamp: number;
+  Adam: number;
+  Natka: number;
+  Adi: number;
+  income: number;
+  expenses: number;
+}
+
+export interface CategoryData {
+  category: string;
+  total: number;
+  transactions: number;
 }
