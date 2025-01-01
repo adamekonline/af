@@ -19,8 +19,8 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				sans: ['Afacad', 'sans-serif'],
-				display: ['Afacad', 'sans-serif'],
+				sans: ['Roboto Condensed', 'sans-serif'],
+				display: ['Roboto Condensed', 'sans-serif'],
 			},
 			colors: {
 				border: 'hsl(var(--border))',
