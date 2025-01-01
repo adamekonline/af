@@ -25,11 +25,31 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
       category: "Other",
       person: "Adam",
       property: undefined
+    },
+    // Add required validation for all fields
+    rules: {
+      date: { required: "Date is required" },
+      description: { required: "Description is required" },
+      amount: { 
+        required: "Amount is required",
+        validate: (value) => !isNaN(parseFloat(value)) || "Amount must be a number"
+      },
+      currency: { required: "Currency is required" },
+      category: { required: "Category is required" },
+      person: { required: "Person is required" }
     }
   });
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate all fields before submission
+    const isValid = await form.trigger();
+    if (!isValid) {
+      toast.error("Please fill in all required fields");
+      return;
+    }
+
     const formData = form.getValues();
     
     try {
