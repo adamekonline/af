@@ -14,6 +14,7 @@ import { TransactionFormDialog } from "@/components/transactions/TransactionForm
 
 const Index = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -25,6 +26,11 @@ const Index = () => {
       console.error("Error logging out:", error);
       toast.error("Error logging out");
     }
+  };
+
+  const handleTabChange = (value: string) => {
+    setActiveTab(value);
+    setMobileMenuOpen(false);
   };
 
   return (
@@ -40,15 +46,27 @@ const Index = () => {
               </SheetTrigger>
               <SheetContent side="left" className="w-[240px] sm:w-[280px]">
                 <nav className="flex flex-col gap-4">
-                  <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-sm" 
+                    onClick={() => handleTabChange("dashboard")}
+                  >
                     <LayoutDashboard className="mr-2 h-4 w-4" />
                     Dashboard
                   </Button>
-                  <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-sm" 
+                    onClick={() => handleTabChange("transactions")}
+                  >
                     <Receipt className="mr-2 h-4 w-4" />
                     Transactions
                   </Button>
-                  <Button variant="ghost" className="justify-start text-sm" onClick={() => setMobileMenuOpen(false)}>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-sm" 
+                    onClick={() => handleTabChange("trends")}
+                  >
                     <Bookmark className="mr-2 h-4 w-4" />
                     Trends
                   </Button>
@@ -57,7 +75,7 @@ const Index = () => {
             </Sheet>
           
             <h1 className="text-base md:text-lg lg:text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-2 md:ml-4 truncate max-w-[200px] md:max-w-none">
-              AFinance
+              AF
             </h1>
           </div>
 
@@ -76,7 +94,7 @@ const Index = () => {
       </header>
 
       <main className="flex-1 container mx-auto p-4 md:p-6">
-        <Tabs defaultValue="dashboard" className="space-y-6">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
           <TabsList className="hidden md:flex justify-start border-b w-full text-sm">
             <TabsTrigger value="dashboard" className="flex items-center gap-2">
               <LayoutDashboard className="h-4 w-4" />
