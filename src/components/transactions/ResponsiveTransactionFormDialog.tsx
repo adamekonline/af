@@ -73,20 +73,28 @@ export const ResponsiveTransactionFormDialog = ({ onAddTransaction }: Transactio
           Add Transaction
         </Button>
       </SheetTrigger>
-      <SheetContent side="bottom" className="h-[90vh]">
-        <ScrollArea className="h-full pb-20">
-          <SheetHeader className="mb-6">
+      <SheetContent side="bottom" className="h-[80vh] max-h-[80vh]">
+        <div className="flex flex-col h-full">
+          <SheetHeader className="flex-shrink-0">
             <SheetTitle>Add Transaction</SheetTitle>
             <SheetDescription>Add a new transaction to your records.</SheetDescription>
           </SheetHeader>
-          <form onSubmit={handleSubmit} className="space-y-6">
-            <TransactionBasicFields form={form} />
-            <TransactionSelectFields form={form} />
-            <div className="sticky bottom-0 pt-6 pb-2 bg-background">
-              <Button type="submit" className="w-full">Add Transaction</Button>
+          
+          <form onSubmit={handleSubmit} className="flex flex-col h-full">
+            <div className="flex-1 overflow-y-auto py-4">
+              <div className="space-y-4">
+                <TransactionBasicFields form={form} />
+                <TransactionSelectFields form={form} />
+              </div>
+            </div>
+            
+            <div className="flex-shrink-0 pt-4 pb-2 border-t bg-background mt-auto">
+              <Button type="submit" className="w-full">
+                Add Transaction
+              </Button>
             </div>
           </form>
-        </ScrollArea>
+        </div>
       </SheetContent>
     </Sheet>
   );
