@@ -27,10 +27,22 @@ export const DashboardView = () => {
   const [startDate, setStartDate] = useState<Date>();
   const [endDate, setEndDate] = useState<Date>();
   const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedPerson, setSelectedPerson] = useState("All");
   const [sortBy, setSortBy] = useState("date-desc");
   
   // Filtered transactions
   const [filteredTransactions, setFilteredTransactions] = useState<Transaction[]>(mockTransactions);
+
+  // Calculate active filters count
+  const getActiveFiltersCount = () => {
+    let count = 0;
+    if (startDate && endDate) count++;
+    if (selectedCategory !== "all") count++;
+    if (selectedPerson !== "All") count++;
+    if (sortBy !== "date-desc") count++;
+    if (displayCurrency !== "PLN") count++;
+    return count;
+  };
 
   useEffect(() => {
     // Apply filters and sorting
@@ -47,6 +59,11 @@ export const DashboardView = () => {
     // Category filter
     if (selectedCategory !== "all") {
       filtered = filtered.filter(t => t.category === selectedCategory);
+    }
+
+    // Person filter
+    if (selectedPerson !== "All") {
+      filtered = filtered.filter(t => t.person === selectedPerson);
     }
 
     // Sorting
@@ -66,7 +83,7 @@ export const DashboardView = () => {
     });
 
     setFilteredTransactions(filtered);
-  }, [startDate, endDate, selectedCategory, sortBy]);
+  }, [startDate, endDate, selectedCategory, selectedPerson, sortBy]);
 
   useEffect(() => {
     const updateConvertedAmounts = async () => {
@@ -102,27 +119,9 @@ export const DashboardView = () => {
     updateConvertedAmounts();
   }, [filteredTransactions, displayCurrency]);
 
-  const handleCurrencyChange = (value: string) => {
-    setDisplayCurrency(value as Currency);
-  };
-
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4">
-        <div className="flex justify-end">
-          <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select currency" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="PLN">PLN</SelectItem>
-              <SelectItem value="USD">USD</SelectItem>
-              <SelectItem value="EUR">EUR</SelectItem>
-              <SelectItem value="GBP">GBP</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
-
         <DashboardFilters
           startDate={startDate}
           endDate={endDate}
@@ -132,8 +131,13 @@ export const DashboardView = () => {
           }}
           selectedCategory={selectedCategory}
           onCategoryChange={setSelectedCategory}
+          selectedPerson={selectedPerson}
+          onPersonChange={setSelectedPerson}
           sortBy={sortBy}
           onSortChange={setSortBy}
+          selectedCurrency={displayCurrency}
+          onCurrencyChange={setDisplayCurrency}
+          activeFiltersCount={getActiveFiltersCount()}
         />
       </div>
 
