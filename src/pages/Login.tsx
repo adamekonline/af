@@ -34,10 +34,7 @@ const Login = () => {
 
   // Update the Supabase client's auth configuration when rememberMe changes
   useEffect(() => {
-    supabase.auth.setSession({
-      access_token: '',
-      refresh_token: '',
-    }, {
+    supabase.auth.initialize({
       persistSession: rememberMe
     });
   }, [rememberMe]);
