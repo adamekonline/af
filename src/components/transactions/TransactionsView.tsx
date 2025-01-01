@@ -1,10 +1,4 @@
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-</lov-replace>
-
-<lov-search>
-                      <DollarSign className="h-3 w-3" />
-</lov-search>
-<lov-replace>
 import { Transaction, PropertyLocation } from "@/types";
 import { TransactionFormDialog } from "./TransactionFormDialog";
 import { PropertyFilter } from "./PropertyFilter";
@@ -98,13 +92,11 @@ export const TransactionsView = () => {
                   <TableCell className="max-w-[200px] truncate">{transaction.description}</TableCell>
                   <TableCell className={`whitespace-nowrap ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
                     <span className="flex items-center gap-1">
-                      <DollarSign className="h-3 w-3" />
                       {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
                     </span>
                   </TableCell>
                   <TableCell className={`whitespace-nowrap ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}>
                     <span className="flex items-center gap-1">
-                      <DollarSign className="h-3 w-3" />
                       {transaction.amount.toLocaleString()} {transaction.currency}
                     </span>
                   </TableCell>
