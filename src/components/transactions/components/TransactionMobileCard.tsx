@@ -28,6 +28,13 @@ export const TransactionMobileCard = ({
 }: TransactionMobileCardProps) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   
+  const formatNumber = (num: number) => {
+    return num.toLocaleString('de-DE', { 
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   const form = useForm<TransactionFormData>({
     defaultValues: {
       date: transaction.date,
@@ -81,10 +88,10 @@ export const TransactionMobileCard = ({
             <div className="flex items-center gap-2">
               <div className={`text-right ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
                 <p className="font-semibold">
-                  {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+                  {formatNumber(convertedAmount)} {displayCurrency}
                 </p>
                 <p className="text-xs opacity-75">
-                  {transaction.amount.toLocaleString()} {transaction.currency}
+                  {formatNumber(transaction.amount)} {transaction.currency}
                 </p>
               </div>
               <div className="flex gap-2">

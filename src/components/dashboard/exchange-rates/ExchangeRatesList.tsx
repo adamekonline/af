@@ -7,6 +7,13 @@ interface ExchangeRatesListProps {
 }
 
 export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) => {
+  const formatNumber = (num: number) => {
+    return num.toLocaleString('de-DE', { 
+      minimumFractionDigits: 4,
+      maximumFractionDigits: 4
+    });
+  };
+
   return (
     <div className="space-y-4">
       {rates.map((rate) => (
@@ -14,7 +21,7 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
           <div className="space-y-1">
             <p className="text-sm font-medium">{rate.date}</p>
             <p className="text-sm text-muted-foreground">
-              1 {rate.base_currency} = {rate.rate} {rate.target_currency}
+              1 {rate.base_currency} = {formatNumber(rate.rate)} {rate.target_currency}
             </p>
           </div>
           <Button variant="ghost" size="sm" onClick={() => onDelete(rate.id)}>

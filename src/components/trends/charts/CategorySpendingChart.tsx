@@ -8,6 +8,13 @@ interface Props {
 }
 
 export const CategorySpendingChart = ({ data, displayCurrency }: Props) => {
+  const formatNumber = (value: number) => {
+    return value.toLocaleString('de-DE', { 
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   return (
     <Card className="hover:shadow-lg transition-shadow duration-300">
       <CardHeader>
@@ -17,7 +24,7 @@ export const CategorySpendingChart = ({ data, displayCurrency }: Props) => {
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={data} layout="vertical">
             <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-            <XAxis type="number" />
+            <XAxis type="number" tickFormatter={formatNumber} />
             <YAxis dataKey="category" type="category" width={100} />
             <Tooltip content={<ChartTooltip displayCurrency={displayCurrency} />} />
             <Bar 
@@ -26,7 +33,7 @@ export const CategorySpendingChart = ({ data, displayCurrency }: Props) => {
               radius={[0, 4, 4, 0]}
               label={{ 
                 position: 'right',
-                formatter: (value: number) => `${value.toFixed(2)} ${displayCurrency}`,
+                formatter: (value: number) => `${formatNumber(value)} ${displayCurrency}`,
               }}
             />
           </BarChart>

@@ -34,6 +34,13 @@ export const SummaryCard = ({ title, amount, currency, icon: Icon, variant = 'de
     }
   };
 
+  const formatNumber = (num: number) => {
+    return num.toLocaleString('de-DE', { 
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   return (
     <Card className={`hover:shadow-lg transition-shadow duration-300 bg-gradient-to-br ${getGradientClass()} p-3 md:p-6`}>
       <CardHeader className="space-y-1 p-2 md:p-6">
@@ -45,7 +52,7 @@ export const SummaryCard = ({ title, amount, currency, icon: Icon, variant = 'de
       <CardContent className="p-2 md:p-6">
         <p className={`text-lg md:text-2xl font-bold ${getTextColorClass()}`}>
           {amount < 0 ? '-' : '+'}
-          {Math.abs(amount).toLocaleString(undefined, { maximumFractionDigits: 2 })} {currency}
+          {formatNumber(Math.abs(amount))} {currency}
         </p>
       </CardContent>
     </Card>

@@ -28,6 +28,13 @@ export const TransactionTableRow = ({
 }: TransactionTableRowProps) => {
   const [editDialogOpen, setEditDialogOpen] = useState(false);
   
+  const formatNumber = (num: number) => {
+    return num.toLocaleString('de-DE', { 
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   const form = useForm<TransactionFormData>({
     defaultValues: {
       date: transaction.date,
@@ -76,12 +83,12 @@ export const TransactionTableRow = ({
         <TableCell className="max-w-[200px] truncate">{transaction.description}</TableCell>
         <TableCell className={`whitespace-nowrap ${convertedAmount > 0 ? "text-green-600" : "text-red-600"}`}>
           <span className="flex items-center gap-1">
-            {convertedAmount.toLocaleString(undefined, { maximumFractionDigits: 2 })} {displayCurrency}
+            {formatNumber(convertedAmount)} {displayCurrency}
           </span>
         </TableCell>
         <TableCell className={`whitespace-nowrap ${transaction.amount > 0 ? "text-green-600" : "text-red-600"}`}>
           <span className="flex items-center gap-1">
-            {transaction.amount.toLocaleString()} {transaction.currency}
+            {formatNumber(transaction.amount)} {transaction.currency}
           </span>
         </TableCell>
         <TableCell className="whitespace-nowrap">{transaction.category}</TableCell>
