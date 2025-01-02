@@ -46,6 +46,7 @@ export const PersonalSpending = () => {
         }
       }
 
+      console.log("Updated personal spending:", spending);
       setPersonalSpending(spending);
     } catch (error) {
       console.error('Error fetching personal spending:', error);
@@ -58,7 +59,7 @@ export const PersonalSpending = () => {
 
     // Subscribe to real-time changes
     const channel = supabase
-      .channel('personal-spending')
+      .channel('personal-spending-changes')
       .on(
         'postgres_changes',
         { 

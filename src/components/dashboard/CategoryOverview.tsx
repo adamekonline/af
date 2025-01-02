@@ -70,6 +70,7 @@ export const CategoryOverview = () => {
         }
       }
 
+      console.log("Updated category spending:", categories);
       // Convert to array and sort by total amount
       const sortedData = Object.values(categories).sort((a, b) => b.total - a.total);
       setCategoryData(sortedData);
@@ -84,7 +85,7 @@ export const CategoryOverview = () => {
 
     // Subscribe to real-time changes
     const channel = supabase
-      .channel('category-overview')
+      .channel('category-overview-changes')
       .on(
         'postgres_changes',
         { 
