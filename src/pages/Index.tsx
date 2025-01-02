@@ -16,6 +16,7 @@ import { toast } from "sonner";
 export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   useEffect(() => {
     const checkSession = async () => {
@@ -45,6 +46,7 @@ export const Index = () => {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
+    setIsSheetOpen(false); // Close sheet when changing tabs
   };
 
   const handleLogout = async () => {
@@ -55,6 +57,7 @@ export const Index = () => {
         toast.error(t("errorLoggingOut"));
         return;
       }
+      setIsSheetOpen(false); // Close sheet after logout
       navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
@@ -67,7 +70,7 @@ export const Index = () => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2 md:gap-4">
-            <Sheet>
+            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">
                   <Menu className="h-6 w-6" />
@@ -155,7 +158,7 @@ export const Index = () => {
               variant="ghost" 
               size="icon" 
               onClick={handleLogout}
-              className="text-red-500 hover:text-red-600 hover:bg-red-100/50"
+              className="hidden md:flex text-red-500 hover:text-red-600 hover:bg-red-100/50"
             >
               <LogOut className="h-6 w-6" />
             </Button>
