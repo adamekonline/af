@@ -95,7 +95,7 @@ export const CategoryOverview = () => {
                     <span>Adam</span>
                     <span className="text-muted-foreground">{formatAmount(category.Adam)} zł</span>
                   </div>
-                  <Progress value={(category.Adam / category.total) * 100} className="bg-secondary h-2" indicatorClassName="bg-[#9b87f5]" />
+                  <Progress value={(category.Adam / category.total) * 100} className="h-2 [&>div]:bg-[#9b87f5]" />
                 </div>
               )}
               {category.Natka > 0 && (
@@ -104,7 +104,7 @@ export const CategoryOverview = () => {
                     <span>Natka</span>
                     <span className="text-muted-foreground">{formatAmount(category.Natka)} zł</span>
                   </div>
-                  <Progress value={(category.Natka / category.total) * 100} className="bg-secondary h-2" indicatorClassName="bg-[#0EA5E9]" />
+                  <Progress value={(category.Natka / category.total) * 100} className="h-2 [&>div]:bg-[#0EA5E9]" />
                 </div>
               )}
               {category.Adi > 0 && (
@@ -113,7 +113,7 @@ export const CategoryOverview = () => {
                     <span>Adi</span>
                     <span className="text-muted-foreground">{formatAmount(category.Adi)} zł</span>
                   </div>
-                  <Progress value={(category.Adi / category.total) * 100} className="bg-secondary h-2" indicatorClassName="bg-[#D946EF]" />
+                  <Progress value={(category.Adi / category.total) * 100} className="h-2 [&>div]:bg-[#D946EF]" />
                 </div>
               )}
             </div>
