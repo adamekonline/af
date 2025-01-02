@@ -57,10 +57,15 @@ export const PersonalSpending = () => {
       .channel('public:transactions')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'transactions' },
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'transactions',
+          filter: `date.gte.${new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString()}`
+        },
         () => {
+          console.log("Transaction changed, updating personal spending...");
           fetchPersonalSpending();
-          toast.success("Personal spending overview updated");
         }
       )
       .subscribe();

@@ -84,10 +84,15 @@ export const CategoryOverview = () => {
       .channel('public:transactions')
       .on(
         'postgres_changes',
-        { event: '*', schema: 'public', table: 'transactions' },
+        { 
+          event: '*', 
+          schema: 'public', 
+          table: 'transactions',
+          filter: `date.gte.${new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString()}`
+        },
         () => {
+          console.log("Transaction changed, updating category overview...");
           fetchCategorySpending();
-          toast.success("Category overview updated");
         }
       )
       .subscribe();
