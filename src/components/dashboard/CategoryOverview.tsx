@@ -83,6 +83,10 @@ export const CategoryOverview = () => {
     });
   };
 
+  const calculatePercentage = (value: number, total: number) => {
+    return total === 0 ? 0 : (value / total) * 100;
+  };
+
   return (
     <Card className="col-span-full">
       <CardHeader>
@@ -100,26 +104,33 @@ export const CategoryOverview = () => {
               </span>
             </div>
             <div className="space-y-1">
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span>Adam</span>
-                  <span className="text-muted-foreground">{formatAmount(category.Adam)} zł</span>
+              <div className="flex flex-wrap gap-2 text-sm mb-1">
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded-full bg-[#9b87f5]" />
+                  <span>Adam: {formatAmount(category.Adam)} zł</span>
                 </div>
-                <Progress value={(category.Adam / (category.total || 1)) * 100} className="h-2 [&>div]:bg-[#9b87f5]" />
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded-full bg-[#0EA5E9]" />
+                  <span>Natka: {formatAmount(category.Natka)} zł</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <div className="w-3 h-3 rounded-full bg-[#D946EF]" />
+                  <span>Adi: {formatAmount(category.Adi)} zł</span>
+                </div>
               </div>
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span>Natka</span>
-                  <span className="text-muted-foreground">{formatAmount(category.Natka)} zł</span>
-                </div>
-                <Progress value={(category.Natka / (category.total || 1)) * 100} className="h-2 [&>div]:bg-[#0EA5E9]" />
-              </div>
-              <div className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span>Adi</span>
-                  <span className="text-muted-foreground">{formatAmount(category.Adi)} zł</span>
-                </div>
-                <Progress value={(category.Adi / (category.total || 1)) * 100} className="h-2 [&>div]:bg-[#D946EF]" />
+              <div className="flex h-2 overflow-hidden rounded-full bg-secondary">
+                <div 
+                  className="bg-[#9b87f5] transition-all"
+                  style={{ width: `${calculatePercentage(category.Adam, category.total)}%` }}
+                />
+                <div 
+                  className="bg-[#0EA5E9] transition-all"
+                  style={{ width: `${calculatePercentage(category.Natka, category.total)}%` }}
+                />
+                <div 
+                  className="bg-[#D946EF] transition-all"
+                  style={{ width: `${calculatePercentage(category.Adi, category.total)}%` }}
+                />
               </div>
             </div>
           </div>
