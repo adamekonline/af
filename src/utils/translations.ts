@@ -59,7 +59,7 @@ export const translations: Record<string, string> = {
   spent: "Wydane",
   budget: "Budżet",
   budgetTracking: "Śledzenie budżetu",
-  totalBalance: "Saldo całkowite",
+  totalBalance: "Całkowite saldo",
   monthlyIncome: "Miesięczny przychód",
   monthlyExpenses: "Miesięczne wydatki",
   pickDateRange: "Wybierz zakres dat",
@@ -77,7 +77,13 @@ export const translations: Record<string, string> = {
   credit: "Kredyt",
   creditCard: "Karta kredytowa",
   income: "Przychód",
-  other: "Inne"
+  other: "Inne",
+  manualExchangeRates: "Ręczne kursy walut",
+  exchangeRateAdded: "Dodano kurs walutowy",
+  exchangeRateDeleted: "Usunięto kurs walutowy",
+  failedToAddExchangeRate: "Nie udało się dodać kursu walutowego",
+  failedToDeleteExchangeRate: "Nie udało się usunąć kursu walutowego",
+  failedToFetchExchangeRates: "Nie udało się pobrać kursów walutowych"
 };
 
 export const t = (key: keyof typeof translations): string => {
