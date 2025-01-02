@@ -58,7 +58,8 @@ export const useCategorySpending = () => {
 
       // Process transactions
       for (const transaction of transactions as Transaction[]) {
-        if (transaction.amount < 0 && transaction.category !== 'Income') {
+        // Only process non-income categories
+        if (transaction.category !== 'Income') {
           const convertedAmount = await convertCurrency(
             Math.abs(transaction.amount),
             transaction.currency,
