@@ -83,6 +83,8 @@ export const translations = {
   rateAdded: "Kurs został dodany",
   rateDeleted: "Kurs został usunięty",
   fillAllFields: "Wypełnij wszystkie wymagane pola",
+  errorFetchingTransactions: "Błąd podczas pobierania transakcji",
+  failedToDeleteTransaction: "Nie udało się usunąć transakcji",
 
   // Auth
   login: "Zaloguj się",
