@@ -10,6 +10,7 @@ export const translations: Record<string, string> = {
   failedToDeleteTransaction: "Nie udało się usunąć transakcji",
   currency: "Waluta",
   categoryOverview: "Przegląd Kategorii",
+  personalSpendingOverview: "Przegląd Wydatków Osobistych",
   addTransaction: "Dodaj transakcję",
   editTransaction: "Edytuj transakcję",
   deleteTransaction: "Usuń transakcję",
@@ -38,5 +39,28 @@ export const translations: Record<string, string> = {
   reset: "Reset",
   success: "Sukces",
   warning: "Ostrzeżenie",
-  info: "Informacja"
+  info: "Informacja",
+  budgetAdded: "Budżet dodany",
+  budgetDeleted: "Budżet usunięty",
+  selectCategory: "Wybierz kategorię",
+  enterAmount: "Wprowadź kwotę",
+  addBudget: "Dodaj budżet",
+  email: "Email",
+  password: "Hasło",
+  signIn: "Zaloguj się",
+  login: "Logowanie",
+  original: "Oryginalna kwota",
+  allProperties: "Wszystkie nieruchomości",
+  poznan: "Poznań",
+  leuven: "Leuven",
+  housing: "Mieszkanie",
+  food: "Jedzenie",
+  transport: "Transport",
+  spent: "wydane",
+  budget: "budżet",
+  budgetTracking: "Śledzenie budżetu"
+};
+
+export const t = (key: keyof typeof translations): string => {
+  return translations[key] || key;
 };
