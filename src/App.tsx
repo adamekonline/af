@@ -4,7 +4,6 @@ import { Login } from "./pages/Login";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
-// Create a client
 const queryClient = new QueryClient();
 
 function App() {

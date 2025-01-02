@@ -19,10 +19,14 @@ export const Index = () => {
 
   useEffect(() => {
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session) {
+      const { data: { session }, error } = await supabase.auth.getSession();
+      if (error) {
+        console.error("Session check error:", error);
         navigate('/login');
         return;
+      }
+      if (!session) {
+        navigate('/login');
       }
     };
     
@@ -47,12 +51,14 @@ export const Index = () => {
     try {
       const { error } = await supabase.auth.signOut();
       if (error) {
+        console.error("Logout error:", error);
         toast.error(t("errorLoggingOut"));
         return;
       }
+      navigate('/login');
     } catch (error) {
-      toast.error(t("errorLoggingOut"));
       console.error('Logout error:', error);
+      toast.error(t("errorLoggingOut"));
     }
   };
 
