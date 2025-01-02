@@ -38,9 +38,7 @@ export const useCategorySpending = () => {
 
       const { data: transactions, error } = await supabase
         .from('transactions')
-        .select('*')
-        .lte('date', endDate.toISOString().split('T')[0])
-        .gte('date', startDate.toISOString().split('T')[0]);
+        .select('*');
 
       if (error) throw error;
 
