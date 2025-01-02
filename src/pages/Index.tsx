@@ -46,7 +46,7 @@ export const Index = () => {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-    setIsSheetOpen(false); // Close sheet when changing tabs
+    setIsSheetOpen(false);
   };
 
   const handleLogout = async () => {
@@ -57,7 +57,7 @@ export const Index = () => {
         toast.error(t("errorLoggingOut"));
         return;
       }
-      setIsSheetOpen(false); // Close sheet after logout
+      setIsSheetOpen(false);
       navigate('/login');
     } catch (error) {
       console.error('Logout error:', error);
