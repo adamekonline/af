@@ -128,6 +128,12 @@ export const translations = {
   descending: "Malejąco"
 } as const;
 
-export const t = (key: keyof typeof translations): string => {
-  return translations[key] || key;
+type TranslationKey = keyof typeof translations | (string & {});
+
+export const t = (key: TranslationKey): string => {
+  if (key in translations) {
+    return translations[key as keyof typeof translations];
+  }
+  // If the key doesn't exist in translations, return the key itself
+  return key;
 };

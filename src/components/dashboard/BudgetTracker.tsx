@@ -61,7 +61,7 @@ export const BudgetTracker = () => {
             <div key={budget.id} className="space-y-2">
               <div className="flex items-center justify-between text-sm">
                 <div className="flex items-center">
-                  <span>{t(budget.category.toLowerCase())}</span>
+                  <span>{t(budget.category)}</span>
                 </div>
                 <span className="text-muted-foreground">
                   {spent.toFixed(2)} {budget.currency} {t("spent")} / {budget.limit_amount} {budget.currency} {t("budget")}
