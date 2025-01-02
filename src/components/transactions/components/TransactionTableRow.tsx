@@ -82,10 +82,6 @@ export const TransactionTableRow = ({
     }
   };
 
-  const handleDelete = () => {
-    onDelete(transaction.id);
-  };
-
   return (
     <>
       <TableRow key={transaction.id}>
@@ -117,7 +113,7 @@ export const TransactionTableRow = ({
             <Button
               variant="ghost"
               size="icon"
-              onClick={handleDelete}
+              onClick={() => onDelete(transaction.id)}
               className="text-destructive hover:text-destructive hover:bg-destructive/10"
             >
               <Trash2 className="h-4 w-4" />
