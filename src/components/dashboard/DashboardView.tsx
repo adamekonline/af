@@ -1,7 +1,7 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { BudgetTracker } from "./BudgetTracker";
-import { PersonalSpending } from "./PersonalSpending";
-import { CategoryOverview } from "./CategoryOverview";
+import { PersonalSpending } from "./personal-spending/PersonalSpending";
+import { CategoryOverview } from "./category-overview/CategoryOverview";
 import { DashboardFilters } from "./DashboardFilters";
 import { SummaryCard } from "./cards/SummaryCard";
 import { useTransactions } from "./hooks/useTransactions";

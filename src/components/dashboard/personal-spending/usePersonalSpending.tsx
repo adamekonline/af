@@ -1,14 +1,18 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { t } from "@/utils/translations";
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { toast } from "sonner";
 import { startOfMonth, endOfMonth } from "date-fns";
 
-export const PersonalSpending = () => {
-  const [personalSpending, setPersonalSpending] = useState({
+interface PersonalSpendingData {
+  Adam: number;
+  Natka: number;
+  Adi: number;
+}
+
+export const usePersonalSpending = () => {
+  const [personalSpending, setPersonalSpending] = useState<PersonalSpendingData>({
     Adam: 0,
     Natka: 0,
     Adi: 0
@@ -35,7 +39,7 @@ export const PersonalSpending = () => {
 
       // Process transactions
       for (const transaction of transactions as Transaction[]) {
-        if (transaction.amount < 0) { // Only count expenses (negative amounts)
+        if (transaction.amount < 0) {
           const convertedAmount = await convertCurrency(
             Math.abs(transaction.amount),
             transaction.currency,
@@ -57,7 +61,6 @@ export const PersonalSpending = () => {
   useEffect(() => {
     fetchPersonalSpending();
 
-    // Subscribe to real-time changes
     const channel = supabase
       .channel('personal-spending-changes')
       .on(
@@ -79,41 +82,5 @@ export const PersonalSpending = () => {
     };
   }, []);
 
-  // Calculate percentages based on total spending
-  const totalSpending = Object.values(personalSpending).reduce((a, b) => a + b, 0);
-  const getPercentage = (amount: number) => {
-    return totalSpending > 0 ? Math.round((amount / totalSpending) * 100) : 0;
-  };
-
-  const formatAmount = (amount: number) => {
-    return amount.toLocaleString('pl-PL', {
-      minimumFractionDigits: 2,
-      maximumFractionDigits: 2
-    });
-  };
-
-  return (
-    <Card>
-      <CardHeader>
-        <CardTitle>{t("personalSpendingOverview")}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="space-y-8">
-          {Object.entries(personalSpending).map(([person, amount]) => (
-            <div key={person} className="flex items-center">
-              <div className="ml-4 space-y-1">
-                <p className="text-sm font-medium leading-none">{person}</p>
-                <p className="text-sm text-muted-foreground">
-                  {formatAmount(amount)} zł
-                </p>
-              </div>
-              <div className="ml-auto font-medium">
-                {getPercentage(amount)}%
-              </div>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
-  );
+  return { personalSpending };
 };
