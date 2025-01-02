@@ -24,7 +24,7 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
   }
 
   return (
-    <div className="w-full space-y-4">
+    <div className="space-y-4">
       <div className="grid grid-cols-4 gap-4 py-2 px-4 font-medium text-sm text-muted-foreground">
         <div>{t("date")}</div>
         <div>{t("fromCurrency")}</div>

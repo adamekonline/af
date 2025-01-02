@@ -87,16 +87,11 @@ export const ManualExchangeRates = () => {
   };
 
   return (
-    <div className="w-full space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <h2 className="text-2xl font-bold">{t("manualExchangeRates")}</h2>
       
-      <div className="w-full">
-        <ExchangeRateForm form={form} onSubmit={onSubmit} />
-      </div>
-      
-      <div className="w-full">
-        <ExchangeRatesList rates={rates} onDelete={handleDelete} />
-      </div>
+      <ExchangeRateForm form={form} onSubmit={onSubmit} />
+      <ExchangeRatesList rates={rates} onDelete={handleDelete} />
     </div>
   );
 };
