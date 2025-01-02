@@ -92,6 +92,14 @@ export const translations = {
   password: "Hasło",
   signIn: "Zaloguj",
   loginError: "Błąd logowania",
+
+  // Budget related translations
+  budgets: "Budżety",
+  budgetAdded: "Budżet został dodany",
+  budgetDeleted: "Budżet został usunięty",
+  selectCategory: "Wybierz kategorię",
+  enterAmount: "Wprowadź kwotę",
+  addBudget: "Dodaj budżet",
 };
 
 export type TranslationKey = keyof typeof translations;
