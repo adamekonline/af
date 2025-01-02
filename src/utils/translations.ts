@@ -94,6 +94,7 @@ export const translations: Record<string, string> = {
   Credit: "Kredyt",
   "Credit Card": "Karta kredytowa",
   Income: "Przychód",
+  "Telefonia/Internet": "Telefonia/Internet",
   Other: "Inne",
 };
 

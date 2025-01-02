@@ -8,7 +8,18 @@ import { Category, Currency } from "@/types";
 import { toast } from "sonner";
 import { t } from "@/utils/translations";
 
-const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
+const categories: Category[] = [
+  "Housing", 
+  "Food", 
+  "Transport", 
+  "Health", 
+  "Education", 
+  "Credit", 
+  "Credit Card", 
+  "Income", 
+  "Telefonia/Internet",
+  "Other"
+];
 const currencies: Currency[] = ["PLN", "EUR", "USD", "GBP"];
 
 export const BudgetView = () => {

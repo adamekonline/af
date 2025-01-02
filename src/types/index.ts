@@ -10,6 +10,7 @@ export type Category =
   | 'Credit' 
   | 'Credit Card'
   | 'Income'
+  | 'Telefonia/Internet'
   | 'Other';
 
 export interface Transaction {
