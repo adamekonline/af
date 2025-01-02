@@ -25,7 +25,8 @@ export const BudgetTracker = () => {
     queryFn: async () => {
       const { data, error } = await supabase
         .from("transactions")
-        .select("*");
+        .select("*")
+        .order('date', { ascending: false });
       
       if (error) throw error;
       return data || [];
@@ -35,15 +36,21 @@ export const BudgetTracker = () => {
   // Calculate expenses per category
   const calculateExpenses = (category: string) => {
     if (!transactions) return 0;
-    return transactions
-      .filter(t => t.category === category && t.amount < 0) // Only negative amounts are expenses
+    
+    // Filter transactions for the specific category and sum their amounts
+    const expenses = transactions
+      .filter(t => t.category === category)
       .reduce((sum, t) => sum + Math.abs(t.amount), 0);
+
+    console.log(`Calculated expenses for ${category}:`, expenses);
+    return expenses;
   };
 
   // Calculate progress percentage safely
   const calculateProgress = (spent: number, budget: number) => {
     if (budget <= 0) return 0;
     const progress = (spent / budget) * 100;
+    console.log(`Progress calculation - Spent: ${spent}, Budget: ${budget}, Progress: ${progress}%`);
     return Math.min(progress, 100); // Cap at 100%
   };
 
