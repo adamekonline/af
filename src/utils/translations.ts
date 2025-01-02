@@ -24,7 +24,7 @@ export const translations = {
   totalBalance: "Całkowite saldo",
   monthlyIncome: "Miesięczny przychód",
   monthlyExpenses: "Miesięczne wydatki",
-  budgetTracking: "Śledzenie budżetu",
+  budgetTracking: "Śledzenie budżetów",
   categoryOverview: "Przegląd kategorii",
   expenseCategoryOverview: "Przegląd kategorii wydatków",
   personalSpendingOverview: "Przegląd wydatków osobistych",
