@@ -27,13 +27,6 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (session) {
-        navigate("/");
-      }
-    });
-
-    // Check current session
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (session) {
@@ -42,6 +35,12 @@ export const Login = () => {
     };
     
     checkSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session) {
+        navigate("/");
+      }
+    });
 
     return () => {
       subscription.unsubscribe();
@@ -66,8 +65,6 @@ export const Login = () => {
       toast.error(error.message);
       return;
     }
-
-    navigate("/");
   };
 
   return (
