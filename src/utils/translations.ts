@@ -1,109 +1,42 @@
-export const translations = {
-  // Navigation & Common
-  dashboard: "Panel główny",
+export const translations: Record<string, string> = {
+  dashboard: "Dashboard",
   transactions: "Transakcje",
-  exchangeRates: "Kursy walut",
+  budgets: "Budżety",
+  exchangeRates: "Kursy Walut",
+  logout: "Wylogowano pomyślnie",
+  error: "Wystąpił błąd",
+  errorFetchingTransactions: "Błąd podczas pobierania transakcji",
+  transactionDeleted: "Transakcja usunięta",
+  failedToDeleteTransaction: "Nie udało się usunąć transakcji",
+  currency: "Waluta",
+  categoryOverview: "Przegląd Kategorii",
   addTransaction: "Dodaj transakcję",
-  logout: "Wyloguj",
-  clear: "Wyczyść",
-  clearAll: "Wyczyść wszystko",
-  clearFilters: "Wyczyść filtry",
-  edit: "Edytuj",
+  editTransaction: "Edytuj transakcję",
+  deleteTransaction: "Usuń transakcję",
+  confirmDelete: "Czy na pewno chcesz usunąć tę transakcję?",
+  cancel: "Anuluj",
   delete: "Usuń",
   save: "Zapisz",
-  cancel: "Anuluj",
-  loading: "Ładowanie...",
-  success: "Sukces",
-  error: "Błąd",
-
-  // Summary Cards
-  totalBalance: "Saldo całkowite",
-  monthlyIncome: "Przychody miesięczne",
-  monthlyExpenses: "Wydatki miesięczne",
-
-  // Budget Tracking
-  budgetTracking: "Śledzenie budżetu",
-  personalSpendingOverview: "Przegląd wydatków osobistych",
-  housing: "Mieszkanie",
-  food: "Jedzenie",
-  transport: "Transport",
-  spent: "wydano",
-  budget: "budżet",
-
-  // Transaction Form
-  date: "Data",
   description: "Opis",
   amount: "Kwota",
-  currency: "Waluta",
   category: "Kategoria",
   person: "Osoba",
   property: "Nieruchomość",
-  add: "Dodaj",
-  update: "Aktualizuj",
-  selectDate: "Wybierz datę",
-  pickDateRange: "Wybierz zakres dat",
-  filterByCategory: "Filtruj po kategorii",
-  filterByPerson: "Filtruj po osobie",
-  displayCurrency: "Wyświetl walutę",
-  sortBy: "Sortuj po",
+  date: "Data",
+  all: "Wszystkie",
+  loading: "Ładowanie...",
+  noData: "Brak danych",
   filters: "Filtry",
-  allCategories: "Wszystkie kategorie",
-  allProperties: "Wszystkie nieruchomości",
-
-  // Properties
-  poznan: "Poznań",
-  leuven: "Leuven",
-  original: "Oryginalna kwota",
-
-  // Categories
-  income: "Przychód",
-  health: "Zdrowie",
-  education: "Edukacja",
-  credit: "Kredyt",
-  creditCard: "Karta kredytowa",
-  other: "Inne",
-
-  // Sort options
-  dateNewest: "Data (od najnowszych)",
-  dateOldest: "Data (od najstarszych)",
-  amountHighest: "Kwota (od najwyższej)",
-  amountLowest: "Kwota (od najniższej)",
-
-  // Exchange Rates
-  manualExchangeRates: "Ręczne kursy walut",
-  addRate: "Dodaj kurs",
-  baseCurrency: "Waluta bazowa",
-  targetCurrency: "Waluta docelowa",
-  rate: "Kurs",
-
-  // Messages
-  transactionAdded: "Transakcja została dodana",
-  transactionUpdated: "Transakcja została zaktualizowana",
-  transactionDeleted: "Transakcja została usunięta",
-  rateAdded: "Kurs został dodany",
-  rateDeleted: "Kurs został usunięty",
-  fillAllFields: "Wypełnij wszystkie wymagane pola",
-  errorFetchingTransactions: "Błąd podczas pobierania transakcji",
-  failedToDeleteTransaction: "Nie udało się usunąć transakcji",
-
-  // Auth
-  login: "Zaloguj się",
-  email: "Email",
-  password: "Hasło",
-  signIn: "Zaloguj",
-  loginError: "Błąd logowania",
-
-  // Budget related translations
-  budgets: "Budżety",
-  budgetAdded: "Budżet został dodany",
-  budgetDeleted: "Budżet został usunięty",
-  selectCategory: "Wybierz kategorię",
-  enterAmount: "Wprowadź kwotę",
-  addBudget: "Dodaj budżet",
-};
-
-export type TranslationKey = keyof typeof translations;
-
-export const t = (key: TranslationKey): string => {
-  return translations[key];
+  clearFilters: "Wyczyść filtry",
+  sortBy: "Sortuj według",
+  ascending: "Rosnąco",
+  descending: "Malejąco",
+  dateRange: "Zakres dat",
+  from: "Od",
+  to: "Do",
+  apply: "Zastosuj",
+  reset: "Reset",
+  success: "Sukces",
+  warning: "Ostrzeżenie",
+  info: "Informacja"
 };
