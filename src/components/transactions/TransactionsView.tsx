@@ -50,7 +50,6 @@ export const TransactionsView = () => {
         throw error;
       }
       
-      // Ensure the data matches our Transaction type
       const typedData: Transaction[] = data.map(item => ({
         ...item,
         currency: item.currency as Currency,
@@ -113,7 +112,7 @@ export const TransactionsView = () => {
   );
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 px-2 md:px-0">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h2 className="text-xl font-bold">{t("transactions")}</h2>
         <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
@@ -133,7 +132,7 @@ export const TransactionsView = () => {
       </div>
 
       {isMobile ? (
-        <div className="space-y-4">
+        <div className="space-y-4 w-full overflow-x-hidden">
           {filteredTransactions.map((transaction) => (
             <TransactionMobileCard
               key={transaction.id}
@@ -145,7 +144,7 @@ export const TransactionsView = () => {
           ))}
         </div>
       ) : (
-        <ScrollArea className="rounded-md border">
+        <ScrollArea className="rounded-md border w-full overflow-x-auto">
           <Table>
             <TransactionTableHeader />
             <TableBody>
