@@ -5,6 +5,7 @@ import { Category, Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { t } from "@/utils/translations";
 import { toast } from "sonner";
+import { startOfMonth, endOfMonth } from "date-fns";
 
 interface CategorySpending {
   category: string;
@@ -32,11 +33,14 @@ export const CategoryOverview = () => {
 
   const fetchCategorySpending = async () => {
     try {
+      const startDate = startOfMonth(new Date());
+      const endDate = endOfMonth(new Date());
+
       const { data: transactions, error } = await supabase
         .from('transactions')
         .select('*')
-        .lt('date', new Date().toISOString())
-        .gt('date', new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString());
+        .lte('date', endDate.toISOString())
+        .gte('date', startDate.toISOString());
 
       if (error) throw error;
 
