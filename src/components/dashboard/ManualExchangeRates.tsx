@@ -87,12 +87,14 @@ export const ManualExchangeRates = () => {
   };
 
   return (
-    <div>
-      <h2 className="text-2xl font-bold mb-6">{t("manualExchangeRates")}</h2>
+    <div className="w-full space-y-6">
+      <h2 className="text-2xl font-bold">{t("manualExchangeRates")}</h2>
       
-      <ExchangeRateForm form={form} onSubmit={onSubmit} />
+      <div className="w-full">
+        <ExchangeRateForm form={form} onSubmit={onSubmit} />
+      </div>
       
-      <div className="mt-8">
+      <div className="w-full">
         <ExchangeRatesList rates={rates} onDelete={handleDelete} />
       </div>
     </div>
