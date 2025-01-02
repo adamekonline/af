@@ -54,6 +54,13 @@ export const BudgetTracker = () => {
     return Math.min(progress, 100); // Cap at 100%
   };
 
+  const formatNumber = (num: number) => {
+    return num.toLocaleString('pl-PL', { 
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -71,7 +78,7 @@ export const BudgetTracker = () => {
                   <span>{t(budget.category)}</span>
                 </div>
                 <span className="text-muted-foreground">
-                  {spent.toFixed(2)} zł / {budget.limit_amount} zł
+                  {formatNumber(spent)} zł / {formatNumber(budget.limit_amount)} zł
                 </span>
               </div>
               <Progress 
