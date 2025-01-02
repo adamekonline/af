@@ -25,22 +25,28 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
 
   return (
     <div className="space-y-4">
+      <div className="grid grid-cols-4 gap-4 py-2 px-4 font-medium text-sm text-muted-foreground">
+        <div>{t("date")}</div>
+        <div>{t("fromCurrency")}</div>
+        <div>{t("toCurrency")}</div>
+        <div>{t("exchangeRate")}</div>
+      </div>
       {rates.map((rate) => (
-        <div key={rate.id} className="flex items-center justify-between p-4 border rounded-lg bg-card">
-          <div className="space-y-1">
-            <p className="text-sm font-medium">{rate.date}</p>
-            <p className="text-sm text-muted-foreground">
-              1 {rate.base_currency} = {formatNumber(rate.rate)} {rate.target_currency}
-            </p>
+        <div key={rate.id} className="grid grid-cols-4 gap-4 items-center p-4 border rounded-lg bg-card hover:bg-accent/50 transition-colors">
+          <div>{rate.date}</div>
+          <div>{rate.base_currency}</div>
+          <div>{rate.target_currency}</div>
+          <div className="flex items-center justify-between">
+            <span>{formatNumber(rate.rate)}</span>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              onClick={() => onDelete(rate.id)}
+              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+            >
+              {t("delete")}
+            </Button>
           </div>
-          <Button 
-            variant="destructive" 
-            size="sm" 
-            onClick={() => onDelete(rate.id)}
-            className="ml-4"
-          >
-            {t("delete")}
-          </Button>
         </div>
       ))}
     </div>

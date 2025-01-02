@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
@@ -89,27 +88,12 @@ export const ManualExchangeRates = () => {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center">
-        <h1>{t("manualExchangeRates")}</h1>
-      </div>
-      <div className="grid gap-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("addNewRate")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ExchangeRateForm form={form} onSubmit={onSubmit} />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>{t("ratesList")}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <ExchangeRatesList rates={rates} onDelete={handleDelete} />
-          </CardContent>
-        </Card>
+      <h2 className="text-2xl font-bold">{t("manualExchangeRates")}</h2>
+      
+      <ExchangeRateForm form={form} onSubmit={onSubmit} />
+      
+      <div className="mt-8">
+        <ExchangeRatesList rates={rates} onDelete={handleDelete} />
       </div>
     </div>
   );
