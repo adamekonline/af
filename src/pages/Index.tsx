@@ -95,22 +95,46 @@ export const Index = () => {
         <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <TabsList className="h-auto p-1 grid grid-cols-2 sm:flex sm:grid-cols-none gap-2">
-              <TabsTrigger value="dashboard" className="flex items-center gap-2 data-[state=active]:font-semibold">
-                <LayoutDashboard className="h-4 w-4" />
-                <span className="hidden sm:inline">{t("dashboard")}</span>
-              </TabsTrigger>
-              <TabsTrigger value="transactions" className="flex items-center gap-2 data-[state=active]:font-semibold">
-                <Receipt className="h-4 w-4" />
-                <span className="hidden sm:inline">{t("transactions")}</span>
-              </TabsTrigger>
-              <TabsTrigger value="budgets" className="flex items-center gap-2 data-[state=active]:font-semibold">
-                <BookmarkPlus className="h-4 w-4" />
-                <span className="hidden sm:inline">{t("budgets")}</span>
-              </TabsTrigger>
-              <TabsTrigger value="exchange-rates" className="flex items-center gap-2 data-[state=active]:font-semibold">
-                <DollarSign className="h-4 w-4" />
-                <span className="hidden sm:inline">{t("exchangeRates")}</span>
-              </TabsTrigger>
+              <div className="contents sm:hidden">
+                <div className="col-span-2 grid grid-cols-2 gap-2 w-full">
+                  <TabsTrigger value="dashboard" className="flex items-center justify-center gap-2 data-[state=active]:font-semibold">
+                    <LayoutDashboard className="h-5 w-5" />
+                    <span className="text-xs">{t("dashboard")}</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="transactions" className="flex items-center justify-center gap-2 data-[state=active]:font-semibold">
+                    <Receipt className="h-5 w-5" />
+                    <span className="text-xs">{t("transactions")}</span>
+                  </TabsTrigger>
+                </div>
+                <div className="col-span-2 grid grid-cols-2 gap-2 w-full">
+                  <TabsTrigger value="budgets" className="flex items-center justify-center gap-2 data-[state=active]:font-semibold">
+                    <BookmarkPlus className="h-5 w-5" />
+                    <span className="text-xs">{t("budgets")}</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="exchange-rates" className="flex items-center justify-center gap-2 data-[state=active]:font-semibold">
+                    <DollarSign className="h-5 w-5" />
+                    <span className="text-xs">{t("exchangeRates")}</span>
+                  </TabsTrigger>
+                </div>
+              </div>
+              <div className="hidden sm:contents">
+                <TabsTrigger value="dashboard" className="flex items-center gap-2 data-[state=active]:font-semibold">
+                  <LayoutDashboard className="h-4 w-4" />
+                  <span>{t("dashboard")}</span>
+                </TabsTrigger>
+                <TabsTrigger value="transactions" className="flex items-center gap-2 data-[state=active]:font-semibold">
+                  <Receipt className="h-4 w-4" />
+                  <span>{t("transactions")}</span>
+                </TabsTrigger>
+                <TabsTrigger value="budgets" className="flex items-center gap-2 data-[state=active]:font-semibold">
+                  <BookmarkPlus className="h-4 w-4" />
+                  <span>{t("budgets")}</span>
+                </TabsTrigger>
+                <TabsTrigger value="exchange-rates" className="flex items-center gap-2 data-[state=active]:font-semibold">
+                  <DollarSign className="h-4 w-4" />
+                  <span>{t("exchangeRates")}</span>
+                </TabsTrigger>
+              </div>
             </TabsList>
           </div>
           
