@@ -114,20 +114,16 @@ export const CategoryOverview = () => {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart
               data={categoryData}
-              margin={{ top: 20, right: 30, left: 40, bottom: 5 }}
-              barSize={40}
+              layout="vertical"
+              margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
+              barSize={20}
             >
-              <XAxis
-                dataKey="category"
-                angle={-45}
-                textAnchor="end"
-                height={80}
-                interval={0}
+              <XAxis type="number" tickFormatter={formatAmount} />
+              <YAxis 
+                type="category" 
+                dataKey="category" 
+                width={90}
                 tick={{ fontSize: 12 }}
-              />
-              <YAxis
-                tickFormatter={formatAmount}
-                width={80}
               />
               <Tooltip content={<CustomTooltip />} />
               <Bar dataKey="Adam" stackId="a" fill="#9b87f5" />
