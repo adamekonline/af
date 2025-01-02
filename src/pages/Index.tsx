@@ -51,14 +51,25 @@ export const Index = () => {
 
   const handleLogout = async () => {
     try {
+      // First, clear any local storage data
+      localStorage.clear();
+      
+      // Sign out from Supabase
       const { error } = await supabase.auth.signOut();
       if (error) {
         console.error("Logout error:", error);
         toast.error(t("errorLoggingOut"));
         return;
       }
+
+      // Close the mobile sheet if it's open
       setIsSheetOpen(false);
-      navigate('/login');
+
+      // Clear session storage as well
+      sessionStorage.clear();
+
+      // Force a page reload to clear any cached states
+      window.location.href = '/login';
     } catch (error) {
       console.error('Logout error:', error);
       toast.error(t("errorLoggingOut"));
