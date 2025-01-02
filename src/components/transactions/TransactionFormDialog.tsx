@@ -9,6 +9,7 @@ import { useToast } from "../ui/use-toast";
 import { TransactionBasicFields } from "./form/TransactionBasicFields";
 import { TransactionSelectFields } from "./form/TransactionSelectFields";
 import { TransactionFormData } from "./types";
+import { t } from "@/utils/translations";
 
 export const TransactionFormDialog = ({ onAddTransaction }: { onAddTransaction: (transaction: Transaction) => void }) => {
   const [open, setOpen] = useState(false);
@@ -43,8 +44,8 @@ export const TransactionFormDialog = ({ onAddTransaction }: { onAddTransaction: 
     form.reset();
     
     toast({
-      title: "Success",
-      description: "Transaction added successfully",
+      title: t("success"),
+      description: t("transactionAdded"),
     });
   };
 
@@ -53,18 +54,18 @@ export const TransactionFormDialog = ({ onAddTransaction }: { onAddTransaction: 
       <DialogTrigger asChild>
         <Button>
           <PlusCircle className="mr-2 h-4 w-4" />
-          Add Transaction
+          {t("addTransaction")}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Transaction</DialogTitle>
+          <DialogTitle>{t("addTransaction")}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <TransactionBasicFields form={form} />
             <TransactionSelectFields form={form} />
-            <Button type="submit" className="w-full">Add Transaction</Button>
+            <Button type="submit" className="w-full">{t("addTransaction")}</Button>
           </form>
         </Form>
       </DialogContent>
