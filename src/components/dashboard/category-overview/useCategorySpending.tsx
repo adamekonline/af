@@ -34,15 +34,17 @@ export const useCategorySpending = () => {
       const startDate = startOfMonth(new Date());
       const endDate = endOfMonth(new Date());
 
-      console.log("Fetching transactions between:", startDate, "and", endDate);
+      console.log("Fetching category spending between:", startDate.toISOString().split('T')[0], "and", endDate.toISOString().split('T')[0]);
 
       const { data: transactions, error } = await supabase
         .from('transactions')
         .select('*')
-        .lte('date', endDate.toISOString())
-        .gte('date', startDate.toISOString());
+        .lte('date', endDate.toISOString().split('T')[0])
+        .gte('date', startDate.toISOString().split('T')[0]);
 
       if (error) throw error;
+
+      console.log("Fetched transactions:", transactions);
 
       // Initialize categories with zero values
       const categories: { [key: string]: CategorySpending } = {};
