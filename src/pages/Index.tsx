@@ -152,15 +152,15 @@ export const Index = () => {
               </Button>
             </nav>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <ResponsiveTransactionFormDialog />
             <Button 
-              variant="ghost" 
-              size="icon" 
+              variant="outline" 
               onClick={handleLogout}
-              className="hidden md:flex text-red-500 hover:text-red-600 hover:bg-red-100/50"
+              className="hidden md:flex items-center gap-2 text-red-500 hover:text-red-600 hover:bg-red-100/50 border-red-200"
             >
-              <LogOut className="h-6 w-6" />
+              <LogOut className="h-4 w-4" />
+              {t("logout")}
             </Button>
           </div>
         </div>
