@@ -10,6 +10,7 @@ export const translations: Record<string, string> = {
   failedToDeleteTransaction: "Nie udało się usunąć transakcji",
   currency: "Waluta",
   categoryOverview: "Przegląd kategorii",
+  expenseCategoryOverview: "Przegląd kategorii wydatków",
   personalSpendingOverview: "Przegląd wydatków osobistych",
   addTransaction: "Dodaj transakcję",
   editTransaction: "Edytuj transakcję",
@@ -97,7 +98,6 @@ export const translations: Record<string, string> = {
   "Telefonia/Internet": "Telefonia/Internet",
   Other: "Inne",
 };
-
 export const t = (key: keyof typeof translations): string => {
   return translations[key] || key;
 };

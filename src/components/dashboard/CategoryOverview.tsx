@@ -22,7 +22,6 @@ const ALL_CATEGORIES: Category[] = [
   "Education",
   "Credit",
   "Credit Card",
-  "Income",
   "Telefonia/Internet",
   "Other"
 ];
@@ -92,7 +91,7 @@ export const CategoryOverview = () => {
   return (
     <Card className="col-span-full">
       <CardHeader>
-        <CardTitle>{t("categoryOverview")}</CardTitle>
+        <CardTitle>{t("expenseCategoryOverview")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         {categoryData.map((category) => (
