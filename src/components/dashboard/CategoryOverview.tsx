@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { Transaction } from "@/types";
+import { Category, Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { t } from "@/utils/translations";
 
@@ -13,6 +13,17 @@ interface CategorySpending {
   Adi: number;
   total: number;
 }
+
+const ALL_CATEGORIES: Category[] = [
+  "Housing",
+  "Food",
+  "Transport",
+  "Health",
+  "Education",
+  "Credit",
+  "Credit Card",
+  "Other"
+];
 
 export const CategoryOverview = () => {
   const [categoryData, setCategoryData] = useState<CategorySpending[]>([]);
@@ -28,7 +39,17 @@ export const CategoryOverview = () => {
 
         if (error) throw error;
 
+        // Initialize categories with zero values
         const categories: { [key: string]: CategorySpending } = {};
+        ALL_CATEGORIES.forEach(category => {
+          categories[category] = {
+            category,
+            Adam: 0,
+            Natka: 0,
+            Adi: 0,
+            total: 0
+          };
+        });
 
         // Process transactions
         for (const transaction of transactions as Transaction[]) {
@@ -38,16 +59,6 @@ export const CategoryOverview = () => {
               transaction.currency,
               'PLN'
             );
-
-            if (!categories[transaction.category]) {
-              categories[transaction.category] = {
-                category: transaction.category,
-                Adam: 0,
-                Natka: 0,
-                Adi: 0,
-                total: 0
-              };
-            }
 
             categories[transaction.category][transaction.person] += convertedAmount;
             categories[transaction.category].total += convertedAmount;
@@ -89,33 +100,27 @@ export const CategoryOverview = () => {
               </span>
             </div>
             <div className="space-y-1">
-              {category.Adam > 0 && (
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Adam</span>
-                    <span className="text-muted-foreground">{formatAmount(category.Adam)} zł</span>
-                  </div>
-                  <Progress value={(category.Adam / category.total) * 100} className="h-2 [&>div]:bg-[#9b87f5]" />
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span>Adam</span>
+                  <span className="text-muted-foreground">{formatAmount(category.Adam)} zł</span>
                 </div>
-              )}
-              {category.Natka > 0 && (
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Natka</span>
-                    <span className="text-muted-foreground">{formatAmount(category.Natka)} zł</span>
-                  </div>
-                  <Progress value={(category.Natka / category.total) * 100} className="h-2 [&>div]:bg-[#0EA5E9]" />
+                <Progress value={(category.Adam / (category.total || 1)) * 100} className="h-2 [&>div]:bg-[#9b87f5]" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span>Natka</span>
+                  <span className="text-muted-foreground">{formatAmount(category.Natka)} zł</span>
                 </div>
-              )}
-              {category.Adi > 0 && (
-                <div className="space-y-1">
-                  <div className="flex justify-between text-sm">
-                    <span>Adi</span>
-                    <span className="text-muted-foreground">{formatAmount(category.Adi)} zł</span>
-                  </div>
-                  <Progress value={(category.Adi / category.total) * 100} className="h-2 [&>div]:bg-[#D946EF]" />
+                <Progress value={(category.Natka / (category.total || 1)) * 100} className="h-2 [&>div]:bg-[#0EA5E9]" />
+              </div>
+              <div className="space-y-1">
+                <div className="flex justify-between text-sm">
+                  <span>Adi</span>
+                  <span className="text-muted-foreground">{formatAmount(category.Adi)} zł</span>
                 </div>
-              )}
+                <Progress value={(category.Adi / (category.total || 1)) * 100} className="h-2 [&>div]:bg-[#D946EF]" />
+              </div>
             </div>
           </div>
         ))}
