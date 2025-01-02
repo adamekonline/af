@@ -12,7 +12,6 @@ import { TransactionSelectFields } from "../form/TransactionSelectFields";
 import { Button as DialogButton } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { convertCurrency } from "@/utils/currencyConverter";
 
 interface TransactionMobileCardProps {
   transaction: Transaction;
@@ -54,10 +53,8 @@ export const TransactionMobileCard = ({
     const formData = form.getValues();
     
     try {
-      // Convert amount if currencies are different
       let finalAmount = parseFloat(formData.amount);
       
-      // If it's an expense (not income), make the amount negative
       if (transaction.category !== 'Income') {
         finalAmount = -Math.abs(finalAmount);
       }
@@ -108,7 +105,7 @@ export const TransactionMobileCard = ({
                   variant="ghost"
                   size="icon"
                   onClick={() => setEditDialogOpen(true)}
-                  className="text-muted-foreground hover:text-blue-600"
+                  className="hover:text-primary hover:bg-primary/10"
                 >
                   <Pencil className="h-4 w-4" />
                 </Button>
@@ -116,7 +113,7 @@ export const TransactionMobileCard = ({
                   variant="ghost"
                   size="icon"
                   onClick={() => onDelete(transaction.id)}
-                  className="text-muted-foreground hover:text-red-600"
+                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
                   <Trash2 className="h-4 w-4" />
                 </Button>
