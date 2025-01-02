@@ -17,22 +17,22 @@ export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
-  // Check session on mount and redirect if not authenticated
   useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
+        navigate('/login');
+      }
+    });
+
+    // Check current session
     const checkSession = async () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate('/login');
       }
     };
+    
     checkSession();
-
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_OUT' || !session) {
-        navigate('/login');
-      }
-    });
 
     return () => {
       subscription.unsubscribe();
@@ -44,14 +44,8 @@ export const Index = () => {
   };
 
   const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      toast.success(t("loggedOut"));
-      navigate("/login");
-    } catch (error: any) {
-      console.error('Error logging out:', error);
-      toast.error(t("errorLoggingOut"));
-    }
+    await supabase.auth.signOut();
+    toast.success(t("loggedOut"));
   };
 
   return (

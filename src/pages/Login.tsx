@@ -27,9 +27,8 @@ export const Login = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is already logged in
-    supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" && session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (session) {
         navigate("/");
       }
     });
@@ -43,6 +42,10 @@ export const Login = () => {
     };
     
     checkSession();
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, [navigate]);
 
   const form = useForm<z.infer<typeof formSchema>>({
