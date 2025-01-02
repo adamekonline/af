@@ -42,9 +42,9 @@ export const translations = {
   delete: "Usuń",
   spent: "wydane",
   budget: "budżet",
-  fromCurrency: "From Currency",
-  toCurrency: "To Currency",
-  exchangeRate: "Exchange Rate",
+  fromCurrency: "Z waluty",
+  toCurrency: "Na walutę",
+  exchangeRate: "Kurs wymiany",
   addRate: "Dodaj kurs",
 
   // Categories
@@ -125,11 +125,6 @@ export const translations = {
 
   // Exchange rates
   original: "Kwota oryginalna",
-
-  // Misc
-  all: "Wszystkie",
-  ascending: "Rosnąco",
-  descending: "Malejąco"
 } as const;
 
 type TranslationKey = keyof typeof translations | (string & {});

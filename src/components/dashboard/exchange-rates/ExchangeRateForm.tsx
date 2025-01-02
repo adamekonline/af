@@ -21,7 +21,7 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
             name="date"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Date</FormLabel>
+                <FormLabel>{t("date")}</FormLabel>
                 <FormControl>
                   <Input type="date" {...field} />
                 </FormControl>
@@ -33,11 +33,11 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
             name="base_currency"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>From Currency</FormLabel>
+                <FormLabel>{t("fromCurrency")}</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select currency" />
+                      <SelectValue placeholder={t("selectCurrency")} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -55,11 +55,11 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
             name="target_currency"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>To Currency</FormLabel>
+                <FormLabel>{t("toCurrency")}</FormLabel>
                 <Select onValueChange={field.onChange} value={field.value}>
                   <FormControl>
                     <SelectTrigger>
-                      <SelectValue placeholder="Select currency" />
+                      <SelectValue placeholder={t("selectCurrency")} />
                     </SelectTrigger>
                   </FormControl>
                   <SelectContent>
@@ -77,7 +77,7 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
             name="rate"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Exchange Rate</FormLabel>
+                <FormLabel>{t("exchangeRate")}</FormLabel>
                 <FormControl>
                   <Input type="number" step="0.0001" {...field} />
                 </FormControl>
@@ -85,7 +85,7 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
             )}
           />
         </div>
-        <Button type="submit">Add Rate</Button>
+        <Button type="submit">{t("addRate")}</Button>
       </form>
     </Form>
   );
