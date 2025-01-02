@@ -3,6 +3,7 @@ export const translations = {
   dashboard: "Panel główny",
   transactions: "Transakcje",
   budgets: "Budżety",
+  budget: "Budżety",
   exchangeRates: "Kursy walut",
   manualExchangeRates: "Kursy walut",
   logout: "Wyloguj",
