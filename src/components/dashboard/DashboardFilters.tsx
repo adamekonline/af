@@ -5,6 +5,7 @@ import { Filter } from "lucide-react";
 import { MobileFilters } from "./filters/MobileFilters";
 import { DesktopFilters } from "./filters/DesktopFilters";
 import { DashboardFiltersProps } from "./filters/types";
+import { t } from "@/utils/translations";
 
 export const DashboardFilters = (props: DashboardFiltersProps) => {
   const { activeFiltersCount } = props;
@@ -16,7 +17,7 @@ export const DashboardFilters = (props: DashboardFiltersProps) => {
         <SheetTrigger asChild>
           <Button variant="outline" className="lg:hidden">
             <Filter className="h-4 w-4 mr-2" />
-            Filters
+            {t("filters")}
             {activeFiltersCount > 0 && (
               <Badge variant="secondary" className="ml-2">
                 {activeFiltersCount}
@@ -26,7 +27,7 @@ export const DashboardFilters = (props: DashboardFiltersProps) => {
         </SheetTrigger>
         <SheetContent>
           <SheetHeader>
-            <SheetTitle>Filters</SheetTitle>
+            <SheetTitle>{t("filters")}</SheetTitle>
           </SheetHeader>
           <div className="flex flex-col gap-4 mt-4">
             <MobileFilters {...props} />

@@ -87,7 +87,7 @@ export const translations = {
   leuven: "Leuven",
 
   // Filter related
-  filters: "Filtry",
+  filters: "Filtruj",
   clearFilters: "Wyczyść filtry",
   clearAllFilters: "Wyczyść wszystkie filtry",
   filterByCategory: "Filtruj według kategorii",
