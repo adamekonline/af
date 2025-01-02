@@ -118,10 +118,10 @@ export const TransactionTableRow = ({
               <Pencil className="h-4 w-4" />
             </Button>
             <Button
-              variant="ghost"
+              variant="destructive"
               size="icon"
               onClick={handleDelete}
-              className="text-destructive hover:text-destructive hover:bg-destructive/10"
+              className="bg-destructive/10 hover:bg-destructive"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
