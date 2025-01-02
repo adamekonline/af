@@ -14,8 +14,8 @@ interface ExchangeRateFormProps {
 export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <FormField
             control={form.control}
             name="date"
@@ -85,7 +85,7 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
             )}
           />
         </div>
-        <Button type="submit">{t("addRate")}</Button>
+        <Button type="submit" className="w-full md:w-auto">{t("addRate")}</Button>
       </form>
     </Form>
   );

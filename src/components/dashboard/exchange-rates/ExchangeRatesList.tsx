@@ -15,17 +15,30 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
     });
   };
 
+  if (rates.length === 0) {
+    return (
+      <div className="text-center py-6 text-muted-foreground">
+        {t("noRatesFound")}
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       {rates.map((rate) => (
-        <div key={rate.id} className="flex items-center justify-between p-4 border rounded-lg">
+        <div key={rate.id} className="flex items-center justify-between p-4 border rounded-lg bg-card">
           <div className="space-y-1">
             <p className="text-sm font-medium">{rate.date}</p>
             <p className="text-sm text-muted-foreground">
               1 {rate.base_currency} = {formatNumber(rate.rate)} {rate.target_currency}
             </p>
           </div>
-          <Button variant="ghost" size="sm" onClick={() => onDelete(rate.id)}>
+          <Button 
+            variant="destructive" 
+            size="sm" 
+            onClick={() => onDelete(rate.id)}
+            className="ml-4"
+          >
             {t("delete")}
           </Button>
         </div>
