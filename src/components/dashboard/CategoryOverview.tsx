@@ -22,6 +22,8 @@ const ALL_CATEGORIES: Category[] = [
   "Education",
   "Credit",
   "Credit Card",
+  "Income",
+  "Telefonia/Internet",
   "Other"
 ];
 
