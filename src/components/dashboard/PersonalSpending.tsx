@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
+import { toast } from "sonner";
 
 export const PersonalSpending = () => {
   const [personalSpending, setPersonalSpending] = useState({
@@ -12,43 +13,61 @@ export const PersonalSpending = () => {
     Adi: 0
   });
 
-  useEffect(() => {
-    const fetchPersonalSpending = async () => {
-      try {
-        const { data: transactions, error } = await supabase
-          .from('transactions')
-          .select('*')
-          .lt('date', new Date().toISOString())
-          .gt('date', new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString());
+  const fetchPersonalSpending = async () => {
+    try {
+      const { data: transactions, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .lt('date', new Date().toISOString())
+        .gt('date', new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString());
 
-        if (error) throw error;
+      if (error) throw error;
 
-        const spending = {
-          Adam: 0,
-          Natka: 0,
-          Adi: 0
-        };
+      const spending = {
+        Adam: 0,
+        Natka: 0,
+        Adi: 0
+      };
 
-        // Process transactions
-        for (const transaction of transactions as Transaction[]) {
-          if (transaction.amount < 0) { // Only count expenses (negative amounts)
-            const convertedAmount = await convertCurrency(
-              Math.abs(transaction.amount),
-              transaction.currency,
-              'PLN'
-            );
-            
-            spending[transaction.person] += convertedAmount;
-          }
+      // Process transactions
+      for (const transaction of transactions as Transaction[]) {
+        if (transaction.amount < 0) { // Only count expenses (negative amounts)
+          const convertedAmount = await convertCurrency(
+            Math.abs(transaction.amount),
+            transaction.currency,
+            'PLN'
+          );
+          
+          spending[transaction.person] += convertedAmount;
         }
-
-        setPersonalSpending(spending);
-      } catch (error) {
-        console.error('Error fetching personal spending:', error);
       }
-    };
 
+      setPersonalSpending(spending);
+    } catch (error) {
+      console.error('Error fetching personal spending:', error);
+      toast.error("Failed to update personal spending overview");
+    }
+  };
+
+  useEffect(() => {
     fetchPersonalSpending();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('public:transactions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'transactions' },
+        () => {
+          fetchPersonalSpending();
+          toast.success("Personal spending overview updated");
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // Calculate percentages based on total spending

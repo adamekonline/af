@@ -5,6 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Category, Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
 import { t } from "@/utils/translations";
+import { toast } from "sonner";
 
 interface CategorySpending {
   category: string;
@@ -16,66 +17,84 @@ interface CategorySpending {
 
 const ALL_CATEGORIES: Category[] = [
   "Housing",
-  "Zywnosc",  // Changed from Food
+  "Zywnosc",
   "Transport",
   "Health",
   "Education",
-  "Kredyty",  // Changed from Credit
+  "Kredyty",
   "Credit Card",
   "Telefonia/Internet",
-  "Restauracje/Rozrywka",  // Added new category
+  "Restauracje/Rozrywka",
   "Other"
 ];
 
 export const CategoryOverview = () => {
   const [categoryData, setCategoryData] = useState<CategorySpending[]>([]);
 
-  useEffect(() => {
-    const fetchCategorySpending = async () => {
-      try {
-        const { data: transactions, error } = await supabase
-          .from('transactions')
-          .select('*')
-          .lt('date', new Date().toISOString())
-          .gt('date', new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString());
+  const fetchCategorySpending = async () => {
+    try {
+      const { data: transactions, error } = await supabase
+        .from('transactions')
+        .select('*')
+        .lt('date', new Date().toISOString())
+        .gt('date', new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString());
 
-        if (error) throw error;
+      if (error) throw error;
 
-        // Initialize categories with zero values
-        const categories: { [key: string]: CategorySpending } = {};
-        ALL_CATEGORIES.forEach(category => {
-          categories[category] = {
-            category,
-            Adam: 0,
-            Natka: 0,
-            Adi: 0,
-            total: 0
-          };
-        });
+      // Initialize categories with zero values
+      const categories: { [key: string]: CategorySpending } = {};
+      ALL_CATEGORIES.forEach(category => {
+        categories[category] = {
+          category,
+          Adam: 0,
+          Natka: 0,
+          Adi: 0,
+          total: 0
+        };
+      });
 
-        // Process transactions
-        for (const transaction of transactions as Transaction[]) {
-          if (transaction.amount < 0 && transaction.category !== 'Income') {
-            const convertedAmount = await convertCurrency(
-              Math.abs(transaction.amount),
-              transaction.currency,
-              'PLN'
-            );
+      // Process transactions
+      for (const transaction of transactions as Transaction[]) {
+        if (transaction.amount < 0 && transaction.category !== 'Income') {
+          const convertedAmount = await convertCurrency(
+            Math.abs(transaction.amount),
+            transaction.currency,
+            'PLN'
+          );
 
-            categories[transaction.category][transaction.person] += convertedAmount;
-            categories[transaction.category].total += convertedAmount;
-          }
+          categories[transaction.category][transaction.person] += convertedAmount;
+          categories[transaction.category].total += convertedAmount;
         }
-
-        // Convert to array and sort by total amount
-        const sortedData = Object.values(categories).sort((a, b) => b.total - a.total);
-        setCategoryData(sortedData);
-      } catch (error) {
-        console.error('Error fetching category spending:', error);
       }
-    };
 
+      // Convert to array and sort by total amount
+      const sortedData = Object.values(categories).sort((a, b) => b.total - a.total);
+      setCategoryData(sortedData);
+    } catch (error) {
+      console.error('Error fetching category spending:', error);
+      toast.error("Failed to update category overview");
+    }
+  };
+
+  useEffect(() => {
     fetchCategorySpending();
+
+    // Subscribe to real-time changes
+    const channel = supabase
+      .channel('public:transactions')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'transactions' },
+        () => {
+          fetchCategorySpending();
+          toast.success("Category overview updated");
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const formatAmount = (value: number) => {
