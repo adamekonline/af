@@ -4,6 +4,7 @@ import { Category, Currency } from "@/types";
 import { DashboardFiltersProps } from "./types";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
+import { t } from "@/utils/translations";
 
 const categories: Category[] = ["Housing", "Zywnosc", "Transport", "Health", "Education", "Kredyty", "Credit Card", "Income", "Telefonia/Internet", "Restauracje/Rozrywka", "Other"];
 const people = ["All", "Adam", "Natka", "Adi"];
@@ -26,10 +27,10 @@ export const MobileFilters = ({
     <>
       <div className="space-y-4">
         <div className="space-y-2">
-          <label className="text-sm font-medium">Date Range</label>
+          <label className="text-sm font-medium">{t("dateRange")}</label>
           <div className="grid grid-cols-2 gap-2">
             <div>
-              <label className="text-xs text-muted-foreground">Start Date</label>
+              <label className="text-xs text-muted-foreground">{t("from")}</label>
               <Input
                 type="date"
                 value={startDate ? format(startDate, 'yyyy-MM-dd') : ''}
@@ -41,7 +42,7 @@ export const MobileFilters = ({
               />
             </div>
             <div>
-              <label className="text-xs text-muted-foreground">End Date</label>
+              <label className="text-xs text-muted-foreground">{t("to")}</label>
               <Input
                 type="date"
                 value={endDate ? format(endDate, 'yyyy-MM-dd') : ''}
@@ -56,16 +57,16 @@ export const MobileFilters = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Category</label>
+          <label className="text-sm font-medium">{t("category")}</label>
           <Select value={selectedCategory} onValueChange={onCategoryChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Filter by category" />
+              <SelectValue placeholder={t("filterByCategory")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
+              <SelectItem value="all">{t("allCategories")}</SelectItem>
               {categories.map((category) => (
                 <SelectItem key={category} value={category}>
-                  {category}
+                  {t(category)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -73,10 +74,10 @@ export const MobileFilters = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Person</label>
+          <label className="text-sm font-medium">{t("person")}</label>
           <Select value={selectedPerson} onValueChange={onPersonChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Filter by person" />
+              <SelectValue placeholder={t("filterByPerson")} />
             </SelectTrigger>
             <SelectContent>
               {people.map((person) => (
@@ -89,10 +90,10 @@ export const MobileFilters = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Display Currency</label>
+          <label className="text-sm font-medium">{t("displayCurrency")}</label>
           <Select value={selectedCurrency} onValueChange={onCurrencyChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Display currency" />
+              <SelectValue placeholder={t("displayCurrency")} />
             </SelectTrigger>
             <SelectContent>
               {currencies.map((currency) => (
@@ -105,16 +106,16 @@ export const MobileFilters = ({
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Sort By</label>
+          <label className="text-sm font-medium">{t("sortBy")}</label>
           <Select value={sortBy} onValueChange={onSortChange}>
             <SelectTrigger>
-              <SelectValue placeholder="Sort by" />
+              <SelectValue placeholder={t("sortBy")} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="date-desc">Date (Newest First)</SelectItem>
-              <SelectItem value="date-asc">Date (Oldest First)</SelectItem>
-              <SelectItem value="amount-desc">Amount (Highest First)</SelectItem>
-              <SelectItem value="amount-asc">Amount (Lowest First)</SelectItem>
+              <SelectItem value="date-desc">{t("dateNewestFirst")}</SelectItem>
+              <SelectItem value="date-asc">{t("dateOldestFirst")}</SelectItem>
+              <SelectItem value="amount-desc">{t("amountHighestFirst")}</SelectItem>
+              <SelectItem value="amount-asc">{t("amountLowestFirst")}</SelectItem>
             </SelectContent>
           </Select>
         </div>
@@ -129,7 +130,7 @@ export const MobileFilters = ({
             onSortChange("date-desc");
           }}
         >
-          Clear all filters
+          {t("clearAllFilters")}
         </Button>
       </div>
     </>

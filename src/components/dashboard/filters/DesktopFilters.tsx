@@ -6,6 +6,7 @@ import { Category, Currency } from "@/types";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { DashboardFiltersProps } from "./types";
+import { t } from "@/utils/translations";
 
 const categories: Category[] = ["Housing", "Zywnosc", "Transport", "Health", "Education", "Kredyty", "Credit Card", "Income", "Telefonia/Internet", "Restauracje/Rozrywka", "Other"];
 const people = ["All", "Adam", "Natka", "Adi"];
@@ -36,7 +37,7 @@ export const DesktopFilters = ({
                 {format(startDate, "LLL dd, y")} - {format(endDate, "LLL dd, y")}
               </>
             ) : (
-              <span>Pick a date range</span>
+              <span>{t("pickDateRange")}</span>
             )}
           </Button>
         </PopoverTrigger>
@@ -57,13 +58,13 @@ export const DesktopFilters = ({
 
       <Select value={selectedCategory} onValueChange={onCategoryChange}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Filter by category" />
+          <SelectValue placeholder={t("filterByCategory")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="all">All Categories</SelectItem>
+          <SelectItem value="all">{t("allCategories")}</SelectItem>
           {categories.map((category) => (
             <SelectItem key={category} value={category}>
-              {category}
+              {t(category)}
             </SelectItem>
           ))}
         </SelectContent>
@@ -71,7 +72,7 @@ export const DesktopFilters = ({
 
       <Select value={selectedPerson} onValueChange={onPersonChange}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Filter by person" />
+          <SelectValue placeholder={t("filterByPerson")} />
         </SelectTrigger>
         <SelectContent>
           {people.map((person) => (
@@ -84,7 +85,7 @@ export const DesktopFilters = ({
 
       <Select value={selectedCurrency} onValueChange={onCurrencyChange}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Display currency" />
+          <SelectValue placeholder={t("displayCurrency")} />
         </SelectTrigger>
         <SelectContent>
           {currencies.map((currency) => (
@@ -97,13 +98,13 @@ export const DesktopFilters = ({
 
       <Select value={sortBy} onValueChange={onSortChange}>
         <SelectTrigger className="w-[180px]">
-          <SelectValue placeholder="Sort by" />
+          <SelectValue placeholder={t("sortBy")} />
         </SelectTrigger>
         <SelectContent>
-          <SelectItem value="date-desc">Date (Newest First)</SelectItem>
-          <SelectItem value="date-asc">Date (Oldest First)</SelectItem>
-          <SelectItem value="amount-desc">Amount (Highest First)</SelectItem>
-          <SelectItem value="amount-asc">Amount (Lowest First)</SelectItem>
+          <SelectItem value="date-desc">{t("dateNewestFirst")}</SelectItem>
+          <SelectItem value="date-asc">{t("dateOldestFirst")}</SelectItem>
+          <SelectItem value="amount-desc">{t("amountHighestFirst")}</SelectItem>
+          <SelectItem value="amount-asc">{t("amountLowestFirst")}</SelectItem>
         </SelectContent>
       </Select>
 
@@ -118,7 +119,7 @@ export const DesktopFilters = ({
           }}
           className="text-muted-foreground hover:text-foreground"
         >
-          Clear filters
+          {t("clearFilters")}
         </Button>
       )}
     </div>
