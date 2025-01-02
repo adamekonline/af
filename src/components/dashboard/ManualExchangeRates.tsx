@@ -88,14 +88,14 @@ export const ManualExchangeRates = () => {
   };
 
   return (
-    <div className="container space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6">
+      <div className="flex items-center">
         <h1>{t("manualExchangeRates")}</h1>
       </div>
       <div className="grid gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">{t("addNewRate")}</CardTitle>
+            <CardTitle>{t("addNewRate")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ExchangeRateForm form={form} onSubmit={onSubmit} />
@@ -104,7 +104,7 @@ export const ManualExchangeRates = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-xl">{t("ratesList")}</CardTitle>
+            <CardTitle>{t("ratesList")}</CardTitle>
           </CardHeader>
           <CardContent>
             <ExchangeRatesList rates={rates} onDelete={handleDelete} />

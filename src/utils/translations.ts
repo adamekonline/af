@@ -4,7 +4,7 @@ export const translations = {
   transactions: "Transakcje",
   budgets: "Budżety",
   exchangeRates: "Kursy walut",
-  manualExchangeRates: "Ręczne kursy walut",
+  manualExchangeRates: "Kursy walut",
   logout: "Wyloguj",
 
   // Error messages
@@ -46,6 +46,7 @@ export const translations = {
   toCurrency: "Na walutę",
   exchangeRate: "Kurs wymiany",
   addRate: "Dodaj kurs",
+  selectCurrency: "Wybierz walutę",
 
   // Categories
   Housing: "Mieszkanie",
@@ -75,7 +76,6 @@ export const translations = {
   addBudget: "Dodaj budżet",
   enterAmount: "Wprowadź kwotę",
   selectCategory: "Wybierz kategorię",
-  selectCurrency: "Wybierz walutę",
 
   // Properties
   allProperties: "Wszystkie nieruchomości",
@@ -125,6 +125,7 @@ export const translations = {
 
   // Exchange rates
   original: "Kwota oryginalna",
+  noRatesFound: "Nie znaleziono kursów walutowych",
 } as const;
 
 type TranslationKey = keyof typeof translations | (string & {});
