@@ -4,7 +4,7 @@ import { TransactionsView } from "@/components/transactions/TransactionsView";
 import { LayoutDashboard, LogOut, Menu, Receipt, BookmarkPlus, DollarSign } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { useState, Suspense } from "react";
+import { useState, Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 import { BudgetView } from "@/components/budget/BudgetView";
@@ -26,6 +26,16 @@ export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
+  useEffect(() => {
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        navigate('/login');
+      }
+    };
+    checkSession();
+  }, [navigate]);
+
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
   };
@@ -33,10 +43,12 @@ export const Index = () => {
   const handleLogout = async () => {
     try {
       const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      if (error) {
+        throw error;
+      }
       navigate("/login");
       toast.success(t("loggedOut"));
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error logging out:', error);
       toast.error(t("errorLoggingOut"));
     }
@@ -87,6 +99,14 @@ export const Index = () => {
                     <DollarSign className="mr-2 h-5 w-5" />
                     {t("exchangeRates")}
                   </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-base w-full text-red-500 hover:text-red-600" 
+                    onClick={handleLogout}
+                  >
+                    <LogOut className="mr-2 h-5 w-5" />
+                    {t("logout")}
+                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>
@@ -94,7 +114,12 @@ export const Index = () => {
           
           <div className="flex items-center gap-2">
             <ResponsiveTransactionFormDialog />
-            <Button variant="ghost" size="icon" onClick={handleLogout}>
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              onClick={handleLogout}
+              className="text-red-500 hover:text-red-600"
+            >
               <LogOut className="h-6 w-6" />
             </Button>
           </div>
