@@ -10,16 +10,18 @@ import { t } from "@/utils/translations";
 
 const categories: Category[] = [
   "Housing", 
-  "Food", 
+  "Zywnosc",  // Changed from Food
   "Transport", 
   "Health", 
   "Education", 
-  "Credit", 
+  "Kredyty",  // Changed from Credit
   "Credit Card", 
   "Income", 
   "Telefonia/Internet",
+  "Restauracje/Rozrywka",  // Added new category
   "Other"
 ];
+
 const currencies: Currency[] = ["PLN", "EUR", "USD", "GBP"];
 
 export const BudgetView = () => {

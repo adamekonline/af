@@ -3,14 +3,15 @@ export type PropertyLocation = 'Poznań' | 'Leuven';
 export type Person = 'Natka' | 'Adam' | 'Adi';
 export type Category = 
   | 'Housing' 
-  | 'Food' 
+  | 'Zywnosc'  // Changed from Food
   | 'Transport' 
   | 'Health' 
   | 'Education' 
-  | 'Credit' 
+  | 'Kredyty'  // Changed from Credit
   | 'Credit Card'
   | 'Income'
   | 'Telefonia/Internet'
+  | 'Restauracje/Rozrywka'  // Added new category
   | 'Other';
 
 export interface Transaction {

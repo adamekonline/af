@@ -16,13 +16,14 @@ interface CategorySpending {
 
 const ALL_CATEGORIES: Category[] = [
   "Housing",
-  "Food",
+  "Zywnosc",  // Changed from Food
   "Transport",
   "Health",
   "Education",
-  "Credit",
+  "Kredyty",  // Changed from Credit
   "Credit Card",
   "Telefonia/Internet",
+  "Restauracje/Rozrywka",  // Added new category
   "Other"
 ];
 
