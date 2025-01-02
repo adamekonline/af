@@ -87,11 +87,23 @@ export const ManualExchangeRates = () => {
   };
 
   return (
-    <div className="space-y-4 md:space-y-6">
-      <h2 className="text-2xl font-bold">{t("manualExchangeRates")}</h2>
+    <div className="container mx-auto p-4 md:p-6 space-y-6">
+      <div className="flex flex-col gap-2">
+        <h2 className="text-2xl font-bold tracking-tight">{t("manualExchangeRates")}</h2>
+        <p className="text-muted-foreground">
+          {t("manageExchangeRates")}
+        </p>
+      </div>
       
-      <ExchangeRateForm form={form} onSubmit={onSubmit} />
-      <ExchangeRatesList rates={rates} onDelete={handleDelete} />
+      <div className="grid gap-6">
+        <div className="rounded-lg border bg-card p-4 md:p-6">
+          <ExchangeRateForm form={form} onSubmit={onSubmit} />
+        </div>
+        
+        <div className="rounded-lg border bg-card">
+          <ExchangeRatesList rates={rates} onDelete={handleDelete} />
+        </div>
+      </div>
     </div>
   );
 };

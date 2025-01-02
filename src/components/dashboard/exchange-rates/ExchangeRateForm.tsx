@@ -14,78 +14,89 @@ interface ExchangeRateFormProps {
 export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-          <FormField
-            control={form.control}
-            name="date"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("date")}</FormLabel>
-                <FormControl>
-                  <Input type="date" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="base_currency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("fromCurrency")}</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-medium">{t("addNewRate")}</h3>
+              <p className="text-sm text-muted-foreground">
+                {t("addNewRateDescription")}
+              </p>
+            </div>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+            <FormField
+              control={form.control}
+              name="date"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("date")}</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("selectCurrency")} />
-                    </SelectTrigger>
+                    <Input type="date" {...field} />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="PLN">PLN</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="GBP">GBP</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="target_currency"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("toCurrency")}</FormLabel>
-                <Select onValueChange={field.onChange} value={field.value}>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="base_currency"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("fromCurrency")}</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("selectCurrency")} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PLN">PLN</SelectItem>
+                      <SelectItem value="EUR">EUR</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
+                      <SelectItem value="GBP">GBP</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="target_currency"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("toCurrency")}</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t("selectCurrency")} />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="PLN">PLN</SelectItem>
+                      <SelectItem value="EUR">EUR</SelectItem>
+                      <SelectItem value="USD">USD</SelectItem>
+                      <SelectItem value="GBP">GBP</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="rate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("exchangeRate")}</FormLabel>
                   <FormControl>
-                    <SelectTrigger>
-                      <SelectValue placeholder={t("selectCurrency")} />
-                    </SelectTrigger>
+                    <Input type="number" step="0.0001" {...field} />
                   </FormControl>
-                  <SelectContent>
-                    <SelectItem value="PLN">PLN</SelectItem>
-                    <SelectItem value="EUR">EUR</SelectItem>
-                    <SelectItem value="USD">USD</SelectItem>
-                    <SelectItem value="GBP">GBP</SelectItem>
-                  </SelectContent>
-                </Select>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="rate"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>{t("exchangeRate")}</FormLabel>
-                <FormControl>
-                  <Input type="number" step="0.0001" {...field} />
-                </FormControl>
-              </FormItem>
-            )}
-          />
-          <div className="flex items-end">
-            <Button type="submit" className="w-full">{t("addRate")}</Button>
+                </FormItem>
+              )}
+            />
+            <div className="flex items-end">
+              <Button type="submit" className="w-full">{t("addRate")}</Button>
+            </div>
           </div>
         </div>
       </form>
