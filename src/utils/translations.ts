@@ -2,7 +2,6 @@ export const translations = {
   // Navigation and main sections
   dashboard: "Panel główny",
   transactions: "Transakcje",
-  budgets: "Budżety",
   budget: "Budżety",
   exchangeRates: "Kursy walut",
   manualExchangeRates: "Kursy walut",
@@ -42,7 +41,6 @@ export const translations = {
   password: "Hasło",
   delete: "Usuń",
   spent: "wydane",
-  budget: "budżet",
   fromCurrency: "Z waluty",
   toCurrency: "Na walutę",
   exchangeRate: "Kurs wymiany",
