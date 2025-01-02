@@ -13,7 +13,7 @@ import { t } from "@/utils/translations";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-const Index = () => {
+export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
