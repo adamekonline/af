@@ -4,6 +4,7 @@ export const translations = {
   transactions: "Transakcje",
   budgets: "Budżety",
   exchangeRates: "Kursy walut",
+  manualExchangeRates: "Ręczne kursy walut",
   logout: "Wyloguj",
 
   // Error messages
@@ -16,6 +17,8 @@ export const translations = {
   failedToAddExchangeRate: "Nie udało się dodać kursu walutowego",
   failedToDeleteExchangeRate: "Nie udało się usunąć kursu walutowego",
   failedToFetchExchangeRates: "Nie udało się pobrać kursów walutowych",
+  exchangeRateAdded: "Dodano kurs walutowy",
+  exchangeRateDeleted: "Usunięto kurs walutowy",
 
   // Dashboard labels
   totalBalance: "Całkowite saldo",
@@ -25,7 +28,6 @@ export const translations = {
   categoryOverview: "Przegląd kategorii",
   expenseCategoryOverview: "Przegląd kategorii wydatków",
   personalSpendingOverview: "Przegląd wydatków osobistych",
-  manualExchangeRates: "Ręczne kursy walut",
 
   // Form fields and labels
   date: "Data",
@@ -38,6 +40,8 @@ export const translations = {
   email: "Email",
   password: "Hasło",
   delete: "Usuń",
+  spent: "wydane",
+  budget: "budżet",
 
   // Categories (both capitalized and lowercase)
   Housing: "Mieszkanie",
@@ -50,20 +54,18 @@ export const translations = {
   Income: "Przychód",
   "Telefonia/Internet": "Telefonia/Internet",
   Other: "Inne",
-  housing: "Mieszkanie",
-  food: "Jedzenie",
-  transport: "Transport",
-  health: "Zdrowie",
-  education: "Edukacja",
-  credit: "Kredyt",
-  "credit card": "Karta kredytowa",
-  income: "Przychód",
-  "telefonia/internet": "Telefonia/Internet",
-  other: "Inne",
+  housing: "mieszkanie",
+  food: "jedzenie",
+  transport: "transport",
+  health: "zdrowie",
+  education: "edukacja",
+  credit: "kredyt",
+  "credit card": "karta kredytowa",
+  income: "przychód",
+  "telefonia/internet": "telefonia/internet",
+  other: "inne",
 
   // Budget related
-  spent: "Wydane",
-  budget: "Budżet",
   budgetAdded: "Dodano budżet",
   budgetDeleted: "Usunięto budżet",
   addBudget: "Dodaj budżet",
@@ -118,8 +120,6 @@ export const translations = {
   info: "Informacja",
 
   // Exchange rates
-  exchangeRateAdded: "Dodano kurs walutowy",
-  exchangeRateDeleted: "Usunięto kurs walutowy",
   original: "Kwota oryginalna",
 
   // Misc
