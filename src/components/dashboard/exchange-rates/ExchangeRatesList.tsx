@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ManualRate } from "./types";
+import { t } from "@/utils/translations";
 
 interface ExchangeRatesListProps {
   rates: ManualRate[];
@@ -25,7 +26,7 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
             </p>
           </div>
           <Button variant="ghost" size="sm" onClick={() => onDelete(rate.id)}>
-            Delete
+            {t("delete")}
           </Button>
         </div>
       ))}
