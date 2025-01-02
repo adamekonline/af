@@ -86,6 +86,15 @@ export const ManualExchangeRates = () => {
     }
   };
 
+  const handleEdit = (rate: ManualRate) => {
+    form.reset({
+      date: rate.date,
+      base_currency: rate.base_currency,
+      target_currency: rate.target_currency,
+      rate: rate.rate.toString(),
+    });
+  };
+
   return (
     <div className="space-y-8">
       <div className="grid gap-8">
@@ -94,7 +103,11 @@ export const ManualExchangeRates = () => {
         </div>
         
         <div className="rounded-lg border bg-card">
-          <ExchangeRatesList rates={rates} onDelete={handleDelete} />
+          <ExchangeRatesList 
+            rates={rates} 
+            onDelete={handleDelete}
+            onEdit={handleEdit}
+          />
         </div>
       </div>
     </div>

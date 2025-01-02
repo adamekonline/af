@@ -1,14 +1,15 @@
 import { Button } from "@/components/ui/button";
 import { ManualRate } from "./types";
 import { t } from "@/utils/translations";
-import { Trash2 } from "lucide-react";
+import { Pencil, Trash2 } from "lucide-react";
 
 interface ExchangeRatesListProps {
   rates: ManualRate[];
   onDelete: (id: number) => Promise<void>;
+  onEdit: (rate: ManualRate) => void;
 }
 
-export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) => {
+export const ExchangeRatesList = ({ rates, onDelete, onEdit }: ExchangeRatesListProps) => {
   const formatNumber = (num: number) => {
     return num.toLocaleString('de-DE', { 
       minimumFractionDigits: 4,
@@ -29,7 +30,7 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
   return (
     <div className="relative overflow-x-auto">
       <table className="w-full text-sm text-left">
-        <thead className="text-xs uppercase bg-muted/50">
+        <thead className="text-xs bg-muted/50">
           <tr>
             <th scope="col" className="px-6 py-4">{t("date")}</th>
             <th scope="col" className="px-6 py-4">{t("fromCurrency")}</th>
@@ -48,7 +49,15 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
               <td className="px-6 py-4">{rate.base_currency}</td>
               <td className="px-6 py-4">{rate.target_currency}</td>
               <td className="px-6 py-4">{formatNumber(rate.rate)}</td>
-              <td className="px-6 py-4 text-right">
+              <td className="px-6 py-4 text-right space-x-2">
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => onEdit(rate)}
+                  className="hover:text-primary hover:bg-primary/10"
+                >
+                  <Pencil className="h-4 w-4" />
+                </Button>
                 <Button 
                   variant="ghost" 
                   size="icon"
