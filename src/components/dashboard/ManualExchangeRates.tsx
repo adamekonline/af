@@ -6,6 +6,7 @@ import { useState, useEffect } from "react";
 import { ExchangeRateForm } from "./exchange-rates/ExchangeRateForm";
 import { ExchangeRatesList } from "./exchange-rates/ExchangeRatesList";
 import { ManualRate, ManualRateForm, SupabaseManualRate } from "./exchange-rates/types";
+import { t } from "@/utils/translations";
 
 export const ManualExchangeRates = () => {
   const [rates, setRates] = useState<ManualRate[]>([]);
@@ -25,7 +26,7 @@ export const ManualExchangeRates = () => {
       .order('date', { ascending: false });
     
     if (error) {
-      toast.error('Failed to fetch exchange rates');
+      toast.error(t("failedToFetchExchangeRates"));
       return;
     }
     
@@ -57,7 +58,7 @@ export const ManualExchangeRates = () => {
 
       if (error) throw error;
 
-      toast.success('Exchange rate added successfully');
+      toast.success(t("exchangeRateAdded"));
       form.reset({
         date: new Date().toISOString().split('T')[0],
         base_currency: 'PLN',
@@ -66,7 +67,7 @@ export const ManualExchangeRates = () => {
       });
       fetchRates();
     } catch (error) {
-      toast.error('Failed to add exchange rate');
+      toast.error(t("failedToAddExchangeRate"));
     }
   };
 
@@ -79,17 +80,17 @@ export const ManualExchangeRates = () => {
 
       if (error) throw error;
 
-      toast.success('Exchange rate deleted successfully');
+      toast.success(t("exchangeRateDeleted"));
       fetchRates();
     } catch (error) {
-      toast.error('Failed to delete exchange rate');
+      toast.error(t("failedToDeleteExchangeRate"));
     }
   };
 
   return (
     <Card className="col-span-full">
       <CardHeader>
-        <CardTitle>Manual Exchange Rates</CardTitle>
+        <CardTitle>{t("manualExchangeRates")}</CardTitle>
       </CardHeader>
       <CardContent className="space-y-6">
         <ExchangeRateForm form={form} onSubmit={onSubmit} />

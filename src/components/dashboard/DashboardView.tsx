@@ -8,6 +8,7 @@ import { useTransactions } from "./hooks/useTransactions";
 import { useFilters } from "./hooks/useFilters";
 import { useFilteredAmounts } from "./hooks/useFilteredAmounts";
 import { Skeleton } from "@/components/ui/skeleton";
+import { t } from "@/utils/translations";
 
 export const DashboardView = () => {
   const { transactions, isLoading } = useTransactions();
@@ -71,19 +72,19 @@ export const DashboardView = () => {
 
       <div className="grid gap-3 md:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <SummaryCard
-          title="Total Balance"
+          title={t("totalBalance")}
           amount={convertedBalance}
           currency="PLN"
         />
         <SummaryCard
-          title="Monthly Income"
+          title={t("monthlyIncome")}
           amount={convertedIncome}
           currency="PLN"
           icon={TrendingUp}
           variant="income"
         />
         <SummaryCard
-          title="Monthly Expenses"
+          title={t("monthlyExpenses")}
           amount={convertedExpenses}
           currency="PLN"
           icon={TrendingDown}
