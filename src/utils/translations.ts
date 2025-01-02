@@ -1,5 +1,13 @@
 export const translations = {
+  // Navigation and main sections
+  dashboard: "Panel główny",
+  transactions: "Transakcje",
+  budgets: "Budżety",
+  exchangeRates: "Kursy walut",
+  logout: "Wyloguj",
+
   // Error messages
+  error: "Wystąpił błąd",
   errorFetchingTransactions: "Błąd podczas pobierania transakcji",
   transactionDeleted: "Transakcja usunięta",
   failedToDeleteTransaction: "Nie udało się usunąć transakcji",
@@ -29,18 +37,25 @@ export const translations = {
   property: "Nieruchomość",
   email: "Email",
   password: "Hasło",
+  delete: "Usuń",
 
   // Categories
+  Housing: "Mieszkanie",
+  Food: "Jedzenie",
+  Transport: "Transport",
+  Health: "Zdrowie",
+  Education: "Edukacja",
+  Credit: "Kredyt",
+  "Credit Card": "Karta kredytowa",
+  Income: "Przychód",
+  "Telefonia/Internet": "Telefonia/Internet",
+  Other: "Inne",
   housing: "Mieszkanie",
   food: "Jedzenie",
   transport: "Transport",
   health: "Zdrowie",
   education: "Edukacja",
   credit: "Kredyt",
-  "Credit Card": "Karta kredytowa",
-  Income: "Przychód",
-  "Telefonia/Internet": "Telefonia/Internet",
-  Other: "Inne",
 
   // Budget related
   spent: "Wydane",
