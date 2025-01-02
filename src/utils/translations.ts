@@ -83,7 +83,18 @@ export const translations: Record<string, string> = {
   exchangeRateDeleted: "Usunięto kurs walutowy",
   failedToAddExchangeRate: "Nie udało się dodać kursu walutowego",
   failedToDeleteExchangeRate: "Nie udało się usunąć kursu walutowego",
-  failedToFetchExchangeRates: "Nie udało się pobrać kursów walutowych"
+  failedToFetchExchangeRates: "Nie udało się pobrać kursów walutowych",
+  
+  // Category translations
+  Housing: "Mieszkanie",
+  Food: "Jedzenie",
+  Transport: "Transport",
+  Health: "Zdrowie",
+  Education: "Edukacja",
+  Credit: "Kredyt",
+  "Credit Card": "Karta kredytowa",
+  Income: "Przychód",
+  Other: "Inne",
 };
 
 export const t = (key: keyof typeof translations): string => {

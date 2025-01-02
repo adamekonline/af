@@ -2,6 +2,7 @@ import { FormField, FormItem, FormLabel, FormControl, FormMessage } from "@/comp
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { UseFormReturn, useWatch } from "react-hook-form";
 import { Category, Currency, Person, PropertyLocation, TransactionFormData } from "../types";
+import { t } from "@/utils/translations";
 
 const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
 const currencies: Currency[] = ["PLN", "USD", "EUR", "GBP"];
@@ -25,12 +26,12 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         name="currency"
         render={({ field }) => (
           <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
-            <FormLabel className="text-sm font-medium">Currency</FormLabel>
+            <FormLabel className="text-sm font-medium">{t("currency")}</FormLabel>
             <div>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger className="h-8">
-                    <SelectValue placeholder="Select currency" />
+                    <SelectValue placeholder={t("selectCurrency")} />
                   </SelectTrigger>
                   <SelectContent>
                     {currencies.map((currency) => (
@@ -52,17 +53,17 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         name="category"
         render={({ field }) => (
           <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
-            <FormLabel className="text-sm font-medium">Category</FormLabel>
+            <FormLabel className="text-sm font-medium">{t("category")}</FormLabel>
             <div>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger className="h-8">
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder={t("selectCategory")} />
                   </SelectTrigger>
                   <SelectContent>
                     {categories.map((category) => (
                       <SelectItem key={category} value={category}>
-                        {category}
+                        {t(category)}
                       </SelectItem>
                     ))}
                   </SelectContent>
@@ -79,12 +80,12 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
         name="person"
         render={({ field }) => (
           <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
-            <FormLabel className="text-sm font-medium">Person</FormLabel>
+            <FormLabel className="text-sm font-medium">{t("person")}</FormLabel>
             <div>
               <FormControl>
                 <Select onValueChange={field.onChange} defaultValue={field.value}>
                   <SelectTrigger className="h-8">
-                    <SelectValue placeholder="Select person" />
+                    <SelectValue placeholder={t("selectPerson")} />
                   </SelectTrigger>
                   <SelectContent>
                     {people.map((person) => (
@@ -107,12 +108,12 @@ export const TransactionSelectFields = ({ form }: TransactionSelectFieldsProps) 
           name="property"
           render={({ field }) => (
             <FormItem className="grid grid-cols-[100px_1fr] items-center gap-2">
-              <FormLabel className="text-sm font-medium">Property</FormLabel>
+              <FormLabel className="text-sm font-medium">{t("property")}</FormLabel>
               <div>
                 <FormControl>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <SelectTrigger className="h-8">
-                      <SelectValue placeholder="Select property" />
+                      <SelectValue placeholder={t("selectProperty")} />
                     </SelectTrigger>
                     <SelectContent>
                       {properties.map((property) => (

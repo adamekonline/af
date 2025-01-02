@@ -84,7 +84,7 @@ export const BudgetView = () => {
             <SelectContent>
               {categories.map((cat) => (
                 <SelectItem key={cat} value={cat}>
-                  {cat}
+                  {t(cat)}
                 </SelectItem>
               ))}
             </SelectContent>
@@ -125,7 +125,7 @@ export const BudgetView = () => {
             className="p-4 rounded-lg border bg-card text-card-foreground shadow-sm"
           >
             <div className="flex justify-between items-start mb-2">
-              <h3 className="font-semibold">{budget.category}</h3>
+              <h3 className="font-semibold">{t(budget.category)}</h3>
               <Button
                 variant="ghost"
                 size="sm"
