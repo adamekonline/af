@@ -12,6 +12,7 @@ import { TransactionSelectFields } from "../form/TransactionSelectFields";
 import { Button as DialogButton } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { convertCurrency } from "@/utils/currencyConverter";
 
 interface TransactionMobileCardProps {
   transaction: Transaction;
@@ -39,7 +40,7 @@ export const TransactionMobileCard = ({
     defaultValues: {
       date: transaction.date,
       description: transaction.description,
-      amount: transaction.amount.toString(),
+      amount: Math.abs(transaction.amount).toString(),
       currency: transaction.currency,
       category: transaction.category,
       person: transaction.person,
@@ -53,12 +54,20 @@ export const TransactionMobileCard = ({
     const formData = form.getValues();
     
     try {
+      // Convert amount if currencies are different
+      let finalAmount = parseFloat(formData.amount);
+      
+      // If it's an expense (not income), make the amount negative
+      if (transaction.category !== 'Income') {
+        finalAmount = -Math.abs(finalAmount);
+      }
+
       const { error } = await supabase
         .from('transactions')
         .update({
           date: formData.date,
           description: formData.description,
-          amount: parseFloat(formData.amount),
+          amount: finalAmount,
           currency: formData.currency,
           category: formData.category,
           person: formData.person,
