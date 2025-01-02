@@ -12,6 +12,7 @@ import { TransactionSelectFields } from "../form/TransactionSelectFields";
 import { Button as DialogButton } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { t } from "@/utils/translations";
 
 interface TransactionMobileCardProps {
   transaction: Transaction;
@@ -75,10 +76,16 @@ export const TransactionMobileCard = ({
       if (error) throw error;
 
       setEditDialogOpen(false);
-      toast.success("Transaction updated successfully");
+      toast.success(t("transactionUpdated"));
     } catch (error) {
       console.error('Error updating transaction:', error);
-      toast.error("Failed to update transaction");
+      toast.error(t("failedToUpdateTransaction"));
+    }
+  };
+
+  const handleDelete = () => {
+    if (window.confirm(t("confirmDeleteTransaction"))) {
+      onDelete(transaction.id);
     }
   };
 
@@ -112,7 +119,7 @@ export const TransactionMobileCard = ({
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => onDelete(transaction.id)}
+                  onClick={handleDelete}
                   className="text-destructive hover:text-destructive hover:bg-destructive/10"
                 >
                   <Trash2 className="h-4 w-4" />
@@ -131,14 +138,14 @@ export const TransactionMobileCard = ({
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent className="max-h-[85vh] w-full max-w-[400px] flex flex-col p-4">
           <DialogHeader>
-            <DialogTitle>Edit Transaction</DialogTitle>
+            <DialogTitle>{t("editTransaction")}</DialogTitle>
           </DialogHeader>
           <Form {...form}>
             <form onSubmit={handleEdit} className="space-y-3">
               <TransactionBasicFields form={form} />
               <TransactionSelectFields form={form} />
               <DialogButton type="submit" className="w-full">
-                Update Transaction
+                {t("updateTransaction")}
               </DialogButton>
             </form>
           </Form>
