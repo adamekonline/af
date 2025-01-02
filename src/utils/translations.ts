@@ -82,7 +82,16 @@ export const translations: Record<string, string> = {
   failedToDeleteExchangeRate: "Nie udało się usunąć kursu walutowego",
   failedToFetchExchangeRates: "Nie udało się pobrać kursów walutowych",
 
-  // Category translations
+  // Form field labels
+  date: "Data",
+  description: "Opis",
+  amount: "Kwota",
+  currency: "Waluta",
+  category: "Kategoria",
+  person: "Osoba",
+  property: "Nieruchomość",
+  
+  // Categories
   Housing: "Mieszkanie",
   Food: "Jedzenie",
   Transport: "Transport",
@@ -93,6 +102,18 @@ export const translations: Record<string, string> = {
   Income: "Przychód",
   "Telefonia/Internet": "Telefonia/Internet",
   Other: "Inne",
+  
+  // Form actions and messages
+  addTransaction: "Dodaj transakcję",
+  editTransaction: "Edytuj transakcję",
+  transactionAdded: "Transakcja została dodana",
+  selectCategory: "Wybierz kategorię",
+  selectCurrency: "Wybierz walutę",
+  selectPerson: "Wybierz osobę",
+  selectProperty: "Wybierz nieruchomość",
+  
+  // Success messages
+  success: "Sukces",
 };
 
 export const t = (key: keyof typeof translations): string => {
