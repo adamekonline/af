@@ -4,14 +4,21 @@ import { TransactionsView } from "@/components/transactions/TransactionsView";
 import { LayoutDashboard, LogOut, Menu, Receipt, BookmarkPlus, DollarSign } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useState, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 import { BudgetView } from "@/components/budget/BudgetView";
 import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
 import { t } from "@/utils/translations";
+import { Skeleton } from "@/components/ui/skeleton";
 
-// ... keep existing code (imports and component start)
+const TabContent = ({ children }: { children: React.ReactNode }) => (
+  <div className="min-h-[200px]">
+    <Suspense fallback={<Skeleton className="w-full h-[200px]" />}>
+      {children}
+    </Suspense>
+  </div>
+);
 
 export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -27,7 +34,7 @@ export const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <header className="border-b">
+      <header className="border-b sticky top-0 bg-background z-50">
         <div className="container flex h-16 items-center justify-between gap-4">
           <div className="flex items-center gap-4">
             <Sheet>
@@ -36,7 +43,7 @@ export const Index = () => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left">
+              <SheetContent side="left" className="w-[240px] sm:w-[280px]">
                 <nav className="flex flex-col gap-2">
                   <Button 
                     variant="ghost" 
@@ -73,67 +80,68 @@ export const Index = () => {
                 </nav>
               </SheetContent>
             </Sheet>
-            
-            <div className="hidden md:flex">
-              <ResponsiveTransactionFormDialog />
-            </div>
           </div>
           
-          <Button variant="ghost" size="icon" onClick={handleLogout}>
-            <LogOut className="h-6 w-6" />
-          </Button>
+          <div className="flex items-center gap-2">
+            <ResponsiveTransactionFormDialog />
+            <Button variant="ghost" size="icon" onClick={handleLogout}>
+              <LogOut className="h-6 w-6" />
+            </Button>
+          </div>
         </div>
       </header>
       
-      <main className="container py-6">
-        <Tabs value={activeTab} onValueChange={handleTabChange}>
-          <div className="flex items-center justify-between mb-6">
-            <TabsList>
-              <TabsTrigger value="dashboard" className="flex items-center gap-2">
+      <main className="container py-4 md:py-6">
+        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <TabsList className="h-auto p-1 grid grid-cols-2 sm:flex sm:grid-cols-none gap-2">
+              <TabsTrigger value="dashboard" className="flex items-center gap-2 data-[state=active]:font-semibold">
                 <LayoutDashboard className="h-4 w-4" />
-                {t("dashboard")}
+                <span className="hidden sm:inline">{t("dashboard")}</span>
               </TabsTrigger>
-              <TabsTrigger value="transactions" className="flex items-center gap-2">
+              <TabsTrigger value="transactions" className="flex items-center gap-2 data-[state=active]:font-semibold">
                 <Receipt className="h-4 w-4" />
-                {t("transactions")}
+                <span className="hidden sm:inline">{t("transactions")}</span>
               </TabsTrigger>
-              <TabsTrigger value="budgets" className="flex items-center gap-2">
+              <TabsTrigger value="budgets" className="flex items-center gap-2 data-[state=active]:font-semibold">
                 <BookmarkPlus className="h-4 w-4" />
-                {t("budgets")}
+                <span className="hidden sm:inline">{t("budgets")}</span>
               </TabsTrigger>
-              <TabsTrigger value="exchange-rates" className="flex items-center gap-2">
+              <TabsTrigger value="exchange-rates" className="flex items-center gap-2 data-[state=active]:font-semibold">
                 <DollarSign className="h-4 w-4" />
-                {t("exchangeRates")}
+                <span className="hidden sm:inline">{t("exchangeRates")}</span>
               </TabsTrigger>
             </TabsList>
-            
-            <div className="flex items-center gap-2">
-              <div className="md:hidden">
-                <ResponsiveTransactionFormDialog />
-              </div>
-            </div>
           </div>
           
           <TabsContent value="dashboard">
-            <DashboardView />
+            <TabContent>
+              <DashboardView />
+            </TabContent>
           </TabsContent>
           
           <TabsContent value="transactions">
-            <TransactionsView />
+            <TabContent>
+              <TransactionsView />
+            </TabContent>
           </TabsContent>
           
           <TabsContent value="budgets">
-            <BudgetView />
+            <TabContent>
+              <BudgetView />
+            </TabContent>
           </TabsContent>
 
           <TabsContent value="exchange-rates">
-            <div className="rounded-lg border bg-card p-6 shadow-sm">
-              <div className="flex items-center gap-2 mb-6">
-                <DollarSign className="h-6 w-6 text-primary" />
-                <h2 className="text-2xl font-semibold">{t("exchangeRates")}</h2>
+            <TabContent>
+              <div className="rounded-lg border bg-card p-4 md:p-6 shadow-sm">
+                <div className="flex items-center gap-2 mb-4 md:mb-6">
+                  <DollarSign className="h-6 w-6 text-primary" />
+                  <h2 className="text-xl md:text-2xl font-semibold">{t("exchangeRates")}</h2>
+                </div>
+                <ManualExchangeRates />
               </div>
-              <ManualExchangeRates />
-            </div>
+            </TabContent>
           </TabsContent>
         </Tabs>
       </main>

@@ -11,11 +11,11 @@ export const DashboardFilters = (props: DashboardFiltersProps) => {
   const { activeFiltersCount } = props;
 
   return (
-    <div className="flex flex-wrap items-center gap-4 mb-6">
+    <div className="flex flex-wrap items-center gap-3">
       {/* Mobile Filters */}
       <Sheet>
         <SheetTrigger asChild>
-          <Button variant="outline" className="lg:hidden">
+          <Button variant="outline" className="lg:hidden w-full sm:w-auto">
             <Filter className="h-4 w-4 mr-2" />
             {t("filters")}
             {activeFiltersCount > 0 && (
@@ -25,18 +25,20 @@ export const DashboardFilters = (props: DashboardFiltersProps) => {
             )}
           </Button>
         </SheetTrigger>
-        <SheetContent>
+        <SheetContent side="bottom" className="h-[85vh] px-4">
           <SheetHeader>
             <SheetTitle>{t("filters")}</SheetTitle>
           </SheetHeader>
-          <div className="flex flex-col gap-4 mt-4">
+          <div className="flex flex-col gap-4 mt-4 overflow-y-auto pb-safe">
             <MobileFilters {...props} />
           </div>
         </SheetContent>
       </Sheet>
 
       {/* Desktop Filters */}
-      <DesktopFilters {...props} />
+      <div className="hidden lg:block w-full">
+        <DesktopFilters {...props} />
+      </div>
     </div>
   );
 };
