@@ -11,6 +11,8 @@ import { BudgetView } from "@/components/budget/BudgetView";
 import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
 import { t } from "@/utils/translations";
 import { Skeleton } from "@/components/ui/skeleton";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "sonner";
 
 const TabContent = ({ children }: { children: React.ReactNode }) => (
   <div className="min-h-[200px]">
@@ -28,8 +30,16 @@ export const Index = () => {
     setActiveTab(tab);
   };
 
-  const handleLogout = () => {
-    // Logout logic here
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
+      navigate("/login");
+      toast.success(t("loggedOut"));
+    } catch (error) {
+      console.error('Error logging out:', error);
+      toast.error(t("errorLoggingOut"));
+    }
   };
 
   return (

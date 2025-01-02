@@ -39,7 +39,7 @@ export const usePersonalSpending = () => {
 
       // Process transactions
       for (const transaction of transactions as Transaction[]) {
-        if (transaction.amount < 0) {
+        if (transaction.amount < 0 && transaction.category !== 'Income') {
           const convertedAmount = await convertCurrency(
             Math.abs(transaction.amount),
             transaction.currency,
