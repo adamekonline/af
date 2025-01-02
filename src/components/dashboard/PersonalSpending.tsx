@@ -1,7 +1,69 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { t } from "@/utils/translations";
+import { useEffect, useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { Transaction } from "@/types";
+import { convertCurrency } from "@/utils/currencyConverter";
 
 export const PersonalSpending = () => {
+  const [personalSpending, setPersonalSpending] = useState({
+    Adam: 0,
+    Natka: 0,
+    Adi: 0
+  });
+
+  useEffect(() => {
+    const fetchPersonalSpending = async () => {
+      try {
+        const { data: transactions, error } = await supabase
+          .from('transactions')
+          .select('*')
+          .lt('date', new Date().toISOString())
+          .gt('date', new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString());
+
+        if (error) throw error;
+
+        const spending = {
+          Adam: 0,
+          Natka: 0,
+          Adi: 0
+        };
+
+        // Process transactions
+        for (const transaction of transactions as Transaction[]) {
+          if (transaction.amount < 0) { // Only count expenses (negative amounts)
+            const convertedAmount = await convertCurrency(
+              Math.abs(transaction.amount),
+              transaction.currency,
+              'PLN'
+            );
+            
+            spending[transaction.person] += convertedAmount;
+          }
+        }
+
+        setPersonalSpending(spending);
+      } catch (error) {
+        console.error('Error fetching personal spending:', error);
+      }
+    };
+
+    fetchPersonalSpending();
+  }, []);
+
+  // Calculate percentages based on total spending
+  const totalSpending = Object.values(personalSpending).reduce((a, b) => a + b, 0);
+  const getPercentage = (amount: number) => {
+    return totalSpending > 0 ? Math.round((amount / totalSpending) * 100) : 0;
+  };
+
+  const formatAmount = (amount: number) => {
+    return amount.toLocaleString('pl-PL', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
+  };
+
   return (
     <Card>
       <CardHeader>
@@ -9,27 +71,19 @@ export const PersonalSpending = () => {
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
-          <div className="flex items-center">
-            <div className="ml-4 space-y-1">
-              <p className="text-sm font-medium leading-none">{t("housing")}</p>
-              <p className="text-sm text-muted-foreground">2100 zł</p>
+          {Object.entries(personalSpending).map(([person, amount]) => (
+            <div key={person} className="flex items-center">
+              <div className="ml-4 space-y-1">
+                <p className="text-sm font-medium leading-none">{person}</p>
+                <p className="text-sm text-muted-foreground">
+                  {formatAmount(amount)} zł
+                </p>
+              </div>
+              <div className="ml-auto font-medium">
+                {getPercentage(amount)}%
+              </div>
             </div>
-            <div className="ml-auto font-medium">+84%</div>
-          </div>
-          <div className="flex items-center">
-            <div className="ml-4 space-y-1">
-              <p className="text-sm font-medium leading-none">{t("food")}</p>
-              <p className="text-sm text-muted-foreground">1200 zł</p>
-            </div>
-            <div className="ml-auto font-medium">+80%</div>
-          </div>
-          <div className="flex items-center">
-            <div className="ml-4 space-y-1">
-              <p className="text-sm font-medium leading-none">{t("transport")}</p>
-              <p className="text-sm text-muted-foreground">300 zł</p>
-            </div>
-            <div className="ml-auto font-medium">+60%</div>
-          </div>
+          ))}
         </div>
       </CardContent>
     </Card>
