@@ -9,7 +9,7 @@ interface ChartTooltipProps {
 
 export const ChartTooltip: FC<ChartTooltipProps> = ({ active, payload, label, displayCurrency }) => {
   const formatNumber = (num: number) => {
-    return num.toLocaleString('de-DE', { 
+    return num.toLocaleString('pl-PL', { 
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });

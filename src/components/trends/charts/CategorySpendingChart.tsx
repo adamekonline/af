@@ -9,7 +9,7 @@ interface Props {
 
 export const CategorySpendingChart = ({ data, displayCurrency }: Props) => {
   const formatNumber = (value: number) => {
-    return value.toLocaleString('de-DE', { 
+    return value.toLocaleString('pl-PL', { 
       minimumFractionDigits: 2,
       maximumFractionDigits: 2
     });

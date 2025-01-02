@@ -11,7 +11,7 @@ interface ExchangeRatesListProps {
 
 export const ExchangeRatesList = ({ rates, onDelete, onEdit }: ExchangeRatesListProps) => {
   const formatNumber = (num: number) => {
-    return num.toLocaleString('de-DE', { 
+    return num.toLocaleString('pl-PL', { 
       minimumFractionDigits: 4,
       maximumFractionDigits: 4
     });

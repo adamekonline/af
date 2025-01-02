@@ -12,7 +12,7 @@ interface MobileExchangeRatesListProps {
 
 export const MobileExchangeRatesList = ({ rates, onDelete, onEdit }: MobileExchangeRatesListProps) => {
   const formatNumber = (num: number) => {
-    return num.toLocaleString('de-DE', { 
+    return num.toLocaleString('pl-PL', { 
       minimumFractionDigits: 4,
       maximumFractionDigits: 4
     });
