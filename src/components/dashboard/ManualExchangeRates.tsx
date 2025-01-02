@@ -4,11 +4,16 @@ import { toast } from "sonner";
 import { useState, useEffect } from "react";
 import { ExchangeRateForm } from "./exchange-rates/ExchangeRateForm";
 import { ExchangeRatesList } from "./exchange-rates/ExchangeRatesList";
+import { MobileExchangeRateForm } from "./exchange-rates/MobileExchangeRateForm";
+import { MobileExchangeRatesList } from "./exchange-rates/MobileExchangeRatesList";
 import { ManualRate, ManualRateForm, SupabaseManualRate } from "./exchange-rates/types";
 import { t } from "@/utils/translations";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export const ManualExchangeRates = () => {
   const [rates, setRates] = useState<ManualRate[]>([]);
+  const isMobile = useIsMobile();
+  
   const form = useForm<ManualRateForm>({
     defaultValues: {
       date: new Date().toISOString().split('T')[0],
@@ -99,15 +104,27 @@ export const ManualExchangeRates = () => {
     <div className="space-y-8">
       <div className="grid gap-8">
         <div className="rounded-lg border bg-card">
-          <ExchangeRateForm form={form} onSubmit={onSubmit} />
+          {isMobile ? (
+            <MobileExchangeRateForm form={form} onSubmit={onSubmit} />
+          ) : (
+            <ExchangeRateForm form={form} onSubmit={onSubmit} />
+          )}
         </div>
         
         <div className="rounded-lg border bg-card">
-          <ExchangeRatesList 
-            rates={rates} 
-            onDelete={handleDelete}
-            onEdit={handleEdit}
-          />
+          {isMobile ? (
+            <MobileExchangeRatesList 
+              rates={rates} 
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          ) : (
+            <ExchangeRatesList 
+              rates={rates} 
+              onDelete={handleDelete}
+              onEdit={handleEdit}
+            />
+          )}
         </div>
       </div>
     </div>
