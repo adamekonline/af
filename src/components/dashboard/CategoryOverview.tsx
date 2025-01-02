@@ -98,7 +98,7 @@ export const CategoryOverview = () => {
           <div key={category.category} className="space-y-2">
             <div className="flex items-center justify-between text-sm">
               <div className="flex items-center">
-                <span className="font-medium">{category.category}</span>
+                <span className="font-medium">{t(category.category)}</span>
               </div>
               <span className="text-muted-foreground">
                 {formatAmount(category.total)} zł
