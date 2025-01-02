@@ -54,17 +54,16 @@ export const PersonalSpending = () => {
 
     // Subscribe to real-time changes
     const channel = supabase
-      .channel('public:transactions')
+      .channel('personal-spending')
       .on(
         'postgres_changes',
         { 
           event: '*', 
           schema: 'public', 
-          table: 'transactions',
-          filter: `date.gte.${new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString()}`
+          table: 'transactions'
         },
-        () => {
-          console.log("Transaction changed, updating personal spending...");
+        (payload) => {
+          console.log("Transaction changed, updating personal spending...", payload);
           fetchPersonalSpending();
         }
       )

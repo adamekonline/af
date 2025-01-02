@@ -1,5 +1,4 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Transaction } from "@/types";
@@ -81,17 +80,16 @@ export const CategoryOverview = () => {
 
     // Subscribe to real-time changes
     const channel = supabase
-      .channel('public:transactions')
+      .channel('category-overview')
       .on(
         'postgres_changes',
         { 
           event: '*', 
           schema: 'public', 
-          table: 'transactions',
-          filter: `date.gte.${new Date(new Date().setMonth(new Date().getMonth() - 1)).toISOString()}`
+          table: 'transactions'
         },
-        () => {
-          console.log("Transaction changed, updating category overview...");
+        (payload) => {
+          console.log("Transaction changed, updating category overview...", payload);
           fetchCategorySpending();
         }
       )
