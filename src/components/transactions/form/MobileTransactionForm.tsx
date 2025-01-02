@@ -7,6 +7,7 @@ import { TransactionSelectFields } from "./TransactionSelectFields";
 import { UseFormReturn } from "react-hook-form";
 import { TransactionFormData } from "../types";
 import { Form } from "@/components/ui/form";
+import { t } from "@/utils/translations";
 
 interface MobileTransactionFormProps {
   open: boolean;
@@ -21,13 +22,13 @@ export const MobileTransactionForm = ({ open, onOpenChange, form, onSubmit }: Mo
       <SheetTrigger asChild>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          Add Transaction
+          {t("addTransaction")}
         </Button>
       </SheetTrigger>
       <SheetContent side="bottom" className="h-[85dvh] p-0">
         <div className="flex flex-col h-full">
           <SheetHeader className="flex-shrink-0 p-4">
-            <SheetTitle>Add Transaction</SheetTitle>
+            <SheetTitle>{t("addTransaction")}</SheetTitle>
             <SheetDescription>Add a new transaction to your records.</SheetDescription>
           </SheetHeader>
           
@@ -42,7 +43,7 @@ export const MobileTransactionForm = ({ open, onOpenChange, form, onSubmit }: Mo
               
               <div className="flex-shrink-0 p-4 border-t bg-background mt-auto">
                 <Button type="submit" className="w-full">
-                  Add Transaction
+                  {t("addTransaction")}
                 </Button>
               </div>
             </form>

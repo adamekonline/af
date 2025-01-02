@@ -7,6 +7,7 @@ import { TransactionSelectFields } from "./TransactionSelectFields";
 import { UseFormReturn } from "react-hook-form";
 import { TransactionFormData } from "../types";
 import { Form } from "@/components/ui/form";
+import { t } from "@/utils/translations";
 
 interface DesktopTransactionFormProps {
   open: boolean;
@@ -21,12 +22,12 @@ export const DesktopTransactionForm = ({ open, onOpenChange, form, onSubmit }: D
       <DialogTrigger asChild>
         <Button>
           <Plus className="h-4 w-4 mr-2" />
-          Add Transaction
+          {t("addTransaction")}
         </Button>
       </DialogTrigger>
       <DialogContent className="max-h-[85vh] w-full max-w-[400px] flex flex-col p-4">
         <DialogHeader className="flex-shrink-0">
-          <DialogTitle>Add Transaction</DialogTitle>
+          <DialogTitle>{t("addTransaction")}</DialogTitle>
           <DialogDescription>Add a new transaction to your records.</DialogDescription>
         </DialogHeader>
         <ScrollArea className="flex-1 mt-4">
@@ -36,7 +37,7 @@ export const DesktopTransactionForm = ({ open, onOpenChange, form, onSubmit }: D
               <TransactionSelectFields form={form} />
               <div className="pt-2">
                 <Button type="submit" className="w-full">
-                  Add Transaction
+                  {t("addTransaction")}
                 </Button>
               </div>
             </form>
