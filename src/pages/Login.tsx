@@ -3,7 +3,7 @@ import { ThemeSupa } from "@supabase/auth-ui-shared";
 import { supabase } from "@/integrations/supabase/client";
 import { t } from "@/utils/translations";
 
-const Login = () => {
+export const Login = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-sm">
@@ -35,5 +35,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;
