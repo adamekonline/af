@@ -64,7 +64,7 @@ export const BudgetTracker = () => {
                   <span>{t(budget.category)}</span>
                 </div>
                 <span className="text-muted-foreground">
-                  {spent.toFixed(2)} {budget.currency} {t("spent")} / {budget.limit_amount} {budget.currency} {t("budget")}
+                  {spent.toFixed(2)} zł / {budget.limit_amount} zł
                 </span>
               </div>
               <Progress 
