@@ -56,6 +56,9 @@ export const translations = {
   health: "Zdrowie",
   education: "Edukacja",
   credit: "Kredyt",
+  creditCard: "Karta kredytowa",
+  income: "Przychód",
+  other: "Inne",
 
   // Budget related
   spent: "Wydane",
@@ -63,6 +66,9 @@ export const translations = {
   budgetAdded: "Dodano budżet",
   budgetDeleted: "Usunięto budżet",
   addBudget: "Dodaj budżet",
+  enterAmount: "Wprowadź kwotę",
+  selectCategory: "Wybierz kategorię",
+  selectCurrency: "Wybierz walutę",
 
   // Properties
   allProperties: "Wszystkie nieruchomości",
@@ -91,9 +97,6 @@ export const translations = {
   editTransaction: "Edytuj transakcję",
   transactionAdded: "Transakcja została dodana",
   enterDescription: "Wprowadź opis",
-  enterAmount: "Wprowadź kwotę",
-  selectCategory: "Wybierz kategorię",
-  selectCurrency: "Wybierz walutę",
   selectPerson: "Wybierz osobę",
   selectProperty: "Wybierz nieruchomość",
   apply: "Zastosuj",
