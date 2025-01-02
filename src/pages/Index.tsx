@@ -43,38 +43,38 @@ export const Index = () => {
                   <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[240px] sm:w-[280px]">
-                <nav className="flex flex-col gap-2">
+              <SheetContent side="top" className="w-full h-[90vh] p-0">
+                <nav className="flex flex-col gap-2 p-4">
                   <Button 
                     variant="ghost" 
-                    className="justify-start text-sm" 
+                    className="justify-start text-base w-full" 
                     onClick={() => handleTabChange("dashboard")}
                   >
-                    <LayoutDashboard className="mr-2 h-4 w-4" />
+                    <LayoutDashboard className="mr-2 h-5 w-5" />
                     {t("dashboard")}
                   </Button>
                   <Button 
                     variant="ghost" 
-                    className="justify-start text-sm" 
+                    className="justify-start text-base w-full" 
                     onClick={() => handleTabChange("transactions")}
                   >
-                    <Receipt className="mr-2 h-4 w-4" />
+                    <Receipt className="mr-2 h-5 w-5" />
                     {t("transactions")}
                   </Button>
                   <Button 
                     variant="ghost" 
-                    className="justify-start text-sm" 
+                    className="justify-start text-base w-full" 
                     onClick={() => handleTabChange("budgets")}
                   >
-                    <BookmarkPlus className="mr-2 h-4 w-4" />
+                    <BookmarkPlus className="mr-2 h-5 w-5" />
                     {t("budgets")}
                   </Button>
                   <Button 
                     variant="ghost" 
-                    className="justify-start text-sm" 
+                    className="justify-start text-base w-full" 
                     onClick={() => handleTabChange("exchange-rates")}
                   >
-                    <DollarSign className="mr-2 h-4 w-4" />
+                    <DollarSign className="mr-2 h-5 w-5" />
                     {t("exchangeRates")}
                   </Button>
                 </nav>
