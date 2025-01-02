@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ManualRate } from "./types";
 import { t } from "@/utils/translations";
+import { Trash2 } from "lucide-react";
 
 interface ExchangeRatesListProps {
   rates: ManualRate[];
@@ -26,36 +27,41 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
   }
 
   return (
-    <div className="space-y-1">
-      <div className="grid grid-cols-4 gap-4 bg-muted/50 p-4 text-sm font-medium">
-        <div>{t("date")}</div>
-        <div>{t("fromCurrency")}</div>
-        <div>{t("toCurrency")}</div>
-        <div>{t("exchangeRate")}</div>
-      </div>
-      <div className="divide-y">
-        {rates.map((rate) => (
-          <div 
-            key={rate.id} 
-            className="grid grid-cols-4 gap-4 items-center p-4 hover:bg-muted/50 transition-colors"
-          >
-            <div>{rate.date}</div>
-            <div>{rate.base_currency}</div>
-            <div>{rate.target_currency}</div>
-            <div className="flex items-center justify-between">
-              <span>{formatNumber(rate.rate)}</span>
-              <Button 
-                variant="ghost" 
-                size="sm" 
-                onClick={() => onDelete(rate.id)}
-                className="text-destructive hover:text-destructive hover:bg-destructive/10"
-              >
-                {t("delete")}
-              </Button>
-            </div>
-          </div>
-        ))}
-      </div>
+    <div className="relative overflow-x-auto">
+      <table className="w-full text-sm text-left">
+        <thead className="text-xs uppercase bg-muted/50">
+          <tr>
+            <th scope="col" className="px-6 py-4">{t("date")}</th>
+            <th scope="col" className="px-6 py-4">{t("fromCurrency")}</th>
+            <th scope="col" className="px-6 py-4">{t("toCurrency")}</th>
+            <th scope="col" className="px-6 py-4">{t("exchangeRate")}</th>
+            <th scope="col" className="px-6 py-4 text-right">Actions</th>
+          </tr>
+        </thead>
+        <tbody className="divide-y">
+          {rates.map((rate) => (
+            <tr 
+              key={rate.id} 
+              className="hover:bg-muted/50 transition-colors"
+            >
+              <td className="px-6 py-4 whitespace-nowrap">{rate.date}</td>
+              <td className="px-6 py-4">{rate.base_currency}</td>
+              <td className="px-6 py-4">{rate.target_currency}</td>
+              <td className="px-6 py-4">{formatNumber(rate.rate)}</td>
+              <td className="px-6 py-4 text-right">
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  onClick={() => onDelete(rate.id)}
+                  className="text-destructive hover:text-destructive hover:bg-destructive/10"
+                >
+                  <Trash2 className="h-4 w-4" />
+                </Button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };

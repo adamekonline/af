@@ -14,18 +14,16 @@ interface ExchangeRateFormProps {
 export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-medium">{t("addNewRate")}</h3>
-              <p className="text-sm text-muted-foreground">
-                {t("addNewRateDescription")}
-              </p>
-            </div>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="p-6">
+        <div className="space-y-6">
+          <div>
+            <h3 className="text-lg font-medium">{t("addNewRate")}</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              {t("addNewRateDescription")}
+            </p>
           </div>
           
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
             <FormField
               control={form.control}
               name="date"
