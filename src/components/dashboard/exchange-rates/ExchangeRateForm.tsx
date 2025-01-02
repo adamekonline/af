@@ -16,26 +16,20 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="p-6">
         <div className="space-y-6">
-          <div>
-            <h3 className="text-lg font-medium">{t("addNewRate")}</h3>
-            <p className="text-sm text-muted-foreground mt-1">
-              {t("addNewRateDescription")}
-            </p>
-          </div>
+          <FormField
+            control={form.control}
+            name="date"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t("date")}</FormLabel>
+                <FormControl>
+                  <Input type="date" {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-            <FormField
-              control={form.control}
-              name="date"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>{t("date")}</FormLabel>
-                  <FormControl>
-                    <Input type="date" {...field} />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
             <FormField
               control={form.control}
               name="base_currency"
@@ -92,9 +86,7 @@ export const ExchangeRateForm = ({ form, onSubmit }: ExchangeRateFormProps) => {
                 </FormItem>
               )}
             />
-            <div className="flex items-end">
-              <Button type="submit" className="w-full">{t("addRate")}</Button>
-            </div>
+            <Button type="submit" className="w-full">{t("addRate")}</Button>
           </div>
         </div>
       </form>

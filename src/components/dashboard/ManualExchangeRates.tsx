@@ -88,13 +88,6 @@ export const ManualExchangeRates = () => {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h2 className="text-2xl font-bold tracking-tight">{t("manualExchangeRates")}</h2>
-        <p className="text-muted-foreground mt-2">
-          {t("manageExchangeRates")}
-        </p>
-      </div>
-      
       <div className="grid gap-8">
         <div className="rounded-lg border bg-card">
           <ExchangeRateForm form={form} onSubmit={onSubmit} />
