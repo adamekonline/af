@@ -1,51 +1,41 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
-import { LayoutDashboard, LogOut, Menu, Receipt, BookmarkPlus } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Receipt, BookmarkPlus, DollarSign } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 import { BudgetView } from "@/components/budget/BudgetView";
 import { t } from "@/utils/translations";
 
-const Index = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
-  const handleLogout = async () => {
-    try {
-      await supabase.auth.signOut();
-      navigate("/login");
-      toast.success(t("logout"));
-    } catch (error) {
-      console.error("Error logging out:", error);
-      toast.error(t("error"));
-    }
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
   };
 
-  const handleTabChange = (value: string) => {
-    setActiveTab(value);
-    setMobileMenuOpen(false);
+  const handleLogout = () => {
+    // Logout logic here
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center justify-between">
-          <div className="flex items-center">
-            <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+    <div className="min-h-screen bg-background">
+      <header className="border-b">
+        <div className="container flex h-16 items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <Sheet>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-5 w-5" />
+                  <Menu className="h-6 w-6" />
                 </Button>
               </SheetTrigger>
-              <SheetContent side="left" className="w-[240px] sm:w-[280px]">
-                <nav className="flex flex-col gap-4">
+              <SheetContent side="left">
+                <nav className="flex flex-col gap-2">
                   <Button 
                     variant="ghost" 
                     className="justify-start text-sm" 
@@ -70,46 +60,61 @@ const Index = () => {
                     <BookmarkPlus className="mr-2 h-4 w-4" />
                     {t("budgets")}
                   </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-sm" 
+                    onClick={() => navigate('/exchange-rates')}
+                  >
+                    <DollarSign className="mr-2 h-4 w-4" />
+                    {t("exchangeRates")}
+                  </Button>
                 </nav>
               </SheetContent>
             </Sheet>
+            
+            <div className="hidden md:flex">
+              <ResponsiveTransactionFormDialog />
+            </div>
+          </div>
           
-            <h1 className="text-base md:text-lg lg:text-xl font-semibold bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent ml-2 md:ml-4 truncate max-w-[200px] md:max-w-none">
-              AF
-            </h1>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <ResponsiveTransactionFormDialog />
-            <Button 
-              variant="ghost" 
-              size="icon"
-              onClick={handleLogout}
-              className="text-muted-foreground hover:text-foreground"
-              title={t("logout")}
-            >
-              <LogOut className="h-5 w-5" />
-            </Button>
-          </div>
+          <Button variant="ghost" size="icon" onClick={handleLogout}>
+            <LogOut className="h-6 w-6" />
+          </Button>
         </div>
       </header>
-
-      <main className="flex-1 container mx-auto p-4 md:p-6">
-        <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-6">
-          <TabsList className="hidden md:flex justify-start border-b w-full text-sm">
-            <TabsTrigger value="dashboard" className="flex items-center gap-2">
-              <LayoutDashboard className="h-4 w-4" />
-              {t("dashboard")}
-            </TabsTrigger>
-            <TabsTrigger value="transactions" className="flex items-center gap-2">
-              <Receipt className="h-4 w-4" />
-              {t("transactions")}
-            </TabsTrigger>
-            <TabsTrigger value="budgets" className="flex items-center gap-2">
-              <BookmarkPlus className="h-4 w-4" />
-              {t("budgets")}
-            </TabsTrigger>
-          </TabsList>
+      
+      <main className="container py-6">
+        <Tabs value={activeTab} onValueChange={handleTabChange}>
+          <div className="flex items-center justify-between mb-6">
+            <TabsList>
+              <TabsTrigger value="dashboard" className="flex items-center gap-2">
+                <LayoutDashboard className="h-4 w-4" />
+                {t("dashboard")}
+              </TabsTrigger>
+              <TabsTrigger value="transactions" className="flex items-center gap-2">
+                <Receipt className="h-4 w-4" />
+                {t("transactions")}
+              </TabsTrigger>
+              <TabsTrigger value="budgets" className="flex items-center gap-2">
+                <BookmarkPlus className="h-4 w-4" />
+                {t("budgets")}
+              </TabsTrigger>
+            </TabsList>
+            
+            <div className="flex items-center gap-2">
+              <Button 
+                variant="outline"
+                onClick={() => navigate('/exchange-rates')}
+                className="hidden md:flex items-center gap-2"
+              >
+                <DollarSign className="h-4 w-4" />
+                {t("exchangeRates")}
+              </Button>
+              <div className="md:hidden">
+                <ResponsiveTransactionFormDialog />
+              </div>
+            </div>
+          </div>
           
           <TabsContent value="dashboard">
             <DashboardView />
@@ -118,7 +123,7 @@ const Index = () => {
           <TabsContent value="transactions">
             <TransactionsView />
           </TabsContent>
-
+          
           <TabsContent value="budgets">
             <BudgetView />
           </TabsContent>
@@ -127,5 +132,3 @@ const Index = () => {
     </div>
   );
 };
-
-export default Index;
