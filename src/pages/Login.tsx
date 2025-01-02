@@ -25,31 +25,6 @@ const formSchema = z.object({
 export const Login = () => {
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const checkSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
-      if (error) {
-        console.error("Session check error:", error);
-        return;
-      }
-      if (session) {
-        navigate("/");
-      }
-    };
-    
-    checkSession();
-
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === 'SIGNED_IN' && session) {
-        navigate("/");
-      }
-    });
-
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, [navigate]);
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,9 +41,13 @@ export const Login = () => {
       });
 
       if (error) {
+        console.error("Login error:", error);
         toast.error(error.message);
         return;
       }
+
+      toast.success(t("loginSuccess"));
+      navigate("/");
     } catch (error) {
       console.error("Login error:", error);
       toast.error(t("errorLoggingIn"));
