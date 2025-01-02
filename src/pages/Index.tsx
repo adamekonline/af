@@ -1,7 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
-import { LayoutDashboard, LogOut, Menu, Receipt, DollarSign } from "lucide-react";
+import { LayoutDashboard, LogOut, Menu, Receipt, DollarSign, BookmarkPlus } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
+import { BudgetView } from "@/components/budget/BudgetView";
 import { t } from "@/utils/translations";
 
 const Index = () => {
@@ -65,6 +66,14 @@ const Index = () => {
                   <Button 
                     variant="ghost" 
                     className="justify-start text-sm" 
+                    onClick={() => handleTabChange("budgets")}
+                  >
+                    <BookmarkPlus className="mr-2 h-4 w-4" />
+                    {t("budgets")}
+                  </Button>
+                  <Button 
+                    variant="ghost" 
+                    className="justify-start text-sm" 
                     onClick={() => handleTabChange("exchange-rates")}
                   >
                     <DollarSign className="mr-2 h-4 w-4" />
@@ -105,6 +114,10 @@ const Index = () => {
               <Receipt className="h-4 w-4" />
               {t("transactions")}
             </TabsTrigger>
+            <TabsTrigger value="budgets" className="flex items-center gap-2">
+              <BookmarkPlus className="h-4 w-4" />
+              {t("budgets")}
+            </TabsTrigger>
             <TabsTrigger value="exchange-rates" className="flex items-center gap-2">
               <DollarSign className="h-4 w-4" />
               {t("exchangeRates")}
@@ -117,6 +130,10 @@ const Index = () => {
           
           <TabsContent value="transactions">
             <TransactionsView />
+          </TabsContent>
+
+          <TabsContent value="budgets">
+            <BudgetView />
           </TabsContent>
 
           <TabsContent value="exchange-rates">
