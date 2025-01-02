@@ -34,6 +34,8 @@ export const useCategorySpending = () => {
       const startDate = startOfMonth(new Date());
       const endDate = endOfMonth(new Date());
 
+      console.log("Fetching transactions between:", startDate, "and", endDate);
+
       const { data: transactions, error } = await supabase
         .from('transactions')
         .select('*')
