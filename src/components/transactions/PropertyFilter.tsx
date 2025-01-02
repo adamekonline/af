@@ -1,7 +1,6 @@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { PropertyLocation } from "@/types";
-
-const properties: PropertyLocation[] = ["Poznań", "Leuven"];
+import { t } from "@/utils/translations";
 
 interface PropertyFilterProps {
   value: PropertyLocation | "all";
@@ -11,16 +10,13 @@ interface PropertyFilterProps {
 export const PropertyFilter = ({ value, onChange }: PropertyFilterProps) => {
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-[180px]">
-        <SelectValue placeholder="Filter by property" />
+      <SelectTrigger className="w-[120px]">
+        <SelectValue placeholder={t("property")} />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="all">All Properties</SelectItem>
-        {properties.map((property) => (
-          <SelectItem key={property} value={property}>
-            {property}
-          </SelectItem>
-        ))}
+        <SelectItem value="all">{t("allProperties")}</SelectItem>
+        <SelectItem value="Poznań">{t("poznan")}</SelectItem>
+        <SelectItem value="Leuven">{t("leuven")}</SelectItem>
       </SelectContent>
     </Select>
   );

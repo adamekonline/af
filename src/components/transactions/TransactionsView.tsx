@@ -44,7 +44,10 @@ export const TransactionsView = () => {
         .select('*')
         .order('date', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        toast.error(t("errorFetchingTransactions"));
+        throw error;
+      }
       
       // Ensure the data matches our Transaction type
       const typedData: Transaction[] = data.map(item => ({
@@ -59,7 +62,7 @@ export const TransactionsView = () => {
       setTransactions(typedData);
     } catch (error) {
       console.error('Error fetching transactions:', error);
-      toast.error('Failed to fetch transactions');
+      toast.error(t("errorFetchingTransactions"));
     }
   };
 
@@ -71,10 +74,10 @@ export const TransactionsView = () => {
         .eq('id', id);
 
       if (error) throw error;
-      toast.success('Transaction deleted successfully');
+      toast.success(t("transactionDeleted"));
     } catch (error) {
       console.error('Error deleting transaction:', error);
-      toast.error('Failed to delete transaction');
+      toast.error(t("failedToDeleteTransaction"));
     }
   };
 
@@ -111,11 +114,11 @@ export const TransactionsView = () => {
   return (
     <div className="space-y-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-xl font-bold">Transactions</h2>
+        <h2 className="text-xl font-bold">{t("transactions")}</h2>
         <div className="flex flex-wrap gap-2 items-center w-full sm:w-auto">
           <Select value={displayCurrency} onValueChange={handleCurrencyChange}>
             <SelectTrigger className="w-[120px]">
-              <SelectValue placeholder="Currency" />
+              <SelectValue placeholder={t("currency")} />
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="PLN">PLN</SelectItem>
