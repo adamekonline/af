@@ -22,14 +22,13 @@ export const Index = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate('/login');
-        return;
       }
     };
     
     checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (!session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_OUT' || !session) {
         navigate('/login');
       }
     });
@@ -44,12 +43,16 @@ export const Index = () => {
   };
 
   const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        toast.error(t("errorLoggingOut"));
+        return;
+      }
+    } catch (error) {
       toast.error(t("errorLoggingOut"));
-      return;
+      console.error('Logout error:', error);
     }
-    toast.success(t("loggedOut"));
   };
 
   return (
@@ -163,4 +166,3 @@ export const Index = () => {
       </main>
     </div>
   );
-};

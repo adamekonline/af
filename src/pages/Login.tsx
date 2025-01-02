@@ -4,7 +4,6 @@ import { supabase } from "@/integrations/supabase/client";
 import { t } from "@/utils/translations";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import {
   Form,
@@ -36,8 +35,8 @@ export const Login = () => {
     
     checkSession();
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (session) {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
         navigate("/");
       }
     });
