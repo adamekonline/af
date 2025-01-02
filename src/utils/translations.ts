@@ -56,10 +56,10 @@ export const translations = {
   health: "Zdrowie",
   education: "Edukacja",
   credit: "Kredyt",
-  creditCard: "Karta kredytowa",
+  "credit card": "Karta kredytowa",
   income: "Przychód",
-  other: "Inne",
   "telefonia/internet": "Telefonia/Internet",
+  other: "Inne",
 
   // Budget related
   spent: "Wydane",
@@ -126,7 +126,7 @@ export const translations = {
   all: "Wszystkie",
   ascending: "Rosnąco",
   descending: "Malejąco"
-};
+} as const;
 
 export const t = (key: keyof typeof translations): string => {
   return translations[key] || key;
