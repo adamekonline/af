@@ -39,7 +39,7 @@ export const translations = {
   password: "Hasło",
   delete: "Usuń",
 
-  // Categories
+  // Categories (both capitalized and lowercase)
   Housing: "Mieszkanie",
   Food: "Jedzenie",
   Transport: "Transport",
@@ -59,6 +59,7 @@ export const translations = {
   creditCard: "Karta kredytowa",
   income: "Przychód",
   other: "Inne",
+  "telefonia/internet": "Telefonia/Internet",
 
   // Budget related
   spent: "Wydane",
