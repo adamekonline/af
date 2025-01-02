@@ -70,57 +70,67 @@ export const Index = () => {
       <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container flex h-14 items-center justify-between">
           <div className="flex items-center gap-2 md:gap-4">
-            <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-              <SheetTrigger asChild>
-                <Button variant="ghost" size="icon" className="md:hidden">
-                  <Menu className="h-6 w-6" />
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left" className="w-64">
-                <nav className="flex flex-col gap-2 mt-4">
-                  <Button
-                    variant={activeTab === "dashboard" ? "secondary" : "ghost"}
-                    className="justify-start text-base w-full"
-                    onClick={() => handleTabChange("dashboard")}
-                  >
-                    <LayoutDashboard className="mr-2 h-5 w-5" />
-                    {t("dashboard")}
+            <div className="flex items-center gap-2 md:hidden">
+              <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon">
+                    <Menu className="h-6 w-6" />
                   </Button>
-                  <Button
-                    variant={activeTab === "transactions" ? "secondary" : "ghost"}
-                    className="justify-start text-base w-full"
-                    onClick={() => handleTabChange("transactions")}
-                  >
-                    <Receipt className="mr-2 h-5 w-5" />
-                    {t("transactions")}
-                  </Button>
-                  <Button
-                    variant={activeTab === "budget" ? "secondary" : "ghost"}
-                    className="justify-start text-base w-full"
-                    onClick={() => handleTabChange("budget")}
-                  >
-                    <BookmarkPlus className="mr-2 h-5 w-5" />
-                    {t("budget")}
-                  </Button>
-                  <Button
-                    variant={activeTab === "exchange-rates" ? "secondary" : "ghost"}
-                    className="justify-start text-base w-full"
-                    onClick={() => handleTabChange("exchange-rates")}
-                  >
-                    <DollarSign className="mr-2 h-5 w-5" />
-                    {t("exchangeRates")}
-                  </Button>
-                  <Button 
-                    variant="ghost" 
-                    className="justify-start text-base w-full text-red-500 hover:text-red-600 hover:bg-red-100/50" 
-                    onClick={handleLogout}
-                  >
-                    <LogOut className="mr-2 h-5 w-5" />
-                    {t("logout")}
-                  </Button>
-                </nav>
-              </SheetContent>
-            </Sheet>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-64">
+                  <nav className="flex flex-col gap-2 mt-4">
+                    <Button
+                      variant={activeTab === "dashboard" ? "secondary" : "ghost"}
+                      className="justify-start text-base w-full"
+                      onClick={() => handleTabChange("dashboard")}
+                    >
+                      <LayoutDashboard className="mr-2 h-5 w-5" />
+                      {t("dashboard")}
+                    </Button>
+                    <Button
+                      variant={activeTab === "transactions" ? "secondary" : "ghost"}
+                      className="justify-start text-base w-full"
+                      onClick={() => handleTabChange("transactions")}
+                    >
+                      <Receipt className="mr-2 h-5 w-5" />
+                      {t("transactions")}
+                    </Button>
+                    <Button
+                      variant={activeTab === "budget" ? "secondary" : "ghost"}
+                      className="justify-start text-base w-full"
+                      onClick={() => handleTabChange("budget")}
+                    >
+                      <BookmarkPlus className="mr-2 h-5 w-5" />
+                      {t("budget")}
+                    </Button>
+                    <Button
+                      variant={activeTab === "exchange-rates" ? "secondary" : "ghost"}
+                      className="justify-start text-base w-full"
+                      onClick={() => handleTabChange("exchange-rates")}
+                    >
+                      <DollarSign className="mr-2 h-5 w-5" />
+                      {t("exchangeRates")}
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      className="justify-start text-base w-full text-red-500 hover:text-red-600 hover:bg-red-100/50" 
+                      onClick={handleLogout}
+                    >
+                      <LogOut className="mr-2 h-5 w-5" />
+                      {t("logout")}
+                    </Button>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+              <Button 
+                variant="outline" 
+                size="icon"
+                onClick={handleLogout}
+                className="text-red-500 hover:text-red-600 hover:bg-red-100/50 border-red-200"
+              >
+                <LogOut className="h-5 w-5" />
+              </Button>
+            </div>
             <nav className="hidden md:flex items-center gap-2">
               <Button
                 variant={activeTab === "dashboard" ? "secondary" : "ghost"}
