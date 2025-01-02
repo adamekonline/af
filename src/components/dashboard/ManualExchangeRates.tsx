@@ -87,7 +87,7 @@ export const ManualExchangeRates = () => {
   };
 
   return (
-    <div className="w-full">
+    <div>
       <h2 className="text-2xl font-bold mb-6">{t("manualExchangeRates")}</h2>
       
       <ExchangeRateForm form={form} onSubmit={onSubmit} />
