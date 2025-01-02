@@ -7,7 +7,7 @@ import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { DashboardFiltersProps } from "./types";
 
-const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
+const categories: Category[] = ["Housing", "Zywnosc", "Transport", "Health", "Education", "Kredyty", "Credit Card", "Income", "Telefonia/Internet", "Restauracje/Rozrywka", "Other"];
 const people = ["All", "Adam", "Natka", "Adi"];
 const currencies: Currency[] = ["PLN", "EUR", "USD"];
 

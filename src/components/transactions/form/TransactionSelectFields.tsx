@@ -4,7 +4,7 @@ import { UseFormReturn, useWatch } from "react-hook-form";
 import { Category, Currency, Person, PropertyLocation, TransactionFormData } from "../types";
 import { t } from "@/utils/translations";
 
-const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Telefonia/Internet", "Other"];
+const categories: Category[] = ["Housing", "Zywnosc", "Transport", "Health", "Education", "Kredyty", "Credit Card", "Income", "Telefonia/Internet", "Restauracje/Rozrywka", "Other"];
 const currencies: Currency[] = ["PLN", "USD", "EUR", "GBP"];
 const people: Person[] = ["Natka", "Adam", "Adi"];
 const properties: PropertyLocation[] = ["Poznań", "Leuven"];

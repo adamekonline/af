@@ -5,7 +5,7 @@ import { DashboardFiltersProps } from "./types";
 import { format } from "date-fns";
 import { Input } from "@/components/ui/input";
 
-const categories: Category[] = ["Housing", "Food", "Transport", "Health", "Education", "Credit", "Credit Card", "Income", "Other"];
+const categories: Category[] = ["Housing", "Zywnosc", "Transport", "Health", "Education", "Kredyty", "Credit Card", "Income", "Telefonia/Internet", "Restauracje/Rozrywka", "Other"];
 const people = ["All", "Adam", "Natka", "Adi"];
 const currencies: Currency[] = ["PLN", "EUR", "USD"];
 
