@@ -133,6 +133,11 @@ export const translations = {
 
   // Actions
   actions: "Akcje",
+
+  // Auth related
+  enterCredentials: "Wprowadź swoje dane logowania",
+  invalidEmail: "Nieprawidłowy adres email",
+  passwordTooShort: "Hasło musi mieć co najmniej 6 znaków",
 } as const;
 
 type TranslationKey = keyof typeof translations | (string & {});
