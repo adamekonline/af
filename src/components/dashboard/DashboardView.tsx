@@ -50,7 +50,8 @@ export const DashboardView = () => {
 
   return (
     <div className="space-y-4 md:space-y-6">
-      <div className="flex flex-col gap-4">
+      {/* Desktop Filters */}
+      <div className="hidden lg:block">
         <DashboardFilters
           startDate={startDate}
           endDate={endDate}
@@ -90,7 +91,30 @@ export const DashboardView = () => {
           icon={TrendingDown}
           variant="expense"
         />
+      </div>
 
+      {/* Mobile Filters - Moved below summary cards */}
+      <div className="lg:hidden">
+        <DashboardFilters
+          startDate={startDate}
+          endDate={endDate}
+          onDateChange={(start, end) => {
+            setStartDate(start);
+            setEndDate(end);
+          }}
+          selectedCategory={selectedCategory}
+          onCategoryChange={setSelectedCategory}
+          selectedPerson={selectedPerson}
+          onPersonChange={setSelectedPerson}
+          sortBy={sortBy}
+          onSortChange={setSortBy}
+          selectedCurrency="PLN"
+          onCurrencyChange={() => {}} // Disable currency selection
+          activeFiltersCount={getActiveFiltersCount()}
+        />
+      </div>
+
+      <div className="grid gap-3 md:gap-6 grid-cols-1 lg:grid-cols-3">
         <BudgetTracker />
         <PersonalSpending />
         <CategoryOverview />
