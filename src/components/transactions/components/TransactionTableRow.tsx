@@ -121,9 +121,9 @@ export const TransactionTableRow = ({
               variant="destructive"
               size="icon"
               onClick={handleDelete}
-              className="bg-destructive/10 hover:bg-destructive"
+              className="bg-red-100 hover:bg-red-600 hover:text-white"
             >
-              <Trash2 className="h-4 w-4" />
+              <Trash2 className="h-4 w-4 text-red-600 hover:text-white" />
             </Button>
           </div>
         </TableCell>
