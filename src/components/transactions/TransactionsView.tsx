@@ -10,6 +10,7 @@ import { toast } from "sonner";
 import { TransactionTableHeader } from "./components/TransactionTableHeader";
 import { TransactionTableRow } from "./components/TransactionTableRow";
 import { TransactionMobileCard } from "./components/TransactionMobileCard";
+import { t } from "@/utils/translations";
 
 export const TransactionsView = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);

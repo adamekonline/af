@@ -50,6 +50,11 @@ export const translations = {
   allCategories: "Wszystkie kategorie",
   allProperties: "Wszystkie nieruchomości",
 
+  // Properties
+  poznan: "Poznań",
+  leuven: "Leuven",
+  original: "Oryginalna kwota",
+
   // Categories
   income: "Przychód",
   health: "Zdrowie",
