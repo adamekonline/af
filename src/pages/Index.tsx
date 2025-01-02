@@ -6,9 +6,9 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
 import { ResponsiveTransactionFormDialog } from "@/components/transactions/ResponsiveTransactionFormDialog";
 import { BudgetView } from "@/components/budget/BudgetView";
+import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
 import { t } from "@/utils/translations";
 
 export const Index = () => {
@@ -63,7 +63,7 @@ export const Index = () => {
                   <Button 
                     variant="ghost" 
                     className="justify-start text-sm" 
-                    onClick={() => navigate('/exchange-rates')}
+                    onClick={() => handleTabChange("exchange-rates")}
                   >
                     <DollarSign className="mr-2 h-4 w-4" />
                     {t("exchangeRates")}
@@ -99,17 +99,13 @@ export const Index = () => {
                 <BookmarkPlus className="h-4 w-4" />
                 {t("budgets")}
               </TabsTrigger>
+              <TabsTrigger value="exchange-rates" className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4" />
+                {t("exchangeRates")}
+              </TabsTrigger>
             </TabsList>
             
             <div className="flex items-center gap-2">
-              <Button 
-                variant="outline"
-                onClick={() => navigate('/exchange-rates')}
-                className="hidden md:flex items-center gap-2"
-              >
-                <DollarSign className="h-4 w-4" />
-                {t("exchangeRates")}
-              </Button>
               <div className="md:hidden">
                 <ResponsiveTransactionFormDialog />
               </div>
@@ -126,6 +122,16 @@ export const Index = () => {
           
           <TabsContent value="budgets">
             <BudgetView />
+          </TabsContent>
+
+          <TabsContent value="exchange-rates">
+            <div className="rounded-lg border bg-card p-6 shadow-sm">
+              <div className="flex items-center gap-2 mb-6">
+                <BookmarkPlus className="h-6 w-6 text-primary" />
+                <h2 className="text-2xl font-semibold">{t("manualExchangeRates")}</h2>
+              </div>
+              <ManualExchangeRates />
+            </div>
           </TabsContent>
         </Tabs>
       </main>
