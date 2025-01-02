@@ -1,6 +1,5 @@
 import { TrendingUp, TrendingDown } from "lucide-react";
 import { BudgetTracker } from "./BudgetTracker";
-import { PersonalSpending } from "./personal-spending/PersonalSpending";
 import { CategoryOverview } from "./category-overview/CategoryOverview";
 import { DashboardFilters } from "./DashboardFilters";
 import { SummaryCard } from "./cards/SummaryCard";
@@ -114,9 +113,8 @@ export const DashboardView = () => {
         />
       </div>
 
-      <div className="grid gap-3 md:gap-6 grid-cols-1 lg:grid-cols-3">
+      <div className="grid gap-3 md:gap-6 grid-cols-1 lg:grid-cols-2">
         <BudgetTracker />
-        <PersonalSpending />
         <CategoryOverview />
       </div>
     </div>
