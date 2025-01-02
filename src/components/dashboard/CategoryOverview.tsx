@@ -1,9 +1,9 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Transaction } from "@/types";
 import { convertCurrency } from "@/utils/currencyConverter";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
 import { t } from "@/utils/translations";
 
 interface CategorySpending {
@@ -72,66 +72,53 @@ export const CategoryOverview = () => {
     });
   };
 
-  const CustomTooltip = ({ active, payload }: any) => {
-    if (active && payload && payload.length) {
-      const data = payload[0].payload;
-      return (
-        <div className="bg-background border rounded-lg p-3 shadow-lg">
-          <p className="font-medium mb-2">{data.category}</p>
-          <div className="space-y-1">
-            <p className="text-sm">
-              <span className="inline-block w-16">Adam:</span>
-              {formatAmount(data.Adam)} zł
-            </p>
-            <p className="text-sm">
-              <span className="inline-block w-16">Natka:</span>
-              {formatAmount(data.Natka)} zł
-            </p>
-            <p className="text-sm">
-              <span className="inline-block w-16">Adi:</span>
-              {formatAmount(data.Adi)} zł
-            </p>
-            <div className="border-t mt-2 pt-2">
-              <p className="text-sm font-medium">
-                <span className="inline-block w-16">Total:</span>
-                {formatAmount(data.total)} zł
-              </p>
-            </div>
-          </div>
-        </div>
-      );
-    }
-    return null;
-  };
-
   return (
     <Card className="col-span-full">
       <CardHeader>
         <CardTitle>{t("categoryOverview")}</CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="h-[400px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={categoryData}
-              layout="vertical"
-              margin={{ top: 20, right: 30, left: 100, bottom: 5 }}
-              barSize={20}
-            >
-              <XAxis type="number" tickFormatter={formatAmount} />
-              <YAxis 
-                type="category" 
-                dataKey="category" 
-                width={90}
-                tick={{ fontSize: 12 }}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar dataKey="Adam" stackId="a" fill="#9b87f5" />
-              <Bar dataKey="Natka" stackId="a" fill="#0EA5E9" />
-              <Bar dataKey="Adi" stackId="a" fill="#D946EF" />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
+      <CardContent className="space-y-6">
+        {categoryData.map((category) => (
+          <div key={category.category} className="space-y-2">
+            <div className="flex items-center justify-between text-sm">
+              <div className="flex items-center">
+                <span className="font-medium">{category.category}</span>
+              </div>
+              <span className="text-muted-foreground">
+                {formatAmount(category.total)} zł
+              </span>
+            </div>
+            <div className="space-y-1">
+              {category.Adam > 0 && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span>Adam</span>
+                    <span className="text-muted-foreground">{formatAmount(category.Adam)} zł</span>
+                  </div>
+                  <Progress value={(category.Adam / category.total) * 100} className="bg-secondary h-2" indicatorClassName="bg-[#9b87f5]" />
+                </div>
+              )}
+              {category.Natka > 0 && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span>Natka</span>
+                    <span className="text-muted-foreground">{formatAmount(category.Natka)} zł</span>
+                  </div>
+                  <Progress value={(category.Natka / category.total) * 100} className="bg-secondary h-2" indicatorClassName="bg-[#0EA5E9]" />
+                </div>
+              )}
+              {category.Adi > 0 && (
+                <div className="space-y-1">
+                  <div className="flex justify-between text-sm">
+                    <span>Adi</span>
+                    <span className="text-muted-foreground">{formatAmount(category.Adi)} zł</span>
+                  </div>
+                  <Progress value={(category.Adi / category.total) * 100} className="bg-secondary h-2" indicatorClassName="bg-[#D946EF]" />
+                </div>
+              )}
+            </div>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );
