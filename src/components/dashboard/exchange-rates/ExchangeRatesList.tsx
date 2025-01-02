@@ -35,7 +35,7 @@ export const ExchangeRatesList = ({ rates, onDelete }: ExchangeRatesListProps) =
             <th scope="col" className="px-6 py-4">{t("fromCurrency")}</th>
             <th scope="col" className="px-6 py-4">{t("toCurrency")}</th>
             <th scope="col" className="px-6 py-4">{t("exchangeRate")}</th>
-            <th scope="col" className="px-6 py-4 text-right">Actions</th>
+            <th scope="col" className="px-6 py-4 text-right">{t("actions")}</th>
           </tr>
         </thead>
         <tbody className="divide-y">

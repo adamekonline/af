@@ -11,6 +11,8 @@ import { BudgetView } from "@/components/budget/BudgetView";
 import { ManualExchangeRates } from "@/components/dashboard/ManualExchangeRates";
 import { t } from "@/utils/translations";
 
+// ... keep existing code (imports and component start)
+
 export const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
@@ -127,8 +129,8 @@ export const Index = () => {
           <TabsContent value="exchange-rates">
             <div className="rounded-lg border bg-card p-6 shadow-sm">
               <div className="flex items-center gap-2 mb-6">
-                <BookmarkPlus className="h-6 w-6 text-primary" />
-                <h2 className="text-2xl font-semibold">{t("manualExchangeRates")}</h2>
+                <DollarSign className="h-6 w-6 text-primary" />
+                <h2 className="text-2xl font-semibold">{t("exchangeRates")}</h2>
               </div>
               <ManualExchangeRates />
             </div>

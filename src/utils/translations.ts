@@ -126,6 +126,9 @@ export const translations = {
   // Exchange rates
   original: "Kwota oryginalna",
   noRatesFound: "Nie znaleziono kursów walutowych",
+
+  // Actions
+  actions: "Akcje",
 } as const;
 
 type TranslationKey = keyof typeof translations | (string & {});
