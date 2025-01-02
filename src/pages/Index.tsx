@@ -1,6 +1,7 @@
 import { useState, Suspense, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Header } from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 import { BudgetView } from "@/components/budget/BudgetView";
 import { DashboardView } from "@/components/dashboard/DashboardView";
 import { TransactionsView } from "@/components/transactions/TransactionsView";
@@ -64,7 +65,7 @@ export const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background flex flex-col">
       <Header
         handleLogout={handleLogout}
         isSheetOpen={isSheetOpen}
@@ -73,7 +74,7 @@ export const Index = () => {
         handleTabChange={handleTabChange}
       />
 
-      <main className="container py-6">
+      <main className="container py-6 flex-grow">
         <Suspense fallback={<div>Loading...</div>}>
           {activeTab === "dashboard" && <DashboardView />}
           {activeTab === "transactions" && <TransactionsView />}
@@ -81,6 +82,8 @@ export const Index = () => {
           {activeTab === "exchange-rates" && <ManualExchangeRates />}
         </Suspense>
       </main>
+
+      <Footer />
     </div>
   );
 };
