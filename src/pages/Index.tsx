@@ -13,7 +13,7 @@ import { t } from "@/utils/translations";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
-export const Index = () => {
+const Index = () => {
   const [activeTab, setActiveTab] = useState("dashboard");
   const navigate = useNavigate();
 
@@ -22,6 +22,7 @@ export const Index = () => {
       const { data: { session } } = await supabase.auth.getSession();
       if (!session) {
         navigate('/login');
+        return;
       }
     };
     
