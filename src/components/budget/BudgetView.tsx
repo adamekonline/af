@@ -10,15 +10,15 @@ import { t } from "@/utils/translations";
 
 const categories: Category[] = [
   "Housing", 
-  "Zywnosc",  // Changed from Food
+  "Zywnosc",
   "Transport", 
   "Health", 
   "Education", 
-  "Kredyty",  // Changed from Credit
+  "Kredyty",
   "Credit Card", 
   "Income", 
   "Telefonia/Internet",
-  "Restauracje/Rozrywka",  // Added new category
+  "Restauracje/Rozrywka",
   "Other"
 ];
 
@@ -87,7 +87,7 @@ export const BudgetView = () => {
   return (
     <div className="space-y-6">
       <div className="flex flex-col gap-4">
-        <h2 className="text-2xl font-bold">{t("budgets")}</h2>
+        <h2 className="text-2xl font-bold">{t("budget")}</h2>
         
         <form onSubmit={handleSubmit} className="flex flex-wrap gap-4">
           <Select value={category} onValueChange={(value) => setCategory(value as Category)}>
