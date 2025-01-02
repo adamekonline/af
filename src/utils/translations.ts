@@ -48,7 +48,7 @@ export const translations = {
   addRate: "Dodaj kurs",
   selectCurrency: "Wybierz walutę",
 
-  // Categories
+  // Categories - exact matches for filters
   Housing: "Mieszkanie",
   Zywnosc: "Żywność",
   Transport: "Transport",
@@ -60,6 +60,8 @@ export const translations = {
   "Telefonia/Internet": "Telefonia/Internet",
   "Restauracje/Rozrywka": "Restauracje/Rozrywka",
   Other: "Inne",
+
+  // Categories - lowercase versions (if needed elsewhere)
   housing: "mieszkanie",
   zywnosc: "żywność",
   transport: "transport",
