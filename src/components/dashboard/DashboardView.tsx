@@ -33,6 +33,12 @@ export const DashboardView = () => {
     "PLN"
   );
 
+  const currentDate = new Date();
+  const monthYear = currentDate.toLocaleString('pl-PL', { 
+    month: 'long', 
+    year: 'numeric' 
+  });
+
   if (isLoading) {
     return (
       <div className="space-y-4 md:space-y-6">
@@ -49,6 +55,10 @@ export const DashboardView = () => {
 
   return (
     <div className="space-y-4 md:space-y-6">
+      <h1 className="text-center text-2xl md:text-3xl font-semibold capitalize text-primary mb-6">
+        {monthYear}
+      </h1>
+
       {/* Desktop Filters */}
       <div className="hidden lg:block">
         <DashboardFilters
