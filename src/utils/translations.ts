@@ -42,8 +42,12 @@ export const translations = {
   delete: "Usuń",
   spent: "wydane",
   budget: "budżet",
+  fromCurrency: "From Currency",
+  toCurrency: "To Currency",
+  exchangeRate: "Exchange Rate",
+  addRate: "Dodaj kurs",
 
-  // Categories (both capitalized and lowercase)
+  // Categories
   Housing: "Mieszkanie",
   Food: "Jedzenie",
   Transport: "Transport",
@@ -134,6 +138,5 @@ export const t = (key: TranslationKey): string => {
   if (key in translations) {
     return translations[key as keyof typeof translations];
   }
-  // If the key doesn't exist in translations, return the key itself
   return key;
 };

@@ -2,9 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Currency } from "@/types";
 import { UseFormReturn } from "react-hook-form";
 import { ManualRateForm } from "./types";
+import { t } from "@/utils/translations";
 
 interface ExchangeRateFormProps {
   form: UseFormReturn<ManualRateForm>;
